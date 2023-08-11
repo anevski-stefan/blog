@@ -27,6 +27,7 @@
 
 .actions {
   display: flex;
+  align-items: center;
 }
 
 .actions button {

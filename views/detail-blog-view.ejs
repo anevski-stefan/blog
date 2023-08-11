@@ -1,0 +1,7 @@
+<h1 class="fs-1 text-center m-5">Detail blog view</h1>
+
+<h3>Title: <%= blog.title %></h3>
+<p class="mb-0">Content: <%= blog.content %></p>
+<p class="mb-0">
+  Created at: <%= (new Date(blog.createdat)).toLocaleString() %>
+</p>
