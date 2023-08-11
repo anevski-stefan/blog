@@ -22,4 +22,5 @@
 
 .blogs .blog-item p {
   margin: 0;
+  height: auto;
 }

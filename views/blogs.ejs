@@ -9,6 +9,9 @@
       <b>Created: </b>
       <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
     </p>
+    <form method="get" action="/blogs/<%= blog.id %>/remove">
+      <button type="submit" class="btn btn-danger mt-3">Delete post</button>
+    </form>
   </div>
   <% }); %>
 </div>
