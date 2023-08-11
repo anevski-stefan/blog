@@ -1,0 +1,29 @@
+<h1 class="text-center m-5">Edit blog</h1>
+<form method="post" action="/blogs/<%= blog.id %>/edit">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input
+      type="text"
+      class="form-control"
+      id="title"
+      name="title"
+      value="<%= blog.title %>"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="content" class="form-label">Content</label>
+    <textarea
+      name="content"
+      class="form-control"
+      id="content"
+      cols="30"
+      rows="10"
+    >
+<%= blog.content %></textarea
+    >
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Edit</button>
+    <a href="/blogs" class="btn btn-danger">Cancel</a>
+  </div>
+</form>

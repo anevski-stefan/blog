@@ -22,4 +22,13 @@
 
 .blogs .blog-item p {
   margin: 0;
+  height: auto;
+}
+
+.actions {
+  display: flex;
+}
+
+.actions button {
+  margin: 5px 10px 5px 0;
 }
