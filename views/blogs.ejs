@@ -1,7 +1,14 @@
-<h1 class="fs-1">Hello</h1>
+<div class="blogs">
+  <h1 class="fs-1">My Blogs</h1>
 
-<ul class="blogs">
-  <% blogs.forEach(element => { %>
-  <li class="blog-item"><%= element.title %></li>
+  <% blogs.forEach(blog => { %>
+  <div class="blog-item">
+    <p><b>Title: </b><%= blog.title %></p>
+    <p><b>Content: </b><%= blog.content %></p>
+    <p>
+      <b>Created: </b>
+      <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
+    </p>
+  </div>
   <% }); %>
-</ul>
+</div>

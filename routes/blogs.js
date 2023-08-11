@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const client = require("../database/database.js");
-const app = express();
 
 router.get("", (req, res) => {
   const query = `SELECT * FROM blog`;
