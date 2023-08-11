@@ -3,10 +3,12 @@ const expressLayouts = require("express-ejs-layouts");
 const dotenv = require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
-const blogsRoute = require("./routes/add.js");
+const blogsRoute = require("./routes/blogs.js");
 const addBlogFormRoute = require("./routes/add-blog-form.js");
 const add = require("./routes/add.js");
 const remove = require("./routes/remove.js");
+const edit = require("./routes/edit.js");
+const editBlogFormRoute = require("./routes/edit-blog-form.js");
 
 app.use(express.static("public"));
 app.use(expressLayouts);
@@ -17,10 +19,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
+app.use(edit);
+
+app.use(editBlogFormRoute);
 
 app.use(remove);
 
-app.use("/blogs/:blogId/add", add);
+app.use(add);
 
 app.use("/blogs/add-form", addBlogFormRoute);
 
