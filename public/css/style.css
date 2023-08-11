@@ -10,7 +10,6 @@
 }
 
 .blogs .blog-item {
-  border: 1px solid green;
   padding: 10px 20px;
   margin: 10px 0 10px 0;
   font-size: 1.2rem;
@@ -32,4 +31,18 @@
 
 .actions button {
   margin: 5px 10px 5px 0;
+}
+
+.detail-wrapper {
+  display: flex;
+  width: 100%;
+  text-align: center;
+}
+
+.detail-wrapper .left-container {
+  width: 50%;
+}
+
+.detail-wrapper .right-container {
+  width: 50%;
 }

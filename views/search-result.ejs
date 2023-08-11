@@ -1,0 +1,23 @@
+<h1 class="text-center mt-5 mb-5">Search results</h1>
+
+<div class="search-results-wrapper">
+  <% blogs.forEach(blog => { %>
+  <div class="searchResult mt-3 mb-3">
+    <h3><%= blog.title %></h3>
+    <p><%= blog.content %></p>
+    <p>
+      <b>Created: </b>
+      <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
+    </p>
+    <div class="actions mt-3">
+      <form method="get" action="/blogs/<%= blog.id %>/remove">
+        <button type="submit" class="btn btn-danger">Delete post</button>
+      </form>
+      <form method="get" action="/blogs/<%= blog.id %>/edit-form">
+        <button type="submit" class="btn btn-primary">Edit post</button>
+      </form>
+      <a href="/blogs/<%= blog.id %>" class="btn btn-secondary">Read more</a>
+    </div>
+  </div>
+  <%}); %>
+</div>

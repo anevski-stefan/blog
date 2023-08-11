@@ -10,6 +10,7 @@ const remove = require("./routes/remove.js");
 const edit = require("./routes/edit.js");
 const editBlogFormRoute = require("./routes/edit-blog-form.js");
 const detailBlogViewRoute = require("./routes/detail-blog-view.js");
+const searchRoute = require("./routes/search.js");
 
 app.use(express.static("public"));
 app.use(expressLayouts);
@@ -20,17 +21,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
-app.use(detailBlogViewRoute);
-
-app.use(edit);
-
-app.use(editBlogFormRoute);
-
-app.use(remove);
-
-app.use(add);
-
+app.use(searchRoute);
 app.use("/blogs/add-form", addBlogFormRoute);
+app.use(editBlogFormRoute);
+app.use(detailBlogViewRoute);
+app.use(add);
+app.use(edit);
+app.use(remove);
 
 app.use("/blogs", blogsRoute);
 
