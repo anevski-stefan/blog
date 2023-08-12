@@ -17,18 +17,3 @@
   <button type="submit" class="btn btn-primary">Add</button>
   <a href="/blogs" class="btn btn-danger">Cancel</a>
 </form>
-<script src="/ckeditor/ckeditor.js"></script>
-<script src="/ckeditor/plugins/higlight/es/highlight.js"></script>
-<link
-  rel="stylesheet"
-  href="../public/ckeditor/plugins/higlight/styles/monokai.min.css"
-/>
-<script>
-  CKEDITOR.replace("content", {
-    allowedContent: true,
-    autoParagraph: false,
-    extraPlugins:
-      "codesnippet,ajax,autogrow,zoom,richcombo,floatpanel,panel,listblock,button,emoji,autocomplete,textwatcher,textmatch",
-    codeSnippet_theme: "monokai",
-  });
-</script>
