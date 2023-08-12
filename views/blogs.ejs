@@ -1,14 +1,16 @@
 <div class="blogs">
   <h1 class="fs-1">My Blogs</h1>
 
-  <% blogs.forEach(blog => { %>
+  <!-- Blogs listing -->
+  <% if(blogs.length > 0) {%> <% blogs.forEach(blog => { %>
   <div class="blog-item">
     <p><b>Title: </b><%= blog.title %></p>
-    <p><b>Content: </b><%= blog.content %></p>
+
     <p>
       <b>Created: </b>
       <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
     </p>
+    <div class="ckeditor-content"><b>Content: </b>...</div>
     <div class="actions mt-3">
       <form method="get" action="/blogs/<%= blog.id %>/remove">
         <button type="submit" class="btn btn-danger">Delete post</button>
@@ -16,8 +18,27 @@
       <form method="get" action="/blogs/<%= blog.id %>/edit-form">
         <button type="submit" class="btn btn-primary">Edit post</button>
       </form>
-      <a href="/blogs/<%= blog.id %>" class="btn btn-secondary">Read more</a>
+      <a href="/blogs/<%= blog.id %>" class="btn btn-secondary"
+        >Read the article</a
+      >
     </div>
   </div>
-  <% }); %>
+  <% }); %> <%} else {%>
+  <h1 class="no-blogs">No blogs to be shown.</h1>
+  <%}%>
 </div>
+
+<script>
+  function removeSuccessMessage() {
+    var successMessage = document.querySelector(".alert-success");
+    if (successMessage) {
+      setTimeout(function () {
+        successMessage.remove();
+      }, 3000);
+    }
+  }
+
+  window.addEventListener("load", function () {
+    removeSuccessMessage();
+  });
+</script>

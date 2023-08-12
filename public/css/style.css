@@ -24,6 +24,27 @@
   height: auto;
 }
 
+.ckeditor-content {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.ckeditor-content p {
+  margin: 0 0 10px;
+}
+
+.ckeditor-content b {
+  font-weight: bold;
+}
+
+.ckeditor-content span {
+  display: block;
+  margin-top: 5px;
+  display: flex;
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -34,15 +55,14 @@
 }
 
 .detail-wrapper {
-  display: flex;
+  /* display: flex; */
   width: 100%;
-  text-align: center;
+  /* text-align: center; */
 }
 
-.detail-wrapper .left-container {
-  width: 50%;
-}
-
-.detail-wrapper .right-container {
-  width: 50%;
+.no-blogs {
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
