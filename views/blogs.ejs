@@ -4,21 +4,26 @@
   <!-- Blogs listing -->
   <% if(blogs.length > 0) {%> <% blogs.forEach(blog => { %>
   <div class="blog-item">
-    <p><b>Title: </b><%= blog.title %></p>
-
+    <div>
+      <h1 class="blog-title"><%= blog.title %></h1>
+      <div>
+        <form method="get" action="/blogs/<%= blog.id %>/remove" class="mx-2">
+          <button type="submit" class="btn btn-danger">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </form>
+        <form method="get" action="/blogs/<%= blog.id %>/edit-form">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </button>
+        </form>
+      </div>
+    </div>
     <p>
-      <b>Created: </b>
       <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
     </p>
-    <div class="ckeditor-content"><b>Content: </b>...</div>
-    <div class="actions mt-3">
-      <form method="get" action="/blogs/<%= blog.id %>/remove">
-        <button type="submit" class="btn btn-danger">Delete post</button>
-      </form>
-      <form method="get" action="/blogs/<%= blog.id %>/edit-form">
-        <button type="submit" class="btn btn-primary">Edit post</button>
-      </form>
-      <a href="/blogs/<%= blog.id %>" class="btn btn-secondary"
+    <div class="actions">
+      <a href="/blogs/<%= blog.id %>" class="btn btn-secondary mt-3"
         >Read the article</a
       >
     </div>
