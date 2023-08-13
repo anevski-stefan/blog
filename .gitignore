@@ -1,5 +1,1 @@
 node_modules
-public/ckeditor/*
-# Excluding this file
-!public/ckeditor/ckeditor.js
-!public/ckeditor/plugins
