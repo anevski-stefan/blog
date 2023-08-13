@@ -3,21 +3,26 @@
     class="left-container d-flex align-items-center justify-content-between w-100"
   >
     <div>
-      <h1 class="fs-1">Details about article: <%= blog.title %></h1>
+      <div>
+        <h1 class="fs-1 title"><%= blog.title %></h1>
+        <div class="actions">
+          <form method="get" action="/blogs/<%= blog.id %>/remove">
+            <button type="submit" class="btn btn-danger">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </form>
+          <form method="get" action="/blogs/<%= blog.id %>/edit-form">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </button>
+          </form>
+        </div>
+      </div>
       <p class="m-0">
-        <b>Created: </b>
         <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
       </p>
     </div>
-    <div class="actions">
-      <form method="get" action="/blogs/<%= blog.id %>/remove">
-        <button type="submit" class="btn btn-danger">Delete post</button>
-      </form>
-      <form method="get" action="/blogs/<%= blog.id %>/edit-form">
-        <button type="submit" class="btn btn-primary">Edit post</button>
-      </form>
-    </div>
   </div>
 
-  <div class="right-container mt-5"><%- blog.content %></div>
+  <div class="right-container mt-3"><%- blog.content %></div>
 </div>

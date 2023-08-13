@@ -9,7 +9,6 @@ router.get("/blogs/:blogId/edit-form", (req, res) => {
     if (err) {
       console.log(err.message);
     }
-    // console.log(result.rows);
     res.render("edit-blog-form", { blog: result.rows[0] });
   });
 });
