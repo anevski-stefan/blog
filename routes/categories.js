@@ -9,7 +9,7 @@ router.get("", (req, res) => {
       console.log(err.message);
       return;
     }
-    res.render("add-blog-form", { categories: result.rows });
+    res.render("categories", { categories: result.rows });
   });
 });
 

@@ -5,6 +5,14 @@
     <input type="text" class="form-control" id="title" name="title" />
   </div>
   <div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select name="category" id="category" class="form-control">
+      <% categories.forEach(category => {%>
+      <option value="<%= category.id  %>"><%= category.name %></option>
+      <%}); %>
+    </select>
+  </div>
+  <div class="mb-3">
     <label for="content" class="form-label">Content</label>
     <textarea
       name="content"

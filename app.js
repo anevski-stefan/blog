@@ -11,6 +11,7 @@ const edit = require("./routes/edit.js");
 const editBlogFormRoute = require("./routes/edit-blog-form.js");
 const detailBlogViewRoute = require("./routes/detail-blog-view.js");
 const searchRoute = require("./routes/search.js");
+const categoriesRoute = require("./routes/categories.js");
 
 app.use(express.static("public"));
 app.use(expressLayouts);
@@ -30,6 +31,7 @@ app.use(edit);
 app.use(remove);
 
 app.use("/blogs", blogsRoute);
+app.use("/categories", categoriesRoute);
 
 app.get("", (req, res) => {
   res.render("index");

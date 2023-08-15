@@ -9,10 +9,11 @@ const DOMPurify = createDOMPurify(window);
 router.post("/blogs/add", (req, res) => {
   const title = req.body.title;
   const content = DOMPurify.sanitize(req.body.content);
+  const category_id = req.body.category;
   const date = new Date();
   const query =
-    "INSERT INTO blog(title, content, createdat) VALUES($1, $2, $3)";
-  const values = [title, content, date];
+    "INSERT INTO blog(title, content, createdat, category_id) VALUES($1, $2, $3, $4)";
+  const values = [title, content, date, category_id];
   client.query(query, values, (err, result) => {
     if (err) {
       console.error(err);

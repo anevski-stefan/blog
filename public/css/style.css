@@ -114,3 +114,21 @@
   padding: 10px 20px;
   border-radius: 12px;
 }
+
+.categories-wrapper {
+  margin-top: 50px;
+  display: flex;
+  padding: 20px;
+  justify-content: space-around;
+}
+
+.categories-wrapper .category {
+  margin: 0;
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: #000;
+}
+
+.blog_category {
+  font-size: 1rem;
+}

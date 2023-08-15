@@ -10,6 +10,18 @@
       value="<%= blog.title %>"
     />
   </div>
+
+  <div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select name="category" id="category" class="form-control">
+      <% categories.forEach(category => {%> <% if (category.id ===
+      category_id.id) { %>
+      <option value="<%= category.id %>" selected><%= category.name %></option>
+      <% } else { %>
+      <option value="<%= category.id %>"><%= category.name %></option>
+      <%} %> <%}); %>
+    </select>
+  </div>
   <div class="mb-3">
     <label for="content" class="form-label">Content</label>
     <textarea
