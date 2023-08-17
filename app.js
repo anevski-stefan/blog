@@ -33,6 +33,8 @@ app.use(remove);
 app.use("/blogs", blogsRoute);
 app.use("/categories", categoriesRoute);
 
+app.use("", require("./routes/user.js"));
+
 app.get("", (req, res) => {
   res.render("index");
 });
