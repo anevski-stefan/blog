@@ -3,15 +3,23 @@ const expressLayouts = require("express-ejs-layouts");
 const dotenv = require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
-const blogsRoute = require("./routes/blogs.js");
-const addBlogFormRoute = require("./routes/add-blog-form.js");
-const add = require("./routes/add.js");
-const remove = require("./routes/remove.js");
-const edit = require("./routes/edit.js");
-const editBlogFormRoute = require("./routes/edit-blog-form.js");
-const detailBlogViewRoute = require("./routes/detail-blog-view.js");
-const searchRoute = require("./routes/search.js");
-const categoriesRoute = require("./routes/categories.js");
+const passport = require("./config/passport.js");
+const session = require("express-session");
+const {
+  checkAuthenticated,
+  checkNotAuthenticated,
+} = require("./config/middleware.js");
+
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static("public"));
 app.use(expressLayouts);
@@ -22,20 +30,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
-app.use(searchRoute);
-app.use("/blogs/add-form", addBlogFormRoute);
-app.use(editBlogFormRoute);
-app.use(detailBlogViewRoute);
-app.use(add);
-app.use(edit);
-app.use(remove);
+app.use(require("./routes/search.js"));
+app.use(
+  "/blogs/add-form",
+  checkAuthenticated,
+  require("./routes/add-blog-form.js")
+);
+app.use(require("./routes/edit-blog-form.js"));
+app.use(require("./routes/detail-blog-view.js"));
+app.use(require("./routes/add.js"));
+app.use(require("./routes/edit.js"));
+app.use(require("./routes/remove.js"));
 
-app.use("/blogs", blogsRoute);
-app.use("/categories", categoriesRoute);
+app.use("/blogs", checkAuthenticated, require("./routes/blogs.js"));
+app.use("/categories", checkAuthenticated, require("./routes/categories.js"));
 
 app.use("", require("./routes/user.js"));
 
-app.get("", (req, res) => {
+app.get("", checkAuthenticated, (req, res) => {
   res.render("index");
 });
 

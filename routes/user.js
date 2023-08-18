@@ -2,25 +2,29 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const client = require("../database/database.js");
+const passport = require("../config/passport.js");
+const {
+  checkAuthenticated,
+  checkNotAuthenticated,
+} = require("../config/middleware.js");
 
 // GET Request: Show login & register pages
 
-router.get("/login", (req, res) => {
+router.get("/login", checkNotAuthenticated, (req, res) => {
   res.render("login");
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", checkNotAuthenticated, (req, res) => {
   res.render("register");
 });
 
 // Post Request: Register a user
-router.post("/register", async (req, res) => {
+router.post("/register", checkNotAuthenticated, async (req, res) => {
   const first_name = req.body.fname;
   const last_name = req.body.lname;
   const username = req.body.username;
   const password = req.body.password;
   try {
-    // Hashing the password
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -36,6 +40,21 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+router.post(
+  "/login",
+  checkNotAuthenticated,
+  passport.authenticate("local", {
+    successRedirect: "/blogs",
+    failureRedirect: "/login",
+    failureFlash: false,
+  })
+);
+
+router.get("/logout", checkAuthenticated, (req, res) => {
+  req.logout();
+  res.redirect("/login");
 });
 
 module.exports = router;
