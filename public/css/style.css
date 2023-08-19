@@ -158,7 +158,8 @@
 /* Login page */
 
 .login--wrapper,
-.register--wrapper {
+.register--wrapper,
+.profile--wrapper {
   margin-top: 50px;
   display: flex;
   justify-content: center;
@@ -167,7 +168,8 @@
 }
 
 .login--wrapper > .form--wrapper,
-.register--wrapper > .form--wrapper {
+.register--wrapper > .form--wrapper,
+.profile--wrapper > .form--wrapper {
   width: 40%;
   height: auto;
   background-color: white;
@@ -178,7 +180,8 @@
 }
 
 .login--wrapper > .form--wrapper > h1,
-.register--wrapper > .form--wrapper > h1 {
+.register--wrapper > .form--wrapper > h1,
+.profile--wrapper > .form--wrapper > h1 {
   text-align: center;
   color: #333;
   margin-bottom: 60px;
@@ -187,7 +190,8 @@
 .login--wrapper > .form--wrapper > form input[type="text"],
 .login--wrapper > .form--wrapper > form input[type="password"],
 .register--wrapper > .form--wrapper > form input[type="text"],
-.register--wrapper > .form--wrapper > form input[type="password"] {
+.register--wrapper > .form--wrapper > form input[type="password"],
+.profile--wrapper > .form--wrapper > .profile--info > form input[type="text"] {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -201,12 +205,20 @@
 .login--wrapper > .form--wrapper > form input[type="text"]:focus,
 .login--wrapper > .form--wrapper > form input[type="password"]:focus,
 .register--wrapper > .form--wrapper > form input[type="text"]:focus,
-.register--wrapper > .form--wrapper > form input[type="password"]:focus {
+.register--wrapper
+  > .form--wrapper
+  > form
+  input[type="password"]:focus
+  .profile--wrapper
+  > .form-wrapper
+  > form
+  > input[type="text"]:focus {
   border-color: #007bff;
 }
 
 .login--wrapper > .form--wrapper > form > button,
-.register--wrapper > .form--wrapper > form > button {
+.register--wrapper > .form--wrapper > form > button,
+.profile--wrapper > .form--wrapper > .profile--info > form > button {
   width: 100%;
   background-color: #007bff;
   color: white;
@@ -219,6 +231,7 @@
 }
 
 .login--wrapper > .form--wrapper > form > button:hover,
-.register--wrapper > .form--wrapper > form > button:hover {
+.register--wrapper > .form--wrapper > form > button:hover,
+.profile--wrapper > .form--wrapper > .profile--info > form > button:hover {
   background-color: #0056b3;
 }

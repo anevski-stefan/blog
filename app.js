@@ -47,6 +47,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use(require("./routes/dashboard.js"));
 app.use(require("./routes/search.js"));
 app.use(
   "/blogs/add-form",

@@ -41,7 +41,7 @@
           <% if(locals.isAuthenticated) { %>
           <a
             class="nav-link text-white d-flex text-decoration-underline align-items-center justify-content-center"
-            href="#"
+            href="/<%= locals.user.username %>/dashboard"
           >
             <%= locals.user.username %>
           </a>
