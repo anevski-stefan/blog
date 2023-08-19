@@ -18,13 +18,13 @@
           <li class="nav-item">
             <a class="nav-link" href="/">Home</a>
           </li>
+          <% if(locals.isAuthenticated) { %>
           <li class="nav-item">
             <a class="nav-link" href="/blogs">Posts</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/blogs/add-form">Add post</a>
           </li>
-          <% if(locals.isAuthenticated) { %>
           <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
           </li>
@@ -47,6 +47,7 @@
           </a>
           <%}%>
         </p>
+        <% if(locals.isAuthenticated) { %>
         <form
           class="form-inline my-2 my-lg-0 d-flex"
           role="search"
@@ -65,7 +66,24 @@
             Search
           </button>
         </form>
+        <%}%>
       </div>
     </div>
   </div>
 </nav>
+
+<script>
+  function updateFormAction(event) {
+    event.preventDefault();
+
+    var searchInput = document.getElementById("searchInput");
+    var searchForm = document.getElementById("searchForm");
+    var inputValue = searchInput.value;
+
+    // Modify the form action URL by appending the input value
+    searchForm.action = "/search/" + encodeURIComponent(inputValue);
+
+    // Submit the form
+    searchForm.submit();
+  }
+</script>

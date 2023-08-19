@@ -19,6 +19,7 @@
   margin: 10px 0 10px 0;
   font-size: 1.2rem;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
 }
 
 .blogs .blog-item > div {
@@ -152,4 +153,72 @@
 .like-dislike > div > form > button {
   border-radius: 10px;
   padding: 0 15px;
+}
+
+/* Login page */
+
+.login--wrapper,
+.register--wrapper {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.login--wrapper > .form--wrapper,
+.register--wrapper > .form--wrapper {
+  width: 40%;
+  height: auto;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login--wrapper > .form--wrapper > h1,
+.register--wrapper > .form--wrapper > h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 60px;
+}
+
+.login--wrapper > .form--wrapper > form input[type="text"],
+.login--wrapper > .form--wrapper > form input[type="password"],
+.register--wrapper > .form--wrapper > form input[type="text"],
+.register--wrapper > .form--wrapper > form input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.login--wrapper > .form--wrapper > form input[type="text"]:focus,
+.login--wrapper > .form--wrapper > form input[type="password"]:focus,
+.register--wrapper > .form--wrapper > form input[type="text"]:focus,
+.register--wrapper > .form--wrapper > form input[type="password"]:focus {
+  border-color: #007bff;
+}
+
+.login--wrapper > .form--wrapper > form > button,
+.register--wrapper > .form--wrapper > form > button {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login--wrapper > .form--wrapper > form > button:hover,
+.register--wrapper > .form--wrapper > form > button:hover {
+  background-color: #0056b3;
 }

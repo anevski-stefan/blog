@@ -65,9 +65,7 @@ app.use("/categories", checkAuthenticated, require("./routes/categories.js"));
 
 app.use("", require("./routes/user.js"));
 
-app.get("", checkAuthenticated, (req, res) => {
-  res.render("index");
-});
+app.use(require("./routes/home.js", checkAuthenticated));
 
 app.use((req, res, next) => {
   if (req.user) {
