@@ -53,8 +53,13 @@ router.post(
 );
 
 router.get("/logout", checkAuthenticated, (req, res) => {
-  req.logout();
-  res.redirect("/login");
+  req.logout((err) => {
+    if (err) {
+      // Handle the error
+      console.error("Error logging out:", err);
+    }
+    res.redirect("/login");
+  });
 });
 
 module.exports = router;

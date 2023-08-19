@@ -132,3 +132,11 @@
 .blog_category {
   font-size: 1rem;
 }
+
+.logged-user {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  margin: 0;
+  justify-content: end;
+}

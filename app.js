@@ -9,12 +9,17 @@ const {
   checkAuthenticated,
   checkNotAuthenticated,
 } = require("./config/middleware.js");
+const client = require("./database/database.js");
 
 app.use(
   session({
     secret: "your-secret-key",
     resave: false,
     saveUninitialized: true,
+    name: "userCookie",
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
   })
 );
 
@@ -28,6 +33,20 @@ app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use((req, res, next) => {
+  if (!res.locals.logsPrinted) {
+    res.locals.isAuthenticated = req.isAuthenticated();
+    res.locals.user = req.user;
+    res.locals.userName = req.user ? req.user.name : null;
+
+    console.log("res.locals.user:", res.locals.user);
+
+    res.locals.logsPrinted = true; // Mark that the logs have been printed
+  }
+
+  next();
+});
 
 // Routes
 app.use(require("./routes/search.js"));
@@ -43,12 +62,28 @@ app.use(require("./routes/edit.js"));
 app.use(require("./routes/remove.js"));
 
 app.use("/blogs", checkAuthenticated, require("./routes/blogs.js"));
+
 app.use("/categories", checkAuthenticated, require("./routes/categories.js"));
 
 app.use("", require("./routes/user.js"));
 
 app.get("", checkAuthenticated, (req, res) => {
   res.render("index");
+});
+
+app.use((req, res, next) => {
+  if (req.user) {
+    const user_id = req.user.id;
+    const query = `SELECT * FROM bloguser WHERE id = ${user_id}`;
+    client.query(query, (err, result) => {
+      if (err) {
+        console.log(err.message);
+        return;
+      }
+      const user = result.rows[0];
+    });
+  }
+  next(); // Add this line
 });
 
 // App listening on port
