@@ -28,7 +28,18 @@
         >Read the article</a
       >
     </div>
+    <div class="like-dislike">
+      <div>
+        <form action="/blogs/<%= blog.id %>/like" method="POST">
+          <button type="submit">Like <%= blog.like_count%></button>
+        </form>
+        <form action="/blogs/<%= blog.id %>/dislike" method="post">
+          <button type="submit">Disike <%= blog.dislike_count %></button>
+        </form>
+      </div>
+    </div>
   </div>
+
   <% }); %> <%} else {%>
   <h1 class="no-blogs">No blogs to be shown.</h1>
   <%}%>

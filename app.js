@@ -40,9 +40,7 @@ app.use((req, res, next) => {
     res.locals.user = req.user;
     res.locals.userName = req.user ? req.user.name : null;
 
-    console.log("res.locals.user:", res.locals.user);
-
-    res.locals.logsPrinted = true; // Mark that the logs have been printed
+    res.locals.logsPrinted = true;
   }
 
   next();
@@ -60,7 +58,7 @@ app.use(require("./routes/detail-blog-view.js"));
 app.use(require("./routes/add.js"));
 app.use(require("./routes/edit.js"));
 app.use(require("./routes/remove.js"));
-
+app.use(require("./routes/like-dislike.js"));
 app.use("/blogs", checkAuthenticated, require("./routes/blogs.js"));
 
 app.use("/categories", checkAuthenticated, require("./routes/categories.js"));

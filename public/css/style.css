@@ -140,3 +140,16 @@
   margin: 0;
   justify-content: end;
 }
+
+.like-dislike > div {
+  margin-top: 20px;
+}
+
+.like-dislike > div > form:first-child > button {
+  margin-right: 10px;
+}
+
+.like-dislike > div > form > button {
+  border-radius: 10px;
+  padding: 0 15px;
+}
