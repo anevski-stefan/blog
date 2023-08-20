@@ -1,0 +1,43 @@
+<div class="profile--wrapper">
+  <div class="form--wrapper">
+    <h1>Dashboard</h1>
+
+    <div class="profile--image"></div>
+    <div class="profile--info">
+      <form>
+        <div class="mb-3">
+          <label for="fname" class="form-label">First name: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="fname"
+            name="fname"
+            value="<%= user.firstname %>"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="lname" class="form-label">Last name: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="lname"
+            name="lname"
+            value="<%= user.lastname %>"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username: </label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            value="<%= user.username %>"
+            disabled
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+</div>

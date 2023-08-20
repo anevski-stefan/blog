@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">Blog</a>
+    <a class="navbar-brand" href="/">Blog</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -13,40 +13,68 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/blogs">Posts</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/blogs/add-form">Add post</a>
-        </li>
-      </ul>
-      <form
-        class="d-flex"
-        role="search"
-        method="get"
-        id="searchForm"
-        onsubmit="updateFormAction(event)"
-      >
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          id="searchInput"
-        />
-        <button class="btn btn-outline-light" type="submit">Search</button>
-      </form>
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <% if(locals.isAuthenticated) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/blogs">Posts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/blogs/add-form">Add post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Register</a>
+          </li>
+          <%}%>
+        </ul>
+        <p class="logged-user mb-0">
+          <% if(locals.isAuthenticated) { %>
+          <a
+            class="nav-link text-white d-flex text-decoration-underline align-items-center justify-content-center"
+            href="/<%= locals.user.username %>/dashboard"
+          >
+            <%= locals.user.username %>
+          </a>
+          <%}%>
+        </p>
+        <% if(locals.isAuthenticated) { %>
+        <form
+          class="form-inline my-2 my-lg-0 d-flex"
+          role="search"
+          method="get"
+          id="searchForm"
+          onsubmit="updateFormAction(event)"
+        >
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            id="searchInput"
+          />
+          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+        <%}%>
+      </div>
     </div>
   </div>
 </nav>
 
 <script>
   function updateFormAction(event) {
-    event.preventDefault(); // Prevent the form from submitting
+    event.preventDefault();
 
     var searchInput = document.getElementById("searchInput");
     var searchForm = document.getElementById("searchForm");
