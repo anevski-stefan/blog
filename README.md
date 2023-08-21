@@ -4,6 +4,10 @@
 
 This repository hosts a blog application built using Node.js and Express. The application comes with an advanced rich text editor, powered by CKEditor, to create compelling content. For ensuring robust password security, it employs hashing techniques. The authentication and authorization aspects are handled seamlessly using Passport.js. Furthermore, the application utilizes PostgreSQL as its backend database.
 
+## Note: Ongoing Development
+
+\*\*Please note that this project is currently under active development. New features, improvements, and bug fixes are being actively worked on.
+
 ## Features
 
 - **Rich Text Editor (CKEditor):** The application incorporates CKEditor to provide users with a powerful and user-friendly rich text editing experience when creating their blog posts.
