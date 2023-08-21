@@ -32,13 +32,13 @@
       <div>
         <form action="/blogs/<%= blog.id %>/like" method="POST">
           <button type="submit">
-            <i class="fa fa-thumbs-up" aria-hidden="true"></i> Like <%=
+            <i class="fa fa-thumbs-up" aria-hidden="true"></i> <%=
             blog.like_count%>
           </button>
         </form>
         <form action="/blogs/<%= blog.id %>/dislike" method="post">
           <button type="submit">
-            <i class="fa fa-thumbs-down" aria-hidden="true"></i> Disike <%=
+            <i class="fa fa-thumbs-down" aria-hidden="true"></i> <%=
             blog.dislike_count %>
           </button>
         </form>
