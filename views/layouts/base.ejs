@@ -10,11 +10,21 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/style.css" />
+    <link
+      rel="stylesheet"
+      href="../public/ckeditor/plugins/higlight/styles/monokai.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
+
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
+    <%- include("../partials/header.ejs")%>
     <div class="container">
-      <%- include("../partials/header.ejs")%>
       <main><%- body %></main>
     </div>
 
@@ -23,6 +33,17 @@
       integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
       crossorigin="anonymous"
     ></script>
-    <script src="/script.js"></script>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script src="/ckeditor/plugins/higlight/es/highlight.js"></script>
+    <script>
+      CKEDITOR.replace("content", {
+        allowedContent: true,
+        autoParagraph: false,
+        extraPlugins:
+          "codesnippet,ajax,autogrow,zoom,richcombo,floatpanel,panel,listblock,button,emoji,autocomplete,textwatcher,textmatch",
+        codeSnippet_theme: "monokai",
+      });
+    </script>
+    <script src="/js/script.js"></script>
   </body>
 </html>

@@ -1,7 +1,67 @@
-<h1 class="fs-1">Hello</h1>
+<div class="blogs">
+  <h1 class="fs-1">My Blogs</h1>
 
-<ul class="blogs">
-  <% blogs.forEach(element => { %>
-  <li class="blog-item"><%= element.title %></li>
-  <% }); %>
-</ul>
+  <!-- Blogs listing -->
+  <% if(blogs.length > 0) {%> <% blogs.forEach(blog => { %>
+  <div class="blog-item">
+    <div>
+      <h1 class="blog-title"><%= blog.title %></h1>
+      <div>
+        <form method="get" action="/blogs/<%= blog.id %>/remove" class="mx-2">
+          <button type="submit" class="btn btn-danger">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </form>
+        <form method="get" action="/blogs/<%= blog.id %>/edit-form">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+    <p>
+      <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
+    </p>
+    <p class="blog_category">Category: <%= blog.category_name %></p>
+    <div class="actions">
+      <a href="/blogs/<%= blog.id %>" class="btn btn-secondary mt-3"
+        >Read the article</a
+      >
+    </div>
+    <div class="like-dislike">
+      <div>
+        <form action="/blogs/<%= blog.id %>/like" method="POST">
+          <button type="submit">
+            <i class="fa fa-thumbs-up" aria-hidden="true"></i> <%=
+            blog.like_count%>
+          </button>
+        </form>
+        <form action="/blogs/<%= blog.id %>/dislike" method="post">
+          <button type="submit">
+            <i class="fa fa-thumbs-down" aria-hidden="true"></i> <%=
+            blog.dislike_count %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <% }); %> <%} else {%>
+  <h1 class="no-blogs">No blogs to be shown.</h1>
+  <%}%>
+</div>
+
+<script>
+  function removeSuccessMessage() {
+    var successMessage = document.querySelector(".alert-success");
+    if (successMessage) {
+      setTimeout(function () {
+        successMessage.remove();
+      }, 3000);
+    }
+  }
+
+  window.addEventListener("load", function () {
+    removeSuccessMessage();
+  });
+</script>
