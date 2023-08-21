@@ -19,7 +19,7 @@ This repository hosts a blog application built using Node.js and Express. The ap
 
 To get the application up and running on your local machine, follow these steps:
 
-1. Clone the repository to your local machine:
+1. Clone the repository to your local machine: <br/>
    `git git clone https://github.com/anevski-stefan/<repository-name>.git `
 
 2. Navigate to the project directory:
