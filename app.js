@@ -5,12 +5,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const passport = require("./config/passport.js");
 const session = require("express-session");
-const {
-  checkAuthenticated,
-  checkNotAuthenticated,
-} = require("./config/middleware.js");
-const client = require("./database/database.js");
+const { checkAuthenticated } = require("./config/middleware.js");
 
+// Express session
 app.use(
   session({
     secret: "your-secret-key",
@@ -23,6 +20,7 @@ app.use(
   })
 );
 
+// Passport js
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -47,41 +45,9 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use(require("./routes/dashboard.js"));
-app.use(require("./routes/search.js"));
-app.use(
-  "/blogs/add-form",
-  checkAuthenticated,
-  require("./routes/add-blog-form.js")
-);
-app.use(require("./routes/edit-blog-form.js"));
-app.use(require("./routes/detail-blog-view.js"));
-app.use(require("./routes/add.js"));
-app.use(require("./routes/edit.js"));
-app.use(require("./routes/remove.js"));
-app.use(require("./routes/like-dislike.js"));
-app.use("/blogs", checkAuthenticated, require("./routes/blogs.js"));
-
-app.use("/categories", checkAuthenticated, require("./routes/categories.js"));
-
+app.use(require("./routes/blog.js"));
 app.use("", require("./routes/user.js"));
-
 app.use(require("./routes/home.js", checkAuthenticated));
-
-app.use((req, res, next) => {
-  if (req.user) {
-    const user_id = req.user.id;
-    const query = `SELECT * FROM bloguser WHERE id = ${user_id}`;
-    client.query(query, (err, result) => {
-      if (err) {
-        console.log(err.message);
-        return;
-      }
-      const user = result.rows[0];
-    });
-  }
-  next(); // Add this line
-});
 
 // App listening on port
 app.listen(PORT, () => {
