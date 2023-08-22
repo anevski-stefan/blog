@@ -62,4 +62,6 @@ router.get("/logout", checkAuthenticated, (req, res) => {
   });
 });
 
+router.use(checkAuthenticated, require("./dashboard.js"));
+
 module.exports = router;

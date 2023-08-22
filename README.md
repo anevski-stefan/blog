@@ -20,20 +20,20 @@ This repository hosts a blog application built using Node.js and Express. The ap
 To get the application up and running on your local machine, follow these steps:
 
 1. Clone the repository to your local machine: <br/>
-   `git git clone https://github.com/anevski-stefan/<repository-name>.git `
+   `git clone https://github.com/anevski-stefan/<repository-name>.git `
 
 2. Navigate to the project directory:
-   `bash cd <repository-name> `
+   `cd <repository-name> `
 
 3. Install the required dependencies:
-   `bash npm install `
+   `npm install `
 
 4. Configure the Database:
    - In the database folder, navigate to **createTables.js**. Replace **<db-user>** and **<db-password>** with your PostgreSQL database **user** and **password**.
    - Run the script to create the necessary database tables:
-     `bash node createTables.js`
+     `node createTables.js`
 5. Run the Application:
-   `bash npm start`
+   `npm start`
 6. Open your web browser and access the application at **http://localhost:9000**
 
 ## Dashboard (Work in Progress)

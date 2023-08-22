@@ -1,4 +1,4 @@
-const client = require("../database/database.js");
+const client = require("./database.js");
 
 async function createTables() {
   try {
