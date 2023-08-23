@@ -25,4 +25,20 @@
   </div>
 
   <div class="right-container mt-3"><%- blog.content %></div>
+  <div class="like-dislike">
+    <div class="d-flex">
+      <form action="/blogs/<%= blog.id %>/like" method="POST">
+        <button type="submit">
+          <i class="fa fa-thumbs-up" aria-hidden="true"></i> <%=
+          blog.like_count%>
+        </button>
+      </form>
+      <form action="/blogs/<%= blog.id %>/dislike" method="post">
+        <button type="submit">
+          <i class="fa fa-thumbs-down" aria-hidden="true"></i> <%=
+          blog.dislike_count %>
+        </button>
+      </form>
+    </div>
+  </div>
 </div>

@@ -27,10 +27,10 @@ router.post("/blogs/:blogId/like", (req, res) => {
             console.log(insertErr.message);
             return;
           }
-          return res.redirect(`/blogs`);
+          return res.redirect(`/blogs/${blogId}`);
         });
       } else {
-        return res.redirect(`/blogs`);
+        return res.redirect(`/blogs/${blogId}`);
       }
     });
   });
@@ -76,10 +76,10 @@ router.post("/blogs/:blogId/dislike", (req, res) => {
             console.log(dislikeErr.message);
             return;
           }
-          return res.redirect(`/blogs`);
+          return res.redirect(`/blogs/${blogId}`);
         });
       } else {
-        return res.redirect(`/blogs`);
+        return res.redirect(`/blogs/${blogId}`);
       }
     });
   }
