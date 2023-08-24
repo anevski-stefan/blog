@@ -1,3 +1,15 @@
+/* Navbar */
+#searchInput {
+  position: relative;
+}
+
+#searchInput > button {
+  position: absolute;
+}
+.search-btn__wrapper {
+  position: relative;
+}
+
 /* Blogs page styles */
 .content-wrapper {
   display: flex;
@@ -72,8 +84,13 @@
   color: #718093;
 }
 
+.postedBy > a {
+  color: #718093;
+}
+
 .blog_category {
   font-size: 1rem;
+  color: #718093;
 }
 
 .actions {
@@ -162,7 +179,7 @@
 }
 
 .right-container {
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
   border-radius: 12px;
 }
@@ -290,4 +307,25 @@
 .register--wrapper > .form--wrapper > form > button:hover,
 .profile--wrapper > .form--wrapper > .profile--info > form > button:hover {
   background-color: #0056b3;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-input {
+  padding-left: 40px;
+  width: 100%;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

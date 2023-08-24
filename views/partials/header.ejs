@@ -46,16 +46,18 @@
           id="searchForm"
           onsubmit="updateFormAction(event)"
         >
-          <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            id="searchInput"
-          />
-          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
-            Search
-          </button>
+          <div class="input-container">
+            <input
+              class="form-control icon-input"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              id="searchInput"
+            />
+            <button class="icon-button" type="submit" id="searchButton">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
         </form>
         <%}%>
         <p class="logged-user my-2 my-lg-0">
