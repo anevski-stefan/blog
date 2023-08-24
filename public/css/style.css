@@ -1,18 +1,24 @@
 /* Blogs page styles */
-
 .content-wrapper {
   display: flex;
   width: 100%;
-  /* border: 1px solid red; */
 }
 
 .categories {
   flex: 1;
   padding: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   margin-right: 10px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.categories > h3 {
+  margin: 10px 0;
+  text-align: center;
 }
 
 .blogs {
@@ -30,7 +36,7 @@
 .blogs .blog-item {
   padding: 10px 20px;
   font-size: 1.2rem;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 
@@ -94,10 +100,31 @@
 .latest-posts {
   flex: 1;
   padding: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   margin-left: 10px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.latest-posts > h3 {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.latest-posts > h6 {
+  margin: 0;
+}
+
+.latest-posts > h6 > a {
+  text-decoration: none;
+}
+
+.latest-posts > div > p {
+  font-size: 0.9rem;
+  color: gray;
 }
 
 .no-blogs {
@@ -109,7 +136,7 @@
 
 /* Detail blog page styles */
 .detail-wrapper {
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
 }
 
