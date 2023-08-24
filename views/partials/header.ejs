@@ -59,14 +59,14 @@
         </form>
         <%}%>
         <p class="logged-user my-2 my-lg-0">
-          <% if(locals.isAuthenticated) { %>
+          <% if (locals.isAuthenticated) { %>
           <a
             class="nav-link text-white d-flex text-decoration-underline align-items-center justify-content-center"
-            href="/<%= locals.user.username %>/dashboard"
+            href="/<%= locals.userName %>/dashboard"
           >
-            <%= locals.user.username %>
+            <%= locals.userName %>
           </a>
-          <%}%>
+          <% } %>
         </p>
       </div>
     </div>

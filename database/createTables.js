@@ -25,6 +25,7 @@ async function createTables() {
         title VARCHAR(255) UNIQUE NOT NULL,
         content TEXT,
         category_id INT REFERENCES category(id) ON DELETE CASCADE,
+        user_id INT REFERENCES bloguser(id),
         createdat TIMESTAMP DEFAULT NOW()
       );
     `);

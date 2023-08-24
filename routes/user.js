@@ -49,7 +49,11 @@ router.post(
     successRedirect: "/blogs",
     failureRedirect: "/login",
     failureFlash: false,
-  })
+  }),
+  (req, res) => {
+    req.session.username = req.user.username; // Store the username in the session
+    res.redirect("/blogs");
+  }
 );
 
 router.get("/logout", checkAuthenticated, (req, res) => {

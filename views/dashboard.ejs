@@ -36,7 +36,9 @@
             disabled
           />
         </div>
+        <% if(locals.user.username === loggedInUser.username){%> %>
         <button type="submit" class="btn btn-primary">Update</button>
+        <% } %>
       </form>
     </div>
   </div>

@@ -19,7 +19,9 @@
         </div>
       </div>
       <p class="m-0">
-        <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
+        <div>
+          <span class="postedBy">Posted by: <a href="/<%= blog.username %>/dashboard"><%= blog.username %></a> - <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span></span>
+        </div>
       </p>
     </div>
   </div>

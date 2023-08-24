@@ -36,7 +36,7 @@ app.use((req, res, next) => {
   if (!res.locals.logsPrinted) {
     res.locals.isAuthenticated = req.isAuthenticated();
     res.locals.user = req.user;
-    res.locals.userName = req.user ? req.user.name : null;
+    res.locals.userName = req.user ? req.user.username : null;
 
     res.locals.logsPrinted = true;
   }

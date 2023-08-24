@@ -6,6 +6,7 @@ router.get("/blogs/:blogId", (req, res) => {
   const blogId = req.params.blogId;
   const query = `SELECT 
   blog.*, 
+  bloguser.username,
   category.name AS category_name, 
   COALESCE(like_counts.like_count, 0) AS like_count, 
   COALESCE(dislike_counts.dislike_count, 0) AS dislike_count 
@@ -13,6 +14,8 @@ FROM
   blog 
 LEFT JOIN 
   category ON blog.category_id = category.id 
+LEFT JOIN 
+  bloguser ON blog.user_id = bloguser.id
 LEFT JOIN (
   SELECT 
     id_blog, 
@@ -36,9 +39,7 @@ LEFT JOIN (
     id_blog
 ) AS dislike_counts ON blog.id = dislike_counts.id_blog
 WHERE
-  blog.id = ${blogId}
-ORDER BY 
-  createdat DESC;`;
+  blog.id = ${blogId};`;
   client.query(query, (err, result) => {
     if (err) {
       console.log(err.message);

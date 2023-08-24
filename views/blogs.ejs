@@ -27,7 +27,14 @@
         </div>
       </div>
       <p>
-        <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
+        <span
+          >Created by:
+          <a href="/<%= blog.blog_username %>/dashboard"
+            ><%= blog.blog_username %></a
+          >
+          -
+          <span class="timestamp" data-createdAt="<%= blog.createdat %>"></span>
+        </span>
       </p>
       <p class="blog_category">Category: <%= blog.category_name %></p>
       <div class="actions">

@@ -4,15 +4,17 @@ const client = require("../database/database.js");
 
 router.get("", (req, res) => {
   const query = `
-    SELECT 
-      blog.*, 
-      category.name AS category_name
-    FROM 
-      blog 
-    LEFT JOIN 
-      category ON blog.category_id = category.id
-    ORDER BY createdat DESC;
-  `;
+  SELECT 
+  blog.*, 
+  category.name AS category_name,
+  bloguser.username AS blog_username
+FROM 
+  blog 
+LEFT JOIN 
+  category ON blog.category_id = category.id
+LEFT JOIN
+  bloguser ON blog.user_id = bloguser.id
+ORDER BY createdat DESC;`;
 
   const categories = "SELECT * FROM category";
   const latest = `SELECT *, 
@@ -37,6 +39,7 @@ router.get("", (req, res) => {
       id_blog
   ) AS dislike_counts ON blog.id = dislike_counts.id_blog
   ORDER BY createdat DESC LIMIT 5;`;
+  const sessionUsername = req.session.username;
 
   client.query(query, (err, result) => {
     if (err) {
@@ -59,6 +62,7 @@ router.get("", (req, res) => {
           blogs: result.rows,
           categories: result2.rows,
           latest: result3.rows,
+          sessionUsername: sessionUsername,
         });
       });
     });
