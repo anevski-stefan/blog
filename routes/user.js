@@ -8,6 +8,19 @@ const {
   checkNotAuthenticated,
 } = require("../config/middleware.js");
 
+// Edit & Delete users from Admin page
+router.get("/admin/:userId/delete", (req, res) => {
+  const userId = req.params.userId;
+  const query = `DELETE FROM bloguser WHERE id = ${userId}`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    res.redirect("/admin/allUsers");
+  });
+});
+
 // GET Request: Show login & register pages
 
 router.get("/login", checkNotAuthenticated, (req, res) => {
@@ -49,7 +62,11 @@ router.post(
     successRedirect: "/blogs",
     failureRedirect: "/login",
     failureFlash: false,
-  })
+  }),
+  (req, res) => {
+    req.session.username = req.user.username; // Store the username in the session
+    res.redirect("/blogs");
+  }
 );
 
 router.get("/logout", checkAuthenticated, (req, res) => {

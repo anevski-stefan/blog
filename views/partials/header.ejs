@@ -36,6 +36,9 @@
             <a class="nav-link" href="/register">Register</a>
           </li>
           <%}%>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">Admin</a>
+          </li>
         </ul>
 
         <% if(locals.isAuthenticated) { %>
@@ -46,27 +49,29 @@
           id="searchForm"
           onsubmit="updateFormAction(event)"
         >
-          <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            id="searchInput"
-          />
-          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
-            Search
-          </button>
+          <div class="input-container">
+            <input
+              class="form-control icon-input"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              id="searchInput"
+            />
+            <button class="icon-button" type="submit" id="searchButton">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
         </form>
         <%}%>
         <p class="logged-user my-2 my-lg-0">
-          <% if(locals.isAuthenticated) { %>
+          <% if (locals.isAuthenticated) { %>
           <a
             class="nav-link text-white d-flex text-decoration-underline align-items-center justify-content-center"
-            href="/<%= locals.user.username %>/dashboard"
+            href="/<%= locals.userName %>/dashboard"
           >
-            <%= locals.user.username %>
+            <%= locals.userName %>
           </a>
-          <%}%>
+          <% } %>
         </p>
       </div>
     </div>

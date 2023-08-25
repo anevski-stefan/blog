@@ -4,7 +4,7 @@
 
     <div class="profile--image"></div>
     <div class="profile--info">
-      <form>
+      <form action="/<%= user.username %>/update" method="post">
         <div class="mb-3">
           <label for="fname" class="form-label">First name: </label>
           <input
@@ -36,7 +36,9 @@
             disabled
           />
         </div>
+        <% if(locals.user.username === loggedInUser.username){%> %>
         <button type="submit" class="btn btn-primary">Update</button>
+        <% } %>
       </form>
     </div>
   </div>

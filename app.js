@@ -36,7 +36,7 @@ app.use((req, res, next) => {
   if (!res.locals.logsPrinted) {
     res.locals.isAuthenticated = req.isAuthenticated();
     res.locals.user = req.user;
-    res.locals.userName = req.user ? req.user.name : null;
+    res.locals.userName = req.user ? req.user.username : null;
 
     res.locals.logsPrinted = true;
   }
@@ -45,10 +45,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use(require("./routes/add-comment.js"));
 app.use(require("./routes/blog.js"));
-app.use("", require("./routes/user.js"));
+app.use("", require("./routes/user.js", { layout: "base.ejs" }));
 app.use(require("./routes/home.js", checkAuthenticated));
-
+app.use(require("./routes/admin.js"));
 // App listening on port
 app.listen(PORT, () => {
   console.log(`The app is listening on port ${PORT}`);

@@ -1,0 +1,119 @@
+<main>
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">Welcome back, <%= user.username %></h1>
+    <div class="row">
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4">
+          <div class="card-body">Users: <%= userCount %></div>
+          <% if(users.length > 0) { %>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach(user => { %>
+              <tr>
+                <td><%= user.id %></td>
+                <td><%= user.firstname %></td>
+                <td><%= user.lastname %></td>
+                <td><%= user.username %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <p>No users to be shown</p>
+          <% } %>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-white mb-4">
+          <div class="card-body">Blogs: <%= blogCount %></div>
+          <% if(blogs.length > 0) { %>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category ID</th>
+                <th>User ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% blogs.forEach(blog => { %>
+              <tr>
+                <td><%= blog.id %></td>
+                <td><%= blog.title %></td>
+                <td><%= blog.category_id %></td>
+                <td><%= blog.user_id %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <p>No blogs to be shown</p>
+          <% } %>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+          <div class="card-body">Comments: <%= commentCount %></div>
+          <% if(comments.length > 0) { %>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Blog id</th>
+                <th>Content</th>
+                <th>User Id</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% comments.forEach(comment => { %>
+              <tr>
+                <td><%= comment.id %></td>
+                <td><%= comment.id_blog %></td>
+                <td><%= comment.content %></td>
+                <td><%= comment.id_user %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <p>No comments to be shown</p>
+          <% } %>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-danger text-white mb-4">
+          <div class="card-body">Categories: <%= categoryCount %></div>
+          <% if(categories.length > 0) { %>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% categories.forEach(category => { %>
+              <tr>
+                <td><%= category.id %></td>
+                <td><%= category.name %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <% } else { %>
+          <p>No categories to be shown</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
