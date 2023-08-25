@@ -1,0 +1,42 @@
+<div class="container mt-5">
+  <div class="table-container">
+    <h1 class="text-center">All blogs</h1>
+    <div class="table-responsive">
+      <% if (blogs.length > 0) { %>
+      <table class="table">
+        <thead class="table-header">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Category</th>
+            <th scope="col">Author</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% blogs.forEach(blog => { %>
+          <tr class="blog-row">
+            <td><%= blog.blog_id %></td>
+            <td><%= blog.blog_title %></td>
+            <td><%= blog.blog_content %></td>
+            <td><%= blog.category_name %></td>
+            <td><%= blog.user_username %></td>
+            <td>
+              <a class="btn btn-primary" href="#">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </a>
+              <a class="btn btn-danger" href="#">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% }else { %>
+      <p>No users to be shown.</p>
+      <% } %>
+    </div>
+  </div>
+</div>

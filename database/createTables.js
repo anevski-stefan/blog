@@ -25,7 +25,7 @@ async function createTables() {
         title VARCHAR(255) UNIQUE NOT NULL,
         content TEXT,
         category_id INT REFERENCES category(id) ON DELETE CASCADE,
-        user_id INT REFERENCES bloguser(id),
+        user_id INT REFERENCES bloguser(id) ON DELETE CASCADE,
         createdat TIMESTAMP DEFAULT NOW()
       );
     `);
@@ -47,7 +47,7 @@ async function createTables() {
     `);
 
     await client.query(`CREATE TABLE IF NOT EXISTS blog_comment (
-      id_like SERIAL PRIMARY KEY UNIQUE,
+      id SERIAL PRIMARY KEY UNIQUE,
       content TEXT not null,
       id_blog INT REFERENCES blog(id) ON DELETE CASCADE,
       id_user INT REFERENCES bloguser(id) ON DELETE CASCADE,
