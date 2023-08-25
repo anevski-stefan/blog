@@ -41,7 +41,7 @@ router.post("/register", checkNotAuthenticated, async (req, res) => {
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const query = `INSERT INTO blogUser(firstname, lastname, username, password) VALUES($1, $2, $3, $4)`;
+    const query = `INSERT INTO bloguser(firstname, lastname, username, password) VALUES($1, $2, $3, $4)`;
     const values = [first_name, last_name, username, hashedPassword];
     client.query(query, values, (err, result) => {
       if (err) {
