@@ -329,3 +329,143 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+/* For delete */
+/* Reset default browser styles */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #f7f7f7;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Categories Section */
+.categories {
+  flex: 0 0 18%;
+  /* padding-right: 1.5rem; */
+}
+
+.category {
+  margin: 0.5rem 0;
+  font-weight: bold;
+  color: #777;
+}
+
+/* Blogs Section */
+.blogs {
+  flex: 0 0 64%;
+  padding: 0 1.5rem;
+}
+
+.blog-item {
+  background-color: #fff;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.blog-title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.blog_category {
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.blog {
+  margin: 0.5rem 0;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .categories,
+  .blogs,
+  .latest-posts {
+    flex: 100%;
+  }
+}
+
+/* Comments section */
+.comment {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+.image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #777;
+}
+
+.right--part {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.leave-comment__section {
+  margin-top: 60px;
+}

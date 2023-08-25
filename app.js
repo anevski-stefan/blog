@@ -45,6 +45,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use(require("./routes/add-comment.js"));
 app.use(require("./routes/blog.js"));
 app.use("", require("./routes/user.js"));
 app.use(require("./routes/home.js", checkAuthenticated));

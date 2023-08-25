@@ -46,6 +46,13 @@ async function createTables() {
       );
     `);
 
+    await client.query(`CREATE TABLE IF NOT EXISTS blog_comment (
+      id_like SERIAL PRIMARY KEY UNIQUE,
+      content TEXT not null,
+      id_blog INT REFERENCES blog(id) ON DELETE CASCADE,
+      id_user INT REFERENCES bloguser(id) ON DELETE CASCADE,
+      createdAt TIMESTAMP DEFAULT NOW());`);
+
     console.log("Tables created successfully.");
   } catch (error) {
     console.error("Error creating tables:", error);

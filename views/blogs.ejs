@@ -58,17 +58,3 @@
     <%}); %>
   </div>
 </div>
-<script>
-  function removeSuccessMessage() {
-    var successMessage = document.querySelector(".alert-success");
-    if (successMessage) {
-      setTimeout(function () {
-        successMessage.remove();
-      }, 3000);
-    }
-  }
-
-  window.addEventListener("load", function () {
-    removeSuccessMessage();
-  });
-</script>

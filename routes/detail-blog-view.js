@@ -40,12 +40,28 @@ LEFT JOIN (
 ) AS dislike_counts ON blog.id = dislike_counts.id_blog
 WHERE
   blog.id = ${blogId};`;
+  const allComments = `
+  SELECT c.*, u.username
+  FROM blog_comment AS c
+  JOIN bloguser AS u ON c.id_user = u.id
+  WHERE c.id_blog = ${blogId};
+`;
   client.query(query, (err, result) => {
     if (err) {
       console.log(err.message);
       return;
     }
-    res.render("detail-blog-view", { blog: result.rows[0] });
+    client.query(allComments, (err, result2) => {
+      if (err) {
+        console.log(err.message);
+        return;
+      }
+
+      res.render("detail-blog-view", {
+        blog: result.rows[0],
+        comments: result2.rows,
+      });
+    });
   });
 });
 
