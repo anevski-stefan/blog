@@ -3,10 +3,13 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const client = require("../database/database.js");
 const passport = require("../config/passport.js");
+const flash = require("express-flash");
 const {
   checkAuthenticated,
   checkNotAuthenticated,
 } = require("../config/middleware.js");
+
+router.use(flash());
 
 // Edit & Delete users from Admin page
 router.get("/admin/:userId/delete", (req, res) => {
@@ -24,7 +27,12 @@ router.get("/admin/:userId/delete", (req, res) => {
 // GET Request: Show login & register pages
 
 router.get("/login", checkNotAuthenticated, (req, res) => {
-  res.render("login");
+  const messages = {
+    loggedout: req.flash("loggedout"),
+    createdAcc: req.flash("createdAcc"),
+  };
+
+  res.render("login", { messages: messages });
 });
 
 router.get("/register", checkNotAuthenticated, (req, res) => {
@@ -48,6 +56,7 @@ router.post("/register", checkNotAuthenticated, async (req, res) => {
         console.log(err.message);
         return;
       }
+      req.flash("createdAcc", "You have successfully created your account!");
       res.redirect("/login");
     });
   } catch (error) {
@@ -61,10 +70,10 @@ router.post(
   passport.authenticate("local", {
     successRedirect: "/blogs",
     failureRedirect: "/login",
-    failureFlash: false,
+    failureFlash: true,
   }),
   (req, res) => {
-    req.session.username = req.user.username; // Store the username in the session
+    req.session.username = req.user.username;
     res.redirect("/blogs");
   }
 );
@@ -72,9 +81,9 @@ router.post(
 router.get("/logout", checkAuthenticated, (req, res) => {
   req.logout((err) => {
     if (err) {
-      // Handle the error
       console.error("Error logging out:", err);
     }
+    req.flash("loggedout", "You have successfully logged out!");
     res.redirect("/login");
   });
 });

@@ -5,6 +5,17 @@ const createDOMPurify = require("dompurify");
 const { JSDOM } = require("jsdom");
 const window = new JSDOM("").window;
 const DOMPurify = createDOMPurify(window);
+const session = require("express-session");
+const flash = require("express-flash");
+
+router.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+router.use(flash());
 
 router.post("/blogs/add", (req, res) => {
   const title = req.body.title;
@@ -20,7 +31,8 @@ router.post("/blogs/add", (req, res) => {
       console.error(err);
       return;
     }
-    res.redirect("/blogs");
+    req.flash("success", "Blog created successfully!");
+    res.redirect("/blogs?message=success");
   });
 });
 

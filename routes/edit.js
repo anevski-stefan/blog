@@ -1,6 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const client = require("../database/database.js");
+const session = require("express-session");
+const flash = require("express-flash");
+
+router.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+router.use(flash());
 
 router.post("/blogs/:blogId/edit", (req, res) => {
   const blogId = req.params.blogId;
@@ -21,6 +32,7 @@ router.post("/blogs/:blogId/edit", (req, res) => {
       console.log(err.message);
       return;
     }
+    req.flash("edited", "Blog edited successfully!");
     res.redirect("/blogs");
   });
 });

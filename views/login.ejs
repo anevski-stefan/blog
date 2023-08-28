@@ -1,6 +1,20 @@
+<% if (messages.loggedout.length > 0) { %>
+<div class="alert alert-success my-5 text-center" role="alert">
+  <%= messages.loggedout %>
+</div>
+<% } %> <% if (messages.createdAcc.length > 0) { %>
+<div class="alert alert-success my-5 text-center" role="alert">
+  <%= messages.createdAcc %>
+</div>
+<% } %>
 <div class="login--wrapper">
   <div class="form--wrapper">
     <h1>Login</h1>
+    <% if (messages.error) { %>
+    <div class="alert alert-danger text-center" role="alert">
+      <%= messages.error[0] %>
+    </div>
+    <% } %>
     <form action="/login" method="post">
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>

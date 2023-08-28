@@ -1,4 +1,17 @@
 <h1 class="fs-1 text-center mt-5">My Blogs</h1>
+<% if (messages.success.length > 0) { %>
+<div class="alert alert-success my-5 text-center" role="alert">
+  <%= messages.success %>
+</div>
+<% } %> <% if (messages.deleted.length > 0) { %>
+<div class="alert alert-danger my-5 text-center" role="alert">
+  <%= messages.deleted %>
+</div>
+<% } %> <% if (messages.edited.length > 0) { %>
+<div class="alert alert-success my-5 text-center" role="alert">
+  <%= messages.edited %>
+</div>
+<% } %>
 
 <div class="content-wrapper">
   <div class="categories">

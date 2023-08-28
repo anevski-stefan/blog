@@ -6,8 +6,129 @@ const { JSDOM } = require("jsdom");
 const window = new JSDOM("").window;
 const DOMPurify = createDOMPurify(window);
 const bcrypt = require("bcrypt");
+const { checkAdmin } = require("../config/middleware.js");
+const session = require("express-session");
+const flash = require("express-flash");
 
-router.post("/admin/users/add", async (req, res) => {
+router.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+router.use(flash());
+
+router.get("/admin/categories/:categoryId/delete", checkAdmin, (req, res) => {
+  const categoryId = req.params.categoryId;
+  const query = `DELETE FROM category WHERE id=${categoryId};`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    req.flash("deleted", "Category deleted successfully!");
+    res.redirect("/admin/allCategories");
+  });
+});
+
+router.get("/admin/addCategory", checkAdmin, (req, res) => {
+  res.render("admin-addCategory", { layout: "layouts/admin.ejs" });
+});
+
+router.get("/admin/allCategories", checkAdmin, (req, res) => {
+  const query = `SELECT * FROM category;`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    const messages = {
+      deleted: req.flash("deleted"),
+      addedCat: req.flash("addedCat"),
+      editedCat: req.flash("editedCat"),
+    };
+    res.render("admin-allCategories", {
+      categories: result.rows,
+      layout: "layouts/admin.ejs",
+      messages: messages,
+    });
+  });
+});
+
+router.post("/admin/categories/add", checkAdmin, (req, res) => {
+  const catName = req.body.catname;
+  const query = `INSERT INTO category(name) VALUES('${catName}');`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    req.flash("addedCat", "Category added successfully!");
+    res.redirect("/admin/allCategories");
+  });
+});
+
+router.get("/admin/categories/:CatId/editPage", (req, res) => {
+  const blogId = req.params.CatId;
+  const query = `SELECT * FROM category WHERE id=${blogId}`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    res.render("editCategory", { category: result.rows[0] });
+  });
+});
+
+router.post("/admin/categories/:CatId/edit", (req, res) => {
+  const catId = req.params.CatId;
+  const catName = req.body.catname;
+  const query = "UPDATE category SET name = $1 WHERE id = $2";
+  const values = [catName, catId];
+  client.query(query, values, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    req.flash("editedCat", "Category edited successfully!");
+    res.redirect("/admin/allCategories");
+  });
+});
+
+router.get("/admin/allUsers", checkAdmin, (req, res) => {
+  const query = `SELECT * FROM bloguser;`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    const messages = {
+      addedUser: req.flash("addedUser"),
+      removeUser: req.flash("removeUser"),
+    };
+    res.render("admin-allUsers", {
+      layout: "layouts/admin.ejs",
+      users: result.rows,
+      messages: messages,
+    });
+  });
+});
+
+router.get("/admin/:idUser/deleteuser", (req, res) => {
+  const idUser = req.params.idUser;
+  const query = `DELETE FROM bloguser WHERE id=${idUser}`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    req.flash("removeUser", "User removed successfully!");
+    res.redirect("/admin/allUsers");
+  });
+});
+
+router.post("/admin/users/add", checkAdmin, async (req, res) => {
   const first_name = req.body.fname;
   const last_name = req.body.lname;
   const username = req.body.username;
@@ -23,6 +144,7 @@ router.post("/admin/users/add", async (req, res) => {
         console.log(err.message);
         return;
       }
+      req.flash("addedUser", "User created successfully!");
       res.redirect("/admin/allUsers");
     });
   } catch (error) {
@@ -30,7 +152,20 @@ router.post("/admin/users/add", async (req, res) => {
   }
 });
 
-router.post("/admin/blogs/add", (req, res) => {
+router.get("/admin/:blogId/remove", (req, res) => {
+  const blogId = req.params.blogId;
+  const query = `DELETE FROM blog WHERE id = ${blogId}`;
+  client.query(query, (err, result) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    req.flash("removedBlog", "Blog removed successfully!");
+    res.redirect("/admin/allBlogs");
+  });
+});
+
+router.post("/admin/blogs/add", checkAdmin, (req, res) => {
   const title = req.body.title;
   const content = DOMPurify.sanitize(req.body.content);
   const category_id = req.body.category;
@@ -44,20 +179,24 @@ router.post("/admin/blogs/add", (req, res) => {
       console.error(err);
       return;
     }
+    req.flash("addedBlog", "Blog added successfully!");
     res.redirect("/admin/allBlogs");
   });
 });
 
-router.get("/admin/users/addForm", (req, res) => {
-  res.render("admin-addUser", { layout: "layouts/admin.ejs" });
+router.get("/admin/users/addForm", checkAdmin, (req, res) => {
+  res.render("admin-addUser", {
+    layout: "layouts/admin.ejs",
+  });
 });
-router.get("/admin/blogs/addForm", (req, res) => {
+router.get("/admin/blogs/addForm", checkAdmin, (req, res) => {
   const categories = `SELECT * FROM category;`;
   client.query(categories, (err, result) => {
     if (err) {
       console.log(err.message);
       return;
     }
+
     res.render("admin-addBlog", {
       layout: "layouts/admin.ejs",
       categories: result.rows,
@@ -65,7 +204,7 @@ router.get("/admin/blogs/addForm", (req, res) => {
   });
 });
 
-router.get("/admin/allLikesDislikes", (req, res) => {
+router.get("/admin/allLikesDislikes", checkAdmin, (req, res) => {
   const query = `
   SELECT
     b.id AS blog_id,
@@ -101,14 +240,19 @@ router.get("/admin/allLikesDislikes", (req, res) => {
       console.log("Err1: ", err.message);
       return;
     }
+    const messages = {
+      addedLike: req.flash("addedLike"),
+      addedDislike: req.flash("addedDislike"),
+    };
     res.render("admin-allLikesDislikes", {
       layout: "layouts/admin.ejs",
       reactions: result.rows,
+      messages: messages,
     });
   });
 });
 
-router.get("/admin/allComments", (req, res) => {
+router.get("/admin/allComments", checkAdmin, (req, res) => {
   const query = `
   SELECT 
   blog_comment .id AS comment_id, 
@@ -133,7 +277,7 @@ router.get("/admin/allComments", (req, res) => {
   });
 });
 
-router.post("/admin/blogs/:blogId/like", (req, res) => {
+router.post("/admin/blogs/:blogId/like", checkAdmin, (req, res) => {
   const blogId = req.params.blogId;
   const userId = req.user.id;
 
@@ -158,6 +302,7 @@ router.post("/admin/blogs/:blogId/like", (req, res) => {
             console.log(insertErr.message);
             return;
           }
+          req.flash("addedLike", "Blog successfully liked!");
           return res.redirect(`/admin/allBlogs`);
         });
       } else {
@@ -166,7 +311,7 @@ router.post("/admin/blogs/:blogId/like", (req, res) => {
     });
   });
 });
-router.post("/admin/blogs/:blogId/dislike", (req, res) => {
+router.post("/admin/blogs/:blogId/dislike", checkAdmin, (req, res) => {
   const blogId = req.params.blogId;
   const userId = req.user.id;
 
@@ -184,6 +329,7 @@ router.post("/admin/blogs/:blogId/dislike", (req, res) => {
           console.log(deleteErr.message);
           return;
         }
+        req.flash("addedDislike", "Blog successfully disliked!");
         insertDislike();
       });
     } else {
@@ -215,7 +361,7 @@ router.post("/admin/blogs/:blogId/dislike", (req, res) => {
   }
 });
 
-router.get("/admin/allBlogs", (req, res) => {
+router.get("/admin/allBlogs", checkAdmin, (req, res) => {
   const query = `
     SELECT 
       blog.id AS blog_id, 
@@ -245,28 +391,19 @@ router.get("/admin/allBlogs", (req, res) => {
       console.log("Err1: ", err.message);
       return;
     }
+    const messages = {
+      addedBlog: req.flash("addedBlog"),
+      removedBlog: req.flash("removedBlog"),
+    };
     res.render("admin-allBlogs", {
       layout: "layouts/admin.ejs",
       blogs: result.rows,
+      messages: messages,
     });
   });
 });
 
-router.get("/admin/allUsers", (req, res) => {
-  const query = `SELECT * FROM bloguser;`;
-  client.query(query, (err, result) => {
-    if (err) {
-      console.log(err.message);
-      return;
-    }
-    res.render("admin-allUsers", {
-      layout: "layouts/admin.ejs",
-      users: result.rows,
-    });
-  });
-});
-
-router.get("/admin", (req, res) => {
+router.get("/admin", checkAdmin, (req, res) => {
   const usersQuery = `SELECT COUNT(*) AS user_count, id, firstname, lastname, username FROM bloguser GROUP BY id, firstname, lastname, username ORDER BY id, firstname, lastname, username;`;
   const blogsQuery = `SELECT COUNT(*) AS blog_count FROM blog;`;
   const commentsQuery = `SELECT COUNT(*) AS comment_count FROM blog_comment;`;

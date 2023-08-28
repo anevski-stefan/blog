@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const passport = require("./config/passport.js");
 const session = require("express-session");
-const { checkAuthenticated } = require("./config/middleware.js");
+const { checkAuthenticated, checkAdmin } = require("./config/middleware.js");
 
 // Express session
 app.use(

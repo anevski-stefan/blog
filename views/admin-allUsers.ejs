@@ -1,4 +1,13 @@
 <div class="container mt-5">
+  <% if (messages.addedUser.length > 0) { %>
+  <div class="alert alert-success my-5 text-center" role="alert">
+    <%= messages.addedUser %>
+  </div>
+  <% } %> <% if (messages.removeUser.length > 0) { %>
+  <div class="alert alert-danger my-5 text-center" role="alert">
+    <%= messages.removeUser %>
+  </div>
+  <% } %>
   <div class="table-container">
     <h1 class="text-center">All users</h1>
     <div class="table-responsive">
@@ -21,10 +30,7 @@
             <td><%= user.lastname %></td>
             <td><%= user.username %></td>
             <td>
-              <a class="btn btn-primary" href="#">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-              </a>
-              <a class="btn btn-danger" href="/admin/<%= user.id %>/delete">
+              <a class="btn btn-danger" href="/admin/<%= user.id %>/deleteuser">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </a>
             </td>
@@ -33,7 +39,7 @@
         </tbody>
       </table>
       <% }else { %>
-      <p>No users to be shown.</p>
+      <p class="text-center">No users to be shown.</p>
       <% } %>
     </div>
   </div>

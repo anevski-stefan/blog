@@ -1,6 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const client = require("../database/database.js");
+const session = require("express-session");
+const flash = require("express-flash");
+
+router.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+router.use(flash());
 
 router.get("/blogs/:blogId/remove", (req, res) => {
   const blogId = req.params.blogId;
@@ -10,6 +21,7 @@ router.get("/blogs/:blogId/remove", (req, res) => {
       console.log(err.message);
       return;
     }
+    req.flash("deleted", "Blog deleted successfully!");
     res.redirect(`/blogs`);
   });
 });

@@ -1,6 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const client = require("../database/database.js");
+const session = require("express-session");
+const flash = require("express-flash");
+
+router.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+router.use(flash());
 
 router.get("", (req, res) => {
   const query = `
@@ -58,11 +69,19 @@ ORDER BY createdat DESC;`;
           console.log(err.message);
           return;
         }
+        const messages = {
+          success: req.flash("success"),
+          deleted: req.flash("deleted"),
+          edited: req.flash("edited"),
+          loggedout: req.flash("loggedout"),
+        };
+
         res.render("blogs", {
           blogs: result.rows,
           categories: result2.rows,
           latest: result3.rows,
           sessionUsername: sessionUsername,
+          messages: messages,
         });
       });
     });

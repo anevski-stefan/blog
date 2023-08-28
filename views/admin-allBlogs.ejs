@@ -1,4 +1,13 @@
 <div class="container mt-5">
+  <% if (messages.addedBlog.length > 0) { %>
+  <div class="alert alert-success my-5 text-center" role="alert">
+    <%= messages.addedBlog %>
+  </div>
+  <% } %> <% if (messages.removedBlog.length > 0) { %>
+  <div class="alert alert-danger my-5 text-center" role="alert">
+    <%= messages.removedBlog %>
+  </div>
+  <% } %>
   <div class="table-container">
     <h1 class="text-center">All blogs</h1>
     <div class="table-responsive">
@@ -48,7 +57,10 @@
               <a class="btn btn-primary" href="#">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </a>
-              <a class="btn btn-danger" href="#">
+              <a
+                class="btn btn-danger"
+                href="/admin/<%= blog.blog_id %>/remove"
+              >
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </a>
             </td>

@@ -1,4 +1,9 @@
-<div class="profile--wrapper">
+<% if (messages.updatedInfo.length > 0) { %>
+<div class="alert alert-success my-3 text-center" role="alert">
+  <%= messages.updatedInfo %>
+</div>
+<% } %>
+<div class="profile--wrapper my-0">
   <div class="form--wrapper">
     <h1>Dashboard</h1>
 

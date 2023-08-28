@@ -11,3 +11,11 @@ module.exports.checkNotAuthenticated = (req, res, next) => {
   }
   res.redirect("/");
 };
+
+module.exports.checkAdmin = (req, res, next) => {
+  console.log(req.user.username);
+  if (req.user.username == "admin") {
+    return next();
+  }
+  res.redirect("/");
+};
