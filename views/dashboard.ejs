@@ -6,7 +6,13 @@
 <div class="profile--wrapper my-0">
   <div class="form--wrapper">
     <h1>Dashboard</h1>
-
+    <% if((locals.user.username !== loggedInUser.username)){%> %>
+    <form action="" class="block-form">
+      <button class="btn btn-danger">
+        <i class="fa fa-ban" aria-hidden="true"> Block user</i>
+      </button>
+    </form>
+    <% } %>
     <div class="profile--image"></div>
     <div class="profile--info">
       <form action="/<%= user.username %>/update" method="post">
