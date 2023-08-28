@@ -473,3 +473,14 @@ a:hover {
 .leave-comment__section > form > textarea {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+/* Dashboard styles */
+.form--wrapper {
+  position: relative;
+}
+
+.form--wrapper .block-form {
+  position: absolute;
+  right: 1%;
+  top: 1%;
+}

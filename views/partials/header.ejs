@@ -35,10 +35,11 @@
           <li class="nav-item">
             <a class="nav-link" href="/register">Register</a>
           </li>
-          <%}%>
+          <%}%> <% if(locals.userName === "admin") {%>
           <li class="nav-item">
             <a class="nav-link" href="/admin">Admin</a>
           </li>
+          <%}%>
         </ul>
 
         <% if(locals.isAuthenticated) { %>

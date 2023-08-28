@@ -11712,3 +11712,7 @@ body {
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
 }
+
+.admin-blogForm {
+  padding-right: 5px;
+}

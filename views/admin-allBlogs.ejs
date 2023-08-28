@@ -1,9 +1,18 @@
 <div class="container mt-5">
+  <% if (messages.addedBlog.length > 0) { %>
+  <div class="alert alert-success my-5 text-center" role="alert">
+    <%= messages.addedBlog %>
+  </div>
+  <% } %> <% if (messages.removedBlog.length > 0) { %>
+  <div class="alert alert-danger my-5 text-center" role="alert">
+    <%= messages.removedBlog %>
+  </div>
+  <% } %>
   <div class="table-container">
     <h1 class="text-center">All blogs</h1>
     <div class="table-responsive">
       <% if (blogs.length > 0) { %>
-      <table class="table">
+      <table class="table table-responsive w-100">
         <thead class="table-header">
           <tr>
             <th scope="col">ID</th>
@@ -11,6 +20,7 @@
             <th scope="col">Content</th>
             <th scope="col">Category</th>
             <th scope="col">Author</th>
+            <th scope="col">Like/Dislike</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -22,11 +32,35 @@
             <td><%= blog.blog_content %></td>
             <td><%= blog.category_name %></td>
             <td><%= blog.user_username %></td>
+            <td class="d-flex">
+              <form
+                action="/admin/blogs/<%= blog.blog_id %>/like"
+                method="POST"
+                class="admin-blogForm"
+              >
+                <button type="submit" class="btn btn-outline-secondary">
+                  <i class="fa fa-thumbs-up" aria-hidden="true"></i> <%=
+                  blog.like_count%>
+                </button>
+              </form>
+              <form
+                action="/admin/blogs/<%= blog.blog_id %>/dislike"
+                method="post"
+              >
+                <button type="submit" class="btn btn-outline-secondary">
+                  <i class="fa fa-thumbs-down" aria-hidden="true"></i> <%=
+                  blog.dislike_count %>
+                </button>
+              </form>
+            </td>
             <td>
               <a class="btn btn-primary" href="#">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </a>
-              <a class="btn btn-danger" href="#">
+              <a
+                class="btn btn-danger"
+                href="/admin/<%= blog.blog_id %>/remove"
+              >
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </a>
             </td>
