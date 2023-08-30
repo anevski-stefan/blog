@@ -53,6 +53,17 @@ async function createTables() {
       id_user INT REFERENCES bloguser(id) ON DELETE CASCADE,
       createdAt TIMESTAMP DEFAULT NOW());`);
 
+    await client.query(`CREATE TABLE IF NOT EXISTS blog_blockedUsers(
+        id_blockingUser INT REFERENCES bloguser(id) ON DELETE CASCADE,
+        id_blockedUser INT REFERENCES bloguser(id) ON DELETE CASCADE
+      )`);
+
+    await client.query(`CREATE TABLE IF NOT EXISTS blog_followedUsers(
+        id INT unique primary key serial,
+        id_followingUser INT REFERENCES bloguser(id) ON DELETE CASCADE,
+        id_followedUser INT REFERENCES bloguser(id) ON DELETE CASCADE
+      )`);
+
     console.log("Tables created successfully.");
   } catch (error) {
     console.error("Error creating tables:", error);

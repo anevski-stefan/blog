@@ -16,16 +16,22 @@ router.use(flash());
 router.get("", (req, res) => {
   const query = `
   SELECT 
-  blog.*, 
+  DISTINCT blog.*, 
   category.name AS category_name,
-  bloguser.username AS blog_username
+  bloguser.username AS blog_username,
+  bloguser.id AS blog_id
 FROM 
   blog 
 LEFT JOIN 
   category ON blog.category_id = category.id
 LEFT JOIN
   bloguser ON blog.user_id = bloguser.id
+LEFT JOIN
+  blog_followedusers ON blog_followedusers.id_followeduser = blog.user_id
+WHERE (bloguser.username = $1) OR (bloguser.id = blog_followedusers.id_followeduser)
 ORDER BY createdat DESC;`;
+  const blogValues = [req.user.username];
+  console.log(req.user.username);
 
   const categories = "SELECT * FROM category";
   const latest = `SELECT *, 
@@ -52,7 +58,7 @@ ORDER BY createdat DESC;`;
   ORDER BY createdat DESC LIMIT 5;`;
   const sessionUsername = req.session.username;
 
-  client.query(query, (err, result) => {
+  client.query(query, blogValues, (err, result) => {
     if (err) {
       console.log(err.message);
       return;

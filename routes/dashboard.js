@@ -5,19 +5,40 @@ const client = require("../database/database.js");
 router.get("/:username/dashboard", (req, res) => {
   const username = req.params.username;
   const loggedInUser = req.user;
-  const query = "SELECT * FROM bloguser WHERE username = $1";
+  const query = `SELECT *,
+  COALESCE(bloguser.id) AS id FROM bloguser 
+LEFT JOIN 
+  blog_followedusers ON blog_followedusers.id_followinguser = bloguser.id
+WHERE 
+  bloguser.username = $1;`;
+  const numFollowing = `SELECT count(blog_followedusers.id_followinguser) as followed
+  FROM bloguser 
+  LEFT JOIN 
+    blog_followedusers ON blog_followedusers.id_followeduser = bloguser.id
+  WHERE 
+    bloguser.username = $1`;
+
   client.query(query, [username], (err, result) => {
     if (err) {
       console.log(err.message);
       return;
     }
-    const messages = {
-      updatedInfo: req.flash("updatedInfo"),
-    };
-    res.render("dashboard", {
-      user: result.rows[0],
-      loggedInUser: loggedInUser,
-      messages: messages,
+    client.query(numFollowing, [username], (err2, result2) => {
+      if (err2) {
+        console.log(err2.message);
+        return;
+      }
+      console.log(result2.rows[0]["followed"]);
+      const messages = {
+        updatedInfo: req.flash("updatedInfo"),
+      };
+
+      res.render("dashboard", {
+        user: result.rows[0],
+        loggedInUser: loggedInUser,
+        messages: messages,
+        numFollowed: result2.rows[0]["followed"],
+      });
     });
   });
 });

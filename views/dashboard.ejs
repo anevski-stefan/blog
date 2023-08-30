@@ -6,13 +6,36 @@
 <div class="profile--wrapper my-0">
   <div class="form--wrapper">
     <h1>Dashboard</h1>
-    <% if((locals.user.username !== loggedInUser.username)){%> %>
-    <form action="" class="block-form">
+    <p><%= numFollowed %></p>
+    <% if (locals.user.username !== loggedInUser.username) { %>
+    <form
+      action="/<%= user.id %>/<%= loggedInUser.id %>"
+      method="post"
+      class="block-form"
+    >
       <button class="btn btn-danger">
         <i class="fa fa-ban" aria-hidden="true"> Block user</i>
       </button>
     </form>
-    <% } %>
+
+    <% if(numFollowed >= 1) { %>
+    <form
+      action="/unfollow/<%= user.id %>/<%= loggedInUser.id %>"
+      method="post"
+      class="unfollow-form"
+    >
+      <button class="btn btn-primary">Unfollow</button>
+    </form>
+
+    <% } else { %>
+    <form
+      action="/follow/<%= user.id %>/<%= loggedInUser.id %>"
+      method="post"
+      class="follow-form"
+    >
+      <button class="btn btn-primary">Follow</button>
+    </form>
+    <% } %> <% } %>
     <div class="profile--image"></div>
     <div class="profile--info">
       <form action="/<%= user.username %>/update" method="post">
@@ -47,7 +70,7 @@
             disabled
           />
         </div>
-        <% if(locals.user.username === loggedInUser.username){%> %>
+        <% if (locals.user.username === loggedInUser.username) { %>
         <button type="submit" class="btn btn-primary">Update</button>
         <% } %>
       </form>

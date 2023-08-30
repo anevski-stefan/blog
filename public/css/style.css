@@ -484,3 +484,9 @@ a:hover {
   right: 1%;
   top: 1%;
 }
+
+.form--wrapper .follow-form {
+  position: absolute;
+  right: 25%;
+  top: 1%;
+}
