@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.22.0",
     "@clerk/themes": "^2.2.50",
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.1.1",
     "@prisma/client": "^6.10.1",
     "@radix-ui/react-avatar": "^1.1.10",
@@ -42,6 +43,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
+    "gsap": "^3.13.0",
     "lowlight": "^3.3.0",
     "lucide-react": "^0.522.0",
     "next": "15.3.4",

@@ -10,11 +10,12 @@ interface LayoutWrapperProps {
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const pathname = usePathname()
   const isAdmin = pathname?.startsWith("/admin")
+  const isHome = pathname === "/"
 
   return (
     <>
       {!isAdmin && <MainNav />}
-      <main className={!isAdmin ? "container min-h-screen py-10" : ""}>
+      <main className={!isAdmin && !isHome ? "container min-h-screen py-10" : ""}>
         {children}
       </main>
     </>
