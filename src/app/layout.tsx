@@ -12,6 +12,11 @@ export const metadata = {
   ),
   title: "My Blog",
   description: "A modern blog built with Next.js and Supabase",
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed",
+    },
+  },
 }
 
 export default function RootLayout({

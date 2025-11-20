@@ -3,9 +3,11 @@ import { notFound } from "next/navigation"
 import Image from "next/image"
 import { prisma } from "@/lib/db"
 import { constructMetadata } from "@/lib/metadata"
-import { formatDate } from "@/lib/utils"
+import { formatDate, calculateReadingTime } from "@/lib/utils"
 import type { Category, Tag } from "@/generated/prisma"
 import { PostContent } from "@/components/post-content"
+import { StructuredData } from "@/components/structured-data"
+import { SocialShare } from "@/components/social-share"
 import type { Content } from "@tiptap/react"
 
 interface BlogPostPageProps {
@@ -43,18 +45,34 @@ export async function generateMetadata({
     return constructMetadata()
   }
 
-  const ogImageParams = new URLSearchParams({
-    title: post.title,
-    description: post.excerpt || "",
-    type: "article",
-  })
-  const ogImageUrl = `/api/og?${ogImageParams.toString()}`
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001"
+  const postUrl = `${baseUrl}/blog/${post.slug}`
+
+  let ogImageUrl = post.coverImage
+  if (!ogImageUrl) {
+    const ogImageParams = new URLSearchParams({
+      title: post.title,
+      description: post.excerpt || "",
+      type: "article",
+    })
+    ogImageUrl = `${baseUrl}/api/og?${ogImageParams.toString()}`
+  } else if (!ogImageUrl.startsWith("http")) {
+    ogImageUrl = ogImageUrl.startsWith("/")
+      ? `${baseUrl}${ogImageUrl}`
+      : `${baseUrl}/${ogImageUrl}`
+  }
+
+  const description = post.excerpt || post.title || "Read this article"
 
   return constructMetadata({
     title: post.title,
-    description: post.excerpt || "",
+    description: description,
     type: "article",
-    image: post.coverImage || ogImageUrl,
+    image: ogImageUrl,
+    url: postUrl,
+    publishedTime: post.publishedAt?.toISOString(),
+    modifiedTime: post.updatedAt.toISOString(),
+    authors: [post.authorName || "Unknown"],
   })
 }
 
@@ -66,77 +84,93 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001"
+  const postUrl = `${baseUrl}/blog/${post.slug}`
+  const readingTime = calculateReadingTime(post.content)
+
   return (
-    <article className="mx-auto max-w-3xl py-12">
-      {/* Cover Image */}
-      {post.coverImage && (
-        <div className="relative aspect-video mb-8 overflow-hidden rounded-lg">
-          <Image
-            src={post.coverImage}
-            alt={post.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 896px"
-            priority
-          />
-        </div>
-      )}
-
-      {/* Header */}
-      <header className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-        {post.excerpt && (
-          <p className="text-xl text-muted-foreground mb-4">{post.excerpt}</p>
+    <>
+      <StructuredData post={post} baseUrl={baseUrl} />
+      <article className="mx-auto max-w-3xl py-12">
+        {/* Cover Image */}
+        {post.coverImage && (
+          <div className="relative aspect-video mb-8 overflow-hidden rounded-lg">
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 896px"
+              priority
+            />
+          </div>
         )}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <span>By {post.authorName}</span>
-          <span>•</span>
-          <time dateTime={post.publishedAt?.toISOString()}>
-            {formatDate(post.publishedAt || post.createdAt)}
-          </time>
-        </div>
-      </header>
 
-      {/* Content */}
-      <PostContent content={post.content as Content} />
+        {/* Header */}
+        <header className="mb-8">
+          <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+          {post.excerpt && (
+            <p className="text-xl text-muted-foreground mb-4">{post.excerpt}</p>
+          )}
+          <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+            <span>By {post.authorName}</span>
+            <span>•</span>
+            <time dateTime={post.publishedAt?.toISOString()}>
+              {formatDate(post.publishedAt || post.createdAt)}
+            </time>
+            <span>•</span>
+            <span>{readingTime} min read</span>
+          </div>
+        </header>
 
-      {/* Tags and Categories */}
-      <footer className="mt-8 pt-8 border-t">
-        <div className="flex flex-wrap gap-4">
-          {post.categories.length > 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Categories:</span>
-              <div className="flex flex-wrap gap-2">
-                {post.categories.map((category: Category) => (
-                  <a
-                    key={category.id}
-                    href={`/blog/category/${category.slug}`}
-                    className="text-sm text-muted-foreground hover:text-primary"
-                  >
-                    {category.name}
-                  </a>
-                ))}
+        {/* Content */}
+        <PostContent content={post.content as Content} />
+
+        {/* Tags and Categories */}
+        <footer className="mt-8 pt-8 border-t">
+          <div className="flex flex-wrap gap-4 mb-4">
+            {post.categories.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Categories:</span>
+                <div className="flex flex-wrap gap-2">
+                  {post.categories.map((category: Category) => (
+                    <a
+                      key={category.id}
+                      href={`/blog/category/${category.slug}`}
+                      className="text-sm text-muted-foreground hover:text-primary"
+                    >
+                      {category.name}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-          {post.tags.length > 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Tags:</span>
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag: Tag) => (
-                  <a
-                    key={tag.id}
-                    href={`/blog/tag/${tag.slug}`}
-                    className="text-sm text-muted-foreground hover:text-primary"
-                  >
-                    {tag.name}
-                  </a>
-                ))}
+            )}
+            {post.tags.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Tags:</span>
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map((tag: Tag) => (
+                    <a
+                      key={tag.id}
+                      href={`/blog/tag/${tag.slug}`}
+                      className="text-sm text-muted-foreground hover:text-primary"
+                    >
+                      {tag.name}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </footer>
-    </article>
+            )}
+          </div>
+          <div className="flex justify-end">
+            <SocialShare
+              title={post.title}
+              url={postUrl}
+              description={post.excerpt || undefined}
+            />
+          </div>
+        </footer>
+      </article>
+    </>
   )
 }

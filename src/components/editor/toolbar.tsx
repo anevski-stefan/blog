@@ -16,7 +16,7 @@ import {
   Undo,
   Table as TableIcon,
   Link as LinkIcon,
-  Image,
+  Image as ImageIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -245,7 +245,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
               }}
               aria-label="Add image"
             >
-              <Image className="h-4 w-4" alt="" aria-hidden="true" />
+              <ImageIcon className="h-4 w-4" aria-hidden="true" />
             </Toggle>
           </TooltipTrigger>
           <TooltipContent>Add Image</TooltipContent>
