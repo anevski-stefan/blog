@@ -8,6 +8,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'),
   title: "My Blog",
   description: "A modern blog built with Next.js and Supabase",
 }

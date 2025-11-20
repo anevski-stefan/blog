@@ -43,16 +43,18 @@ export async function generateMetadata({
     return constructMetadata()
   }
 
-  const ogUrl = new URL("/api/og", process.env.NEXT_PUBLIC_APP_URL)
-  ogUrl.searchParams.set("title", post.title)
-  ogUrl.searchParams.set("description", post.excerpt || "")
-  ogUrl.searchParams.set("type", "article")
+  const ogImageParams = new URLSearchParams({
+    title: post.title,
+    description: post.excerpt || "",
+    type: "article",
+  })
+  const ogImageUrl = `/api/og?${ogImageParams.toString()}`
 
   return constructMetadata({
     title: post.title,
     description: post.excerpt || "",
     type: "article",
-    image: post.coverImage || ogUrl.toString(),
+    image: post.coverImage || ogImageUrl,
   })
 }
 
