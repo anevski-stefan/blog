@@ -10,9 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
 model Post {
@@ -32,7 +30,6 @@ model Post {
   authorName  String    // This will store the author's name from Supabase
   categories  Category[]
   tags        Tag[]
-  comments    Comment[]
 }
 
 model Category {
@@ -52,24 +49,6 @@ model Tag {
   posts       Post[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-}
-
-model Comment {
-  id          String    @id @default(cuid())
-  content     String    @db.Text
-  postId      String
-  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  authorId    String    // Clerk user ID
-  authorName  String    // Author's name from Clerk
-  isApproved  Boolean   @default(false)
-  replyToId   String?   // ID of the parent comment
-  replyTo     Comment?  @relation("Replies", fields: [replyToId], references: [id], onDelete: Cascade)
-  replies     Comment[] @relation("Replies")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([postId])
-  @@index([replyToId])
 }
 
 enum Role {

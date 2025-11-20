@@ -4,7 +4,6 @@ import { prisma } from "@/lib/db"
 import { constructMetadata } from "@/lib/metadata"
 import { formatDate } from "@/lib/utils"
 import type { Category, Tag } from "@/generated/prisma"
-import { CommentsSection } from "@/components/comments/comments-section"
 import { PostContent } from "@/components/post-content"
 import type { Content } from "@tiptap/react"
 
@@ -134,11 +133,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           )}
         </div>
       </footer>
-
-      {/* Comments */}
-      <div className="mt-16">
-        <CommentsSection postId={post.id} />
-      </div>
     </article>
   )
 } 
