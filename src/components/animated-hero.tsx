@@ -109,7 +109,7 @@ export function AnimatedHero() {
               </h1>
               <p
                 ref={descriptionRef}
-                className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400"
+                className="mx-auto max-w-[700px] text-muted-foreground md:text-xl"
               >
                 Exploring technology, development, and everything in between.
                 Join me on this journey of discovery and learning.
@@ -136,7 +136,7 @@ export function AnimatedHero() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div className="group relative rounded-lg border p-6 hover:shadow-lg transition-shadow">
               <h3 className="mb-2 text-xl font-bold">Coming Soon</h3>
-              <p className="text-gray-500 dark:text-gray-400">
+                    <p className="text-muted-foreground">
                 Exciting content is on its way. Stay tuned!
               </p>
             </div>

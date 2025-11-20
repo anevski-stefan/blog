@@ -57,7 +57,7 @@
   --secondary: #8789C0;
   --secondary-foreground: #F4FAFF;
   --muted: #F4FAFF;
-  --muted-foreground: #8789C0;
+  --muted-foreground: rgba(8, 9, 10, 0.7);
   --accent: #5DFDCB;
   --accent-foreground: #08090A;
   --destructive: oklch(0.577 0.245 27.325);
@@ -123,5 +123,50 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+  }
+
+  a:hover {
+    @apply text-primary transition-colors;
+  }
+  
+  .prose {
+    @apply text-foreground;
+  }
+  
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    @apply text-foreground;
+  }
+  
+  .prose p {
+    @apply text-foreground/90;
+  }
+  
+  .prose a {
+    @apply text-primary no-underline hover:text-accent;
+  }
+  
+  .prose strong {
+    @apply text-foreground;
+  }
+  
+  .prose code {
+    @apply text-accent bg-muted px-1.5 py-0.5 rounded;
+  }
+  
+  .prose pre {
+    @apply bg-muted border border-border;
+  }
+  
+  .dark .prose {
+    @apply text-foreground;
+  }
+  
+  .dark .prose p {
+    @apply text-foreground/90;
   }
 }
