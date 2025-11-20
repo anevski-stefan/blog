@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import Image from "next/image"
 import { prisma } from "@/lib/db"
 import { constructMetadata } from "@/lib/metadata"
 import { formatDate } from "@/lib/utils"
@@ -70,10 +71,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Cover Image */}
       {post.coverImage && (
         <div className="relative aspect-video mb-8 overflow-hidden rounded-lg">
-          <img
+          <Image
             src={post.coverImage}
             alt={post.title}
+            fill
             className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 896px"
+            priority
           />
         </div>
       )}

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { prisma } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import type { Post, Tag, Category } from "@/generated/prisma"
@@ -79,10 +80,12 @@ export default async function TagPage(props: TagPageProps) {
             >
               {post.coverImage && (
                 <div className="aspect-video relative mb-4 overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={post.coverImage}
                     alt={post.title}
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}
