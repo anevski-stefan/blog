@@ -1,11 +1,8 @@
 import { Search } from "@/components/search"
 import { Pagination } from "@/components/pagination"
-import Link from "next/link"
-import Image from "next/image"
-import { formatDate } from "@/lib/utils"
+import { PostCard } from "@/components/post-card"
 import { prisma } from "@/lib/db"
 import type { Post, Prisma } from "@/generated/prisma/client"
-import { TaxonomyBadge } from "@/components/taxonomy-badge"
 
 const POSTS_PER_PAGE = 6
 
@@ -71,12 +68,14 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const { posts, totalPages } = await getPosts(currentPage, searchQuery)
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full px-4 py-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Blog Posts</h1>
 
       {/* Search */}
       <div className="mb-8 flex justify-center">
-        <Search />
+        <div className="w-full max-w-md">
+          <Search />
+        </div>
       </div>
 
       {posts.length === 0 ? (
@@ -90,60 +89,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
       ) : (
         <>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post: PostWithRelations) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}`}
-                className="group rounded-lg border p-6 hover:shadow-lg transition-shadow"
-              >
-                {post.coverImage && (
-                  <div className="aspect-video relative mb-4 overflow-hidden rounded-lg">
-                    <Image
-                      src={post.coverImage}
-                      alt={post.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                )}
-                <article>
-                  <h2 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
-                    {post.title}
-                  </h2>
-                  <p className="text-muted-foreground mb-4 line-clamp-2">
-                    {post.excerpt}
-                  </p>
-
-                  {/* Categories and Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {post.categories.map(category => (
-                      <TaxonomyBadge
-                        key={category.id}
-                        name={category.name}
-                        slug={category.slug}
-                        type="category"
-                      />
-                    ))}
-                    {post.tags.map(tag => (
-                      <TaxonomyBadge
-                        key={tag.id}
-                        name={tag.name}
-                        slug={tag.slug}
-                        type="tag"
-                      />
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>
-                      {post.publishedAt && formatDate(post.publishedAt)}
-                    </span>
-                    <span>By {post.authorName || "Unknown"}</span>
-                  </div>
-                </article>
-              </Link>
+              <PostCard key={post.id} post={post} showTaxonomy={true} />
             ))}
           </div>
 

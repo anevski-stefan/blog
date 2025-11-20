@@ -24,14 +24,12 @@ export function Search() {
   }, [debouncedSearch, router, searchParams])
 
   return (
-    <div className="w-full max-w-md">
-      <Input
-        type="search"
-        placeholder="Search posts..."
-        className="w-full"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
-    </div>
+    <Input
+      type="search"
+      placeholder="Search posts..."
+      className="w-full"
+      value={search}
+      onChange={e => setSearch(e.target.value)}
+    />
   )
 }

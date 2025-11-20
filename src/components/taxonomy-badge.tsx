@@ -27,9 +27,9 @@ export function TaxonomyBadge({
 
   return (
     <Badge
-      variant={type === "category" ? "secondary" : "outline"}
+      variant="secondary"
       className={cn(
-        "hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer",
+        "hover:bg-secondary hover:text-secondary-foreground transition-colors cursor-pointer",
         className
       )}
       onClick={handleClick}

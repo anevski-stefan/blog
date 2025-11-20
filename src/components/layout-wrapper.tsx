@@ -15,9 +15,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
     <>
       {!isAdmin && <MainNav />}
-      <main
-        className={!isAdmin && !isHome ? "container min-h-screen py-10" : ""}
-      >
+      <main className={!isAdmin && !isHome ? "min-h-screen py-10" : ""}>
         {children}
       </main>
     </>

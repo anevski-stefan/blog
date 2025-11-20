@@ -40,8 +40,8 @@ export function MainNav() {
               <Link
                 key={route.href}
                 href={route.href}
-                className={`transition-colors hover:text-primary ${
-                  route.active ? "text-primary" : "text-foreground/70"
+                className={`transition-colors hover:text-secondary ${
+                  route.active ? "text-secondary" : "text-foreground/70"
                 }`}
               >
                 {route.label}
