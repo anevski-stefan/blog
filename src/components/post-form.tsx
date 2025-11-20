@@ -27,10 +27,18 @@ interface PostFormProps {
   onPublish?: (postId: string, publish: boolean) => Promise<void>
 }
 
-export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFormProps) {
+export function PostForm({
+  post,
+  categories,
+  tags,
+  onSubmit,
+  onPublish,
+}: PostFormProps) {
   const [title, setTitle] = useState(post?.title ?? "")
   const [content, setContent] = useState(post?.content?.toString() ?? "")
-  const [coverImage, setCoverImage] = useState<string | undefined>(post?.coverImage ?? undefined)
+  const [coverImage, setCoverImage] = useState<string | undefined>(
+    post?.coverImage ?? undefined
+  )
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     post?.categories?.map((c: Category) => c.id) ?? []
   )
@@ -46,7 +54,7 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
 
     try {
       // Create an excerpt from the content by removing HTML tags and limiting to 200 chars
-      const tempDiv = document.createElement('div')
+      const tempDiv = document.createElement("div")
       tempDiv.innerHTML = content
       const excerpt = tempDiv.textContent?.slice(0, 200) + "..."
 
@@ -55,7 +63,10 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
         content,
         excerpt,
         coverImage,
-        slug: title.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "-"),
+        slug: title
+          .toLowerCase()
+          .replace(/[^\w\s]/g, "")
+          .replace(/\s+/g, "-"),
         categoryIds: selectedCategories,
         tagIds: selectedTags,
       })
@@ -68,7 +79,7 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
 
   async function handlePublish() {
     if (!post?.id || !onPublish) return
-    
+
     setIsPublishing(true)
     try {
       await onPublish(post.id, !post.published)
@@ -88,7 +99,7 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
           type="text"
           placeholder="Post title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
           className="w-full rounded-md border p-2"
           required
         />
@@ -96,10 +107,7 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
 
       <div className="space-y-2">
         <Label>Cover Image</Label>
-        <ImageUpload
-          value={coverImage}
-          onChange={setCoverImage}
-        />
+        <ImageUpload value={coverImage} onChange={setCoverImage} />
       </div>
 
       <div className="space-y-2">
@@ -108,10 +116,10 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
           id="categories"
           multiple
           value={selectedCategories}
-          onChange={(values) => setSelectedCategories(values as string[])}
+          onChange={values => setSelectedCategories(values as string[])}
           className="w-full"
         >
-          {categories.map((category) => (
+          {categories.map(category => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
@@ -125,10 +133,10 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
           id="tags"
           multiple
           value={selectedTags}
-          onChange={(values) => setSelectedTags(values as string[])}
+          onChange={values => setSelectedTags(values as string[])}
           className="w-full"
         >
-          {tags.map((tag) => (
+          {tags.map(tag => (
             <option key={tag.id} value={tag.id}>
               {tag.name}
             </option>
@@ -138,8 +146,8 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
 
       <div className="space-y-2">
         <Label>Content</Label>
-        <Editor 
-          content={content} 
+        <Editor
+          content={content}
           onChange={setContent}
           placeholder="Write your post content here..."
         />
@@ -159,11 +167,11 @@ export function PostForm({ post, categories, tags, onSubmit, onPublish }: PostFo
             {isPublishing
               ? "Processing..."
               : post.published
-              ? "Unpublish"
-              : "Publish"}
+                ? "Unpublish"
+                : "Publish"}
           </Button>
         )}
       </div>
     </form>
   )
-} 
+}

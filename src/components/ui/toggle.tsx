@@ -49,4 +49,4 @@ const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(
 
 Toggle.displayName = TogglePrimitive.Root.displayName
 
-export { Toggle, toggleVariants } 
+export { Toggle, toggleVariants }

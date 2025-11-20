@@ -46,71 +46,71 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #F4FAFF;
-  --foreground: #08090A;
-  --card: #F4FAFF;
-  --card-foreground: #08090A;
-  --popover: #F4FAFF;
-  --popover-foreground: #08090A;
-  --primary: #7CC6FE; 
-  --primary-foreground: #08090A;
-  --secondary: #8789C0;
-  --secondary-foreground: #F4FAFF;
-  --muted: #F4FAFF;
+  --background: #f4faff;
+  --foreground: #08090a;
+  --card: #f4faff;
+  --card-foreground: #08090a;
+  --popover: #f4faff;
+  --popover-foreground: #08090a;
+  --primary: #7cc6fe;
+  --primary-foreground: #08090a;
+  --secondary: #8789c0;
+  --secondary-foreground: #f4faff;
+  --muted: #f4faff;
   --muted-foreground: rgba(8, 9, 10, 0.7);
-  --accent: #5DFDCB;
-  --accent-foreground: #08090A;
+  --accent: #5dfdcb;
+  --accent-foreground: #08090a;
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.929 0.013 255.508);
-  --input: #8789C0; 
-  --ring: #7CC6FE; 
-  --chart-1: #5DFDCB; 
-  --chart-2: #7CC6FE; 
-  --chart-3: #8789C0; 
-  --chart-4: #5DFDCB; 
-  --chart-5: #7CC6FE; 
-  --sidebar: #F4FAFF; 
-  --sidebar-foreground: #08090A; 
-  --sidebar-primary: #7CC6FE; 
-  --sidebar-primary-foreground: #08090A; 
-  --sidebar-accent: #5DFDCB; 
-  --sidebar-accent-foreground: #08090A; 
-  --sidebar-border: #8789C0; 
-  --sidebar-ring: #7CC6FE; 
+  --input: #8789c0;
+  --ring: #7cc6fe;
+  --chart-1: #5dfdcb;
+  --chart-2: #7cc6fe;
+  --chart-3: #8789c0;
+  --chart-4: #5dfdcb;
+  --chart-5: #7cc6fe;
+  --sidebar: #f4faff;
+  --sidebar-foreground: #08090a;
+  --sidebar-primary: #7cc6fe;
+  --sidebar-primary-foreground: #08090a;
+  --sidebar-accent: #5dfdcb;
+  --sidebar-accent-foreground: #08090a;
+  --sidebar-border: #8789c0;
+  --sidebar-ring: #7cc6fe;
 }
 
 .dark {
-  --background: #08090A;
-  --foreground: #F4FAFF;
-  --card: #08090A;
-  --card-foreground: #F4FAFF;
-  --popover: #08090A;
-  --popover-foreground: #F4FAFF;
-  --primary: #7CC6FE;
-  --primary-foreground: #08090A;
-  --secondary: #8789C0;
-  --secondary-foreground: #F4FAFF;
-  --muted: #08090A;
-  --muted-foreground: #8789C0;
-  --accent: #5DFDCB;
-  --accent-foreground: #08090A;
+  --background: #08090a;
+  --foreground: #f4faff;
+  --card: #08090a;
+  --card-foreground: #f4faff;
+  --popover: #08090a;
+  --popover-foreground: #f4faff;
+  --primary: #7cc6fe;
+  --primary-foreground: #08090a;
+  --secondary: #8789c0;
+  --secondary-foreground: #f4faff;
+  --muted: #08090a;
+  --muted-foreground: #8789c0;
+  --accent: #5dfdcb;
+  --accent-foreground: #08090a;
   --destructive: oklch(0.704 0.191 22.216);
   --border: rgba(135, 137, 192, 0.2);
   --input: rgba(135, 137, 192, 0.3);
-  --ring: #7CC6FE;
-  --chart-1: #5DFDCB; 
-  --chart-2: #7CC6FE; 
-  --chart-3: #8789C0;
-  --chart-4: #5DFDCB;
-  --chart-5: #7CC6FE;
-  --sidebar: #08090A;
-  --sidebar-foreground: #F4FAFF;
-  --sidebar-primary: #7CC6FE;
-  --sidebar-primary-foreground: #08090A;
-  --sidebar-accent: #5DFDCB;
-  --sidebar-accent-foreground: #08090A;
+  --ring: #7cc6fe;
+  --chart-1: #5dfdcb;
+  --chart-2: #7cc6fe;
+  --chart-3: #8789c0;
+  --chart-4: #5dfdcb;
+  --chart-5: #7cc6fe;
+  --sidebar: #08090a;
+  --sidebar-foreground: #f4faff;
+  --sidebar-primary: #7cc6fe;
+  --sidebar-primary-foreground: #08090a;
+  --sidebar-accent: #5dfdcb;
+  --sidebar-accent-foreground: #08090a;
   --sidebar-border: rgba(135, 137, 192, 0.2);
-  --sidebar-ring: #7CC6FE;
+  --sidebar-ring: #7cc6fe;
 }
 
 @tailwind base;
@@ -128,11 +128,11 @@
   a:hover {
     @apply text-primary transition-colors;
   }
-  
+
   .prose {
     @apply text-foreground;
   }
-  
+
   .prose h1,
   .prose h2,
   .prose h3,
@@ -141,31 +141,31 @@
   .prose h6 {
     @apply text-foreground;
   }
-  
+
   .prose p {
     @apply text-foreground/90;
   }
-  
+
   .prose a {
     @apply text-primary no-underline hover:text-accent;
   }
-  
+
   .prose strong {
     @apply text-foreground;
   }
-  
+
   .prose code {
     @apply text-accent bg-muted px-1.5 py-0.5 rounded;
   }
-  
+
   .prose pre {
     @apply bg-muted border border-border;
   }
-  
+
   .dark .prose {
     @apply text-foreground;
   }
-  
+
   .dark .prose p {
     @apply text-foreground/90;
   }

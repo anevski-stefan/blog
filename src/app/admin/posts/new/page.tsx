@@ -50,9 +50,10 @@ export default async function NewPostPage() {
       }
 
       const currentUserData = await currentUser()
-      const authorName = currentUserData 
-        ? `${currentUserData.firstName ?? ''} ${currentUserData.lastName ?? ''}`.trim() || 'Anonymous'
-        : 'Anonymous'
+      const authorName = currentUserData
+        ? `${currentUserData.firstName ?? ""} ${currentUserData.lastName ?? ""}`.trim() ||
+          "Anonymous"
+        : "Anonymous"
 
       await prisma.post.create({
         data: {
@@ -60,11 +61,16 @@ export default async function NewPostPage() {
           content: data.content,
           excerpt: data.excerpt ?? null,
           coverImage: data.coverImage ?? null,
-          slug: data.slug ?? data.title.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "-"),
+          slug:
+            data.slug ??
+            data.title
+              .toLowerCase()
+              .replace(/[^\w\s]/g, "")
+              .replace(/\s+/g, "-"),
           authorId: currentUserId,
           authorName,
           published: false,
-          categories: data.categoryIds?.length 
+          categories: data.categoryIds?.length
             ? {
                 connect: data.categoryIds.map(id => ({ id })),
               }
@@ -87,11 +93,7 @@ export default async function NewPostPage() {
   return (
     <div className="mx-auto max-w-4xl py-12">
       <h1 className="text-3xl font-bold mb-8">Create New Post</h1>
-      <PostForm 
-        onSubmit={createPost}
-        categories={categories}
-        tags={tags}
-      />
+      <PostForm onSubmit={createPost} categories={categories} tags={tags} />
     </div>
   )
-} 
+}

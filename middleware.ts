@@ -8,6 +8,6 @@ export const config = {
   matcher: [
     "/((?!.+\\.[\\w]+$|_next).*)", // all files except static files
     "/", // root
-    "/(api|trpc)(.*)" // api routes
-  ]
-} 
+    "/(api|trpc)(.*)", // api routes
+  ],
+}

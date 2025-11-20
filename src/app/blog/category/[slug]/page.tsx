@@ -26,9 +26,9 @@ export default async function CategoryPage(props: CategoryPageProps) {
     where: { slug: params.slug },
     include: {
       _count: {
-        select: { posts: { where: { published: true } } }
-      }
-    }
+        select: { posts: { where: { published: true } } },
+      },
+    },
   })
 
   if (!category) {
@@ -39,8 +39,8 @@ export default async function CategoryPage(props: CategoryPageProps) {
     where: {
       published: true,
       categories: {
-        some: { slug: params.slug }
-      }
+        some: { slug: params.slug },
+      },
     },
     include: {
       categories: true,
@@ -99,9 +99,7 @@ export default async function CategoryPage(props: CategoryPageProps) {
                   <span>
                     {post.publishedAt && formatDate(post.publishedAt)}
                   </span>
-                  <span>
-                    By {post.authorName || "Unknown"}
-                  </span>
+                  <span>By {post.authorName || "Unknown"}</span>
                 </div>
               </article>
             </Link>
@@ -110,10 +108,8 @@ export default async function CategoryPage(props: CategoryPageProps) {
       )}
 
       {totalPages > 1 && (
-        <div className="mt-8">
-          {/* We'll add pagination here later */}
-        </div>
+        <div className="mt-8">{/* We'll add pagination here later */}</div>
       )}
     </div>
   )
-} 
+}

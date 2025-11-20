@@ -7,8 +7,8 @@ export function SignOutButtonWrapper() {
   const { signOut } = useClerk()
 
   return (
-    <Button 
-      variant="ghost" 
+    <Button
+      variant="ghost"
       size="sm"
       className="text-muted-foreground hover:text-foreground"
       onClick={() => signOut()}
@@ -16,4 +16,4 @@ export function SignOutButtonWrapper() {
       Sign Out
     </Button>
   )
-} 
+}

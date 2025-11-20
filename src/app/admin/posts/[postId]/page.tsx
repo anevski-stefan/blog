@@ -58,9 +58,10 @@ export default async function EditPostPage(props: EditPostPageProps) {
       }
 
       const currentUserData = await currentUser()
-      const authorName = currentUserData 
-        ? `${currentUserData.firstName ?? ''} ${currentUserData.lastName ?? ''}`.trim() || 'Anonymous'
-        : 'Anonymous'
+      const authorName = currentUserData
+        ? `${currentUserData.firstName ?? ""} ${currentUserData.lastName ?? ""}`.trim() ||
+          "Anonymous"
+        : "Anonymous"
 
       await prisma.post.update({
         where: {
@@ -71,7 +72,12 @@ export default async function EditPostPage(props: EditPostPageProps) {
           content: data.content,
           excerpt: data.excerpt ?? null,
           coverImage: data.coverImage ?? null,
-          slug: data.slug ?? data.title.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, "-"),
+          slug:
+            data.slug ??
+            data.title
+              .toLowerCase()
+              .replace(/[^\w\s]/g, "")
+              .replace(/\s+/g, "-"),
           authorName,
           updatedAt: new Date(),
           categories: {
@@ -112,8 +118,8 @@ export default async function EditPostPage(props: EditPostPageProps) {
   return (
     <div className="mx-auto max-w-4xl py-12">
       <h1 className="text-3xl font-bold mb-8">Edit Post</h1>
-      <PostForm 
-        post={post} 
+      <PostForm
+        post={post}
         categories={categories}
         tags={tags}
         onSubmit={updatePost}
@@ -121,4 +127,4 @@ export default async function EditPostPage(props: EditPostPageProps) {
       />
     </div>
   )
-} 
+}

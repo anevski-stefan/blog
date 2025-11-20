@@ -15,41 +15,41 @@ export default function SignInPage() {
             colorBackground: "#020817",
             colorInputBackground: "#1e293b",
             colorInputText: "#ffffff",
-            borderRadius: "0.5rem"
+            borderRadius: "0.5rem",
           },
           elements: {
             card: {
               boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
               border: "1px solid #1e293b",
-              width: "400px"
+              width: "400px",
             },
             rootBox: {
               margin: "0",
-              padding: "0"
+              padding: "0",
             },
             formButtonPrimary: {
               backgroundColor: "#0ea5e9",
               fontSize: "14px",
               textTransform: "none",
               "&:hover": {
-                backgroundColor: "#0284c7"
-              }
+                backgroundColor: "#0284c7",
+              },
             },
             footerAction: {
-              display: "none"
+              display: "none",
             },
             dividerRow: {
-              display: "none"
+              display: "none",
             },
             socialButtons: {
-              display: "none"
+              display: "none",
             },
             footer: {
-              display: "none"
-            }
-          }
+              display: "none",
+            },
+          },
         }}
       />
     </div>
   )
-} 
+}

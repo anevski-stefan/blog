@@ -37,6 +37,10 @@ export function PostContent({ content }: PostContentProps) {
     return null
   }
 
-  return <EditorContent editor={editor} className="prose prose-stone dark:prose-invert max-w-none" />
+  return (
+    <EditorContent
+      editor={editor}
+      className="prose prose-stone dark:prose-invert max-w-none"
+    />
+  )
 }
-

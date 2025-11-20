@@ -36,7 +36,11 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   }
 
   const addTable = () => {
-    editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+    editor
+      .chain()
+      .focus()
+      .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+      .run()
   }
 
   const addLink = () => {
@@ -67,7 +71,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Toggle
               size="sm"
               pressed={editor.isActive("italic")}
-              onPressedChange={() => editor.chain().focus().toggleItalic().run()}
+              onPressedChange={() =>
+                editor.chain().focus().toggleItalic().run()
+              }
             >
               <Italic className="h-4 w-4" />
             </Toggle>
@@ -80,7 +86,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Toggle
               size="sm"
               pressed={editor.isActive("strike")}
-              onPressedChange={() => editor.chain().focus().toggleStrike().run()}
+              onPressedChange={() =>
+                editor.chain().focus().toggleStrike().run()
+              }
             >
               <Strikethrough className="h-4 w-4" />
             </Toggle>
@@ -108,7 +116,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Toggle
               size="sm"
               pressed={editor.isActive("heading", { level: 2 })}
-              onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHeading({ level: 2 }).run()
+              }
             >
               <Heading2 className="h-4 w-4" />
             </Toggle>
@@ -121,7 +131,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Toggle
               size="sm"
               pressed={editor.isActive("bulletList")}
-              onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
+              onPressedChange={() =>
+                editor.chain().focus().toggleBulletList().run()
+              }
             >
               <List className="h-4 w-4" />
             </Toggle>
@@ -134,7 +146,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Toggle
               size="sm"
               pressed={editor.isActive("orderedList")}
-              onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
+              onPressedChange={() =>
+                editor.chain().focus().toggleOrderedList().run()
+              }
             >
               <ListOrdered className="h-4 w-4" />
             </Toggle>
@@ -147,7 +161,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Toggle
               size="sm"
               pressed={editor.isActive("blockquote")}
-              onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
+              onPressedChange={() =>
+                editor.chain().focus().toggleBlockquote().run()
+              }
             >
               <Quote className="h-4 w-4" />
             </Toggle>
@@ -222,14 +238,14 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Toggle
               size="sm"
               onPressedChange={() => {
-                const url = window.prompt('Enter image URL')
+                const url = window.prompt("Enter image URL")
                 if (url) {
                   editor.chain().focus().setImage({ src: url }).run()
                 }
               }}
               aria-label="Add image"
             >
-              <Image className="h-4 w-4" aria-hidden="true" />
+              <Image className="h-4 w-4" alt="" aria-hidden="true" />
             </Toggle>
           </TooltipTrigger>
           <TooltipContent>Add Image</TooltipContent>
@@ -237,4 +253,4 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       </div>
     </TooltipProvider>
   )
-} 
+}

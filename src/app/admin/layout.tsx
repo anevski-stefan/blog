@@ -9,7 +9,7 @@ export default async function AdminLayout({
   children: React.ReactNode
 }) {
   const { userId } = await auth()
-  
+
   if (!userId || userId !== process.env.ADMIN_USER_ID) {
     redirect("/")
   }
@@ -24,19 +24,31 @@ export default async function AdminLayout({
                 Admin Dashboard
               </Link>
               <nav className="flex items-center space-x-4 text-sm">
-                <Link href="/admin/posts" className="text-muted-foreground hover:text-foreground">
+                <Link
+                  href="/admin/posts"
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   Posts
                 </Link>
-                <Link href="/admin/categories" className="text-muted-foreground hover:text-foreground">
+                <Link
+                  href="/admin/categories"
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   Categories
                 </Link>
-                <Link href="/admin/tags" className="text-muted-foreground hover:text-foreground">
+                <Link
+                  href="/admin/tags"
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   Tags
                 </Link>
               </nav>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+              <Link
+                href="/"
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
                 View Site
               </Link>
               <SignOutButtonWrapper />
@@ -44,9 +56,7 @@ export default async function AdminLayout({
           </div>
         </div>
       </header>
-      <main className="container mx-auto px-4 py-8">
-        {children}
-      </main>
+      <main className="container mx-auto px-4 py-8">{children}</main>
     </div>
   )
-} 
+}

@@ -51,7 +51,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
               onUploadBegin={() => {
                 setIsLoading(true)
               }}
-              onClientUploadComplete={(res) => {
+              onClientUploadComplete={res => {
                 setIsLoading(false)
                 if (res && res[0]) {
                   setPreview(res[0].url)
@@ -67,11 +67,13 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
                 toast({
                   variant: "destructive",
                   title: "Upload failed",
-                  description: error.message || "Something went wrong. Please try again.",
+                  description:
+                    error.message || "Something went wrong. Please try again.",
                 })
               }}
               appearance={{
-                container: "border-dashed border-2 rounded-lg p-4 ut-uploading:border-primary",
+                container:
+                  "border-dashed border-2 rounded-lg p-4 ut-uploading:border-primary",
                 allowedContent: "text-sm text-muted-foreground",
                 button: "ut-ready:bg-primary ut-uploading:bg-primary/50",
               }}
@@ -81,4 +83,4 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
       </div>
     </div>
   )
-} 
+}

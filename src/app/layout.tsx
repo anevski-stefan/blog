@@ -7,7 +7,9 @@ import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001"
+  ),
   title: "My Blog",
   description: "A modern blog built with Next.js and Supabase",
 }
@@ -27,9 +29,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <LayoutWrapper>
-              {children}
-            </LayoutWrapper>
+            <LayoutWrapper>{children}</LayoutWrapper>
             <Toaster />
           </ThemeProvider>
         </ClerkProvider>

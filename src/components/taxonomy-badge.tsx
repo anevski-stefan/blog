@@ -11,7 +11,12 @@ interface TaxonomyBadgeProps {
   className?: string
 }
 
-export function TaxonomyBadge({ name, slug, type, className }: TaxonomyBadgeProps) {
+export function TaxonomyBadge({
+  name,
+  slug,
+  type,
+  className,
+}: TaxonomyBadgeProps) {
   const router = useRouter()
 
   const handleClick = (e: React.MouseEvent) => {
@@ -32,4 +37,4 @@ export function TaxonomyBadge({ name, slug, type, className }: TaxonomyBadgeProp
       {name}
     </Badge>
   )
-} 
+}

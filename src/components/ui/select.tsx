@@ -2,18 +2,29 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export interface SelectProps
-  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange" | "value"> {
+  extends Omit<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    "onChange" | "value"
+  > {
   multiple?: boolean
   value?: string | string[]
   onChange?: (value: string | string[]) => void
 }
 
-export function Select({ className, multiple, value, onChange, ...props }: SelectProps) {
+export function Select({
+  className,
+  multiple,
+  value,
+  onChange,
+  ...props
+}: SelectProps) {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!onChange) return
 
     if (multiple) {
-      const values = Array.from(e.target.selectedOptions).map(option => option.value)
+      const values = Array.from(e.target.selectedOptions).map(
+        option => option.value
+      )
       onChange(values)
     } else {
       onChange(e.target.value)
@@ -35,4 +46,4 @@ export function Select({ className, multiple, value, onChange, ...props }: Selec
       {...props}
     />
   )
-} 
+}

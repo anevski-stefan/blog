@@ -30,9 +30,7 @@ export default async function AdminDashboard() {
               className="flex items-center justify-between p-4"
             >
               <div className="space-y-1">
-                <h3 className="font-medium leading-none">
-                  {post.title}
-                </h3>
+                <h3 className="font-medium leading-none">{post.title}</h3>
                 <p className="text-sm text-muted-foreground">
                   {post.published ? "Published" : "Draft"} •{" "}
                   {new Date(post.createdAt).toLocaleDateString()}
@@ -40,9 +38,7 @@ export default async function AdminDashboard() {
               </div>
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" asChild>
-                  <Link href={`/admin/posts/${post.id}`}>
-                    Edit
-                  </Link>
+                  <Link href={`/admin/posts/${post.id}`}>Edit</Link>
                 </Button>
                 <Button
                   variant={post.published ? "outline" : "default"}
@@ -57,4 +53,4 @@ export default async function AdminDashboard() {
       </div>
     </div>
   )
-} 
+}

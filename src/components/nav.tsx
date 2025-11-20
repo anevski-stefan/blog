@@ -33,12 +33,10 @@ export function MainNav() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold">
-              My Blog
-            </span>
+            <span className="text-xl font-bold">My Blog</span>
           </Link>
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            {routes.map((route) => (
+            {routes.map(route => (
               <Link
                 key={route.href}
                 href={route.href}
@@ -66,4 +64,4 @@ export function MainNav() {
       </div>
     </header>
   )
-} 
+}

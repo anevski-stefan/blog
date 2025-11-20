@@ -60,4 +60,4 @@ export function constructMetadata({
     manifest: "/site.webmanifest",
     metadataBase: new URL(url),
   }
-} 
+}

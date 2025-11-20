@@ -25,7 +25,12 @@ async function getPosts(page: number, search?: string) {
     ...(search
       ? {
           OR: [
-            { title: { contains: search, mode: "insensitive" as Prisma.QueryMode } },
+            {
+              title: {
+                contains: search,
+                mode: "insensitive" as Prisma.QueryMode,
+              },
+            },
             { content: { string_contains: search } },
           ],
         }
@@ -68,7 +73,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Blog Posts</h1>
-      
+
       {/* Search */}
       <div className="mb-8 flex justify-center">
         <Search />
@@ -110,10 +115,10 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   <p className="text-muted-foreground mb-4 line-clamp-2">
                     {post.excerpt}
                   </p>
-                  
+
                   {/* Categories and Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {post.categories.map((category) => (
+                    {post.categories.map(category => (
                       <TaxonomyBadge
                         key={category.id}
                         name={category.name}
@@ -121,7 +126,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                         type="category"
                       />
                     ))}
-                    {post.tags.map((tag) => (
+                    {post.tags.map(tag => (
                       <TaxonomyBadge
                         key={tag.id}
                         name={tag.name}
@@ -135,9 +140,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     <span>
                       {post.publishedAt && formatDate(post.publishedAt)}
                     </span>
-                    <span>
-                      By {post.authorName || "Unknown"}
-                    </span>
+                    <span>By {post.authorName || "Unknown"}</span>
                   </div>
                 </article>
               </Link>
@@ -146,13 +149,10 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <Pagination
-              totalPages={totalPages}
-              currentPage={currentPage}
-            />
+            <Pagination totalPages={totalPages} currentPage={currentPage} />
           )}
         </>
       )}
     </div>
   )
-} 
+}

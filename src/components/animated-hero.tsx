@@ -21,9 +21,9 @@ export function AnimatedHero() {
         const titleText = titleRef.current.textContent || ""
         titleRef.current.innerHTML = titleText
           .split("")
-          .map((char) => 
-            char === " " 
-              ? '<span class="inline-block">&nbsp;</span>' 
+          .map(char =>
+            char === " "
+              ? '<span class="inline-block">&nbsp;</span>'
               : `<span class="inline-block">${char}</span>`
           )
           .join("")
@@ -94,7 +94,10 @@ export function AnimatedHero() {
   }, [])
 
   return (
-    <div ref={heroRef} className="flex flex-col items-center justify-center space-y-12">
+    <div
+      ref={heroRef}
+      className="flex flex-col items-center justify-center space-y-12"
+    >
       {/* Hero Section */}
       <section className="w-full min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6 mx-auto">
@@ -136,7 +139,7 @@ export function AnimatedHero() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div className="group relative rounded-lg border p-6 hover:shadow-lg transition-shadow">
               <h3 className="mb-2 text-xl font-bold">Coming Soon</h3>
-                    <p className="text-muted-foreground">
+              <p className="text-muted-foreground">
                 Exciting content is on its way. Stay tuned!
               </p>
             </div>
@@ -146,4 +149,3 @@ export function AnimatedHero() {
     </div>
   )
 }
-

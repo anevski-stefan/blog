@@ -9,7 +9,8 @@ export async function GET(req: NextRequest) {
 
     // Dynamic params
     const title = searchParams.get("title") ?? "My Blog"
-    const description = searchParams.get("description") ?? "A personal blog built with Next.js"
+    const description =
+      searchParams.get("description") ?? "A personal blog built with Next.js"
     const type = searchParams.get("type") ?? "article"
 
     return new ImageResponse(
@@ -92,4 +93,4 @@ export async function GET(req: NextRequest) {
     console.error(e)
     return new Response("Failed to generate image", { status: 500 })
   }
-} 
+}

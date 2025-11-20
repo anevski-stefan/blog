@@ -27,9 +27,9 @@ export default async function TagPage(props: TagPageProps) {
     where: { slug: params.slug },
     include: {
       _count: {
-        select: { posts: { where: { published: true } } }
-      }
-    }
+        select: { posts: { where: { published: true } } },
+      },
+    },
   })
 
   if (!tag) {
@@ -40,8 +40,8 @@ export default async function TagPage(props: TagPageProps) {
     where: {
       published: true,
       tags: {
-        some: { slug: params.slug }
-      }
+        some: { slug: params.slug },
+      },
     },
     include: {
       categories: true,
@@ -57,9 +57,11 @@ export default async function TagPage(props: TagPageProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Posts tagged with: {tag.name}</h1>
+        <h1 className="text-4xl font-bold mb-2">
+          Posts tagged with: {tag.name}
+        </h1>
         <p className="text-muted-foreground">
-          {tag._count.posts} {tag._count.posts === 1 ? 'post' : 'posts'} found
+          {tag._count.posts} {tag._count.posts === 1 ? "post" : "posts"} found
         </p>
       </div>
 
@@ -123,9 +125,7 @@ export default async function TagPage(props: TagPageProps) {
                   <span>
                     {post.publishedAt && formatDate(post.publishedAt)}
                   </span>
-                  <span>
-                    By {post.authorName}
-                  </span>
+                  <span>By {post.authorName}</span>
                 </div>
               </article>
             </Link>
@@ -134,10 +134,8 @@ export default async function TagPage(props: TagPageProps) {
       )}
 
       {totalPages > 1 && (
-        <div className="mt-8">
-          {/* We'll add pagination here later */}
-        </div>
+        <div className="mt-8">{/* We'll add pagination here later */}</div>
       )}
     </div>
   )
-} 
+}

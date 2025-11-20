@@ -15,4 +15,3 @@ export default defineConfig({
   },
   schema: path.join("prisma", "schema.prisma"),
 } as Parameters<typeof defineConfig>[0])
-

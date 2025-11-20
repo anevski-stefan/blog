@@ -1,19 +1,19 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  siteUrl: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   generateRobotsTxt: true,
   generateIndexSitemap: false,
-  changefreq: 'daily',
+  changefreq: "daily",
   priority: 0.7,
-  exclude: ['/api/*', '/admin/*'],
+  exclude: ["/api/*", "/admin/*"],
   robotsTxtOptions: {
     additionalSitemaps: [],
     policies: [
       {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/api/*', '/admin/*'],
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/api/*", "/admin/*"],
       },
     ],
   },
-} 
+}

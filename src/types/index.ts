@@ -15,4 +15,4 @@ export interface Post {
   authorName: string
   categories?: string[] // Array of category IDs
   tags?: string[] // Array of tag IDs
-} 
+}
