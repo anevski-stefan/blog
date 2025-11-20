@@ -3,25 +3,16 @@ import { notFound } from "next/navigation"
 import { prisma } from "@/lib/db"
 import { constructMetadata } from "@/lib/metadata"
 import { formatDate } from "@/lib/utils"
-import type { Post, Category, Tag } from "@/generated/prisma"
+import type { Category, Tag } from "@/generated/prisma"
 import { CommentsSection } from "@/components/comments/comments-section"
-import { EditorContent, useEditor } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
-import { common, createLowlight } from "lowlight"
-import Table from "@tiptap/extension-table"
-import TableRow from "@tiptap/extension-table-row"
-import TableCell from "@tiptap/extension-table-cell"
-import TableHeader from "@tiptap/extension-table-header"
+import { PostContent } from "@/components/post-content"
+import type { Content } from "@tiptap/react"
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
-
-// Initialize lowlight with common languages
-const lowlight = createLowlight(common)
 
 async function getPost(slug: string) {
   const post = await prisma.post.findUnique({
@@ -45,7 +36,8 @@ async function getPost(slug: string) {
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getPost(params.slug)
+  const { slug } = await params
+  const post = await getPost(slug)
 
   if (!post) {
     return constructMetadata()
@@ -64,33 +56,9 @@ export async function generateMetadata({
   })
 }
 
-function PostContent({ content }: { content: any }) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
-      Table.configure({
-        resizable: false,
-      }),
-      TableRow,
-      TableCell,
-      TableHeader,
-    ],
-    content,
-    editable: false,
-  })
-
-  if (!editor) {
-    return null
-  }
-
-  return <EditorContent editor={editor} className="prose prose-stone dark:prose-invert max-w-none" />
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getPost(params.slug)
+  const { slug } = await params
+  const post = await getPost(slug)
 
   if (!post) {
     notFound()
@@ -125,7 +93,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </header>
 
       {/* Content */}
-      <PostContent content={post.content} />
+      <PostContent content={post.content as Content} />
 
       {/* Tags and Categories */}
       <footer className="mt-8 pt-8 border-t">

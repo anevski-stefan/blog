@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@clerk/nextjs"
 import { toast } from "sonner"
 import { Comment } from "./comment"
@@ -16,22 +16,22 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
   const [comments, setComments] = useState<CommentType[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    fetchComments()
-  }, [postId])
-
-  async function fetchComments() {
+  const fetchComments = useCallback(async () => {
     try {
       const response = await fetch(`/api/posts/${postId}/comments`)
       if (!response.ok) throw new Error("Failed to fetch comments")
       const data = await response.json()
       setComments(data)
-    } catch (error) {
+    } catch {
       toast.error("Failed to load comments")
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [postId])
+
+  useEffect(() => {
+    fetchComments()
+  }, [fetchComments])
 
   async function handleDelete(commentId: string) {
     if (!confirm("Are you sure you want to delete this comment?")) return
@@ -53,7 +53,7 @@ export function CommentsSection({ postId }: CommentsSectionProps) {
       )
 
       toast.success("Comment deleted")
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete comment")
     }
   }

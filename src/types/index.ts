@@ -2,7 +2,7 @@ export interface Post {
   id: string
   title: string
   slug: string
-  content: any
+  content: unknown
   excerpt: string | null
   coverImage: string | null
   published: boolean

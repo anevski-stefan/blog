@@ -36,7 +36,7 @@ interface ToggleProps
 }
 
 const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(
-  ({ className, variant, size, asChild = false, pressed, onPressedChange, ...props }, ref) => (
+  ({ className, variant, size, pressed, onPressedChange, ...props }, ref) => (
     <TogglePrimitive.Root
       ref={ref}
       pressed={pressed}

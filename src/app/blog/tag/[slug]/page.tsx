@@ -6,17 +6,19 @@ import type { Post, Tag, Category } from "@/generated/prisma"
 import { TaxonomyBadge } from "@/components/taxonomy-badge"
 
 interface TagPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     page?: string
-  }
+  }>
 }
 
 const POSTS_PER_PAGE = 6
 
-export default async function TagPage({ params, searchParams }: TagPageProps) {
+export default async function TagPage(props: TagPageProps) {
+  const params = await props.params
+  const searchParams = await props.searchParams
   const currentPage = Number(searchParams.page) || 1
   const skip = (currentPage - 1) * POSTS_PER_PAGE
 

@@ -2,11 +2,10 @@ import { redirect } from "next/navigation"
 import { auth, currentUser } from "@clerk/nextjs/server"
 import { PostForm } from "@/components/post-form"
 import { prisma } from "@/lib/db"
-import type { Post } from "@/generated/prisma/client"
 
 export interface CreatePostData {
   title: string
-  content: any // JSON content from Tiptap
+  content: unknown // JSON content from Tiptap
   excerpt?: string
   slug?: string
   coverImage?: string
@@ -55,7 +54,7 @@ export default async function NewPostPage() {
         ? `${currentUserData.firstName ?? ''} ${currentUserData.lastName ?? ''}`.trim() || 'Anonymous'
         : 'Anonymous'
 
-      const post = await prisma.post.create({
+      await prisma.post.create({
         data: {
           title: data.title,
           content: data.content,

@@ -14,7 +14,7 @@ interface CommentFormProps {
 }
 
 export function CommentForm({ postId, replyToId, onSuccess, onCancel }: CommentFormProps) {
-  const { userId, isSignedIn } = useAuth()
+  const { isSignedIn } = useAuth()
   const [content, setContent] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -52,7 +52,7 @@ export function CommentForm({ postId, replyToId, onSuccess, onCancel }: CommentF
       setContent("")
       toast.success(replyToId ? "Reply submitted" : "Comment submitted")
       onSuccess?.()
-    } catch (error) {
+    } catch {
       toast.error("Failed to submit comment. Please try again.")
     } finally {
       setIsSubmitting(false)

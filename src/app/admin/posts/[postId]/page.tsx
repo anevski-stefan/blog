@@ -5,12 +5,13 @@ import { prisma } from "@/lib/db"
 import type { Post } from "@/types"
 
 interface EditPostPageProps {
-  params: {
+  params: Promise<{
     postId: string
-  }
+  }>
 }
 
-export default async function EditPostPage({ params }: EditPostPageProps) {
+export default async function EditPostPage(props: EditPostPageProps) {
+  const params = await props.params
   const { userId } = await auth()
   const user = await currentUser()
 
@@ -18,9 +19,11 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
     redirect("/sign-in")
   }
 
+  const postId = params.postId
+
   const post = await prisma.post.findUnique({
     where: {
-      id: params.postId,
+      id: postId,
     },
     include: {
       categories: true,
@@ -59,9 +62,9 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
         ? `${currentUserData.firstName ?? ''} ${currentUserData.lastName ?? ''}`.trim() || 'Anonymous'
         : 'Anonymous'
 
-      const updatedPost = await prisma.post.update({
+      await prisma.post.update({
         where: {
-          id: params.postId,
+          id: postId,
         },
         data: {
           title: data.title,

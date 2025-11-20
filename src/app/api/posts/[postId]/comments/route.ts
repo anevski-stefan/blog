@@ -3,12 +3,13 @@ import { prisma } from "@/lib/db"
 
 export async function GET(
   request: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) {
   try {
+    const { postId } = await params
     const comments = await prisma.comment.findMany({
       where: {
-        postId: params.postId,
+        postId,
         isApproved: true,
       },
       orderBy: {

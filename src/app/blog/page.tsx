@@ -9,10 +9,10 @@ import { TaxonomyBadge } from "@/components/taxonomy-badge"
 const POSTS_PER_PAGE = 6
 
 interface BlogPageProps {
-  searchParams: {
+  searchParams: Promise<{
     q?: string
     page?: string
-  }
+  }>
 }
 
 async function getPosts(page: number, search?: string) {
@@ -54,13 +54,14 @@ async function getPosts(page: number, search?: string) {
 }
 
 interface PostWithRelations extends Post {
-  categories: any[]
-  tags: any[]
+  categories: { id: string; name: string; slug: string }[]
+  tags: { id: string; name: string; slug: string }[]
 }
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const currentPage = Number(searchParams.page) || 1
-  const searchQuery = searchParams.q
+  const resolvedSearchParams = await searchParams
+  const currentPage = Number(resolvedSearchParams.page) || 1
+  const searchQuery = resolvedSearchParams.q
   const { posts, totalPages } = await getPosts(currentPage, searchQuery)
 
   return (

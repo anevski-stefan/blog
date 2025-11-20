@@ -2,20 +2,22 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { prisma } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
-import type { Post, Category } from "@/generated/prisma/client"
+import type { Post } from "@/generated/prisma/client"
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     page?: string
-  }
+  }>
 }
 
 const POSTS_PER_PAGE = 6
 
-export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
+export default async function CategoryPage(props: CategoryPageProps) {
+  const params = await props.params
+  const searchParams = await props.searchParams
   const currentPage = Number(searchParams.page) || 1
   const skip = (currentPage - 1) * POSTS_PER_PAGE
 

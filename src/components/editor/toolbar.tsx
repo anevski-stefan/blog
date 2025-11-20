@@ -227,8 +227,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
                   editor.chain().focus().setImage({ src: url }).run()
                 }
               }}
+              aria-label="Add image"
             >
-              <Image className="h-4 w-4" />
+              <Image className="h-4 w-4" aria-hidden="true" />
             </Toggle>
           </TooltipTrigger>
           <TooltipContent>Add Image</TooltipContent>
