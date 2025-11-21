@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 import { PostForm } from "@/components/posts/post-form"
 import { prisma } from "@/lib/db"
 import { getTaxonomies } from "@/lib/posts"
-import { updatePost, togglePublish } from "@/lib/actions/posts"
+import { updatePost, togglePublish } from "@/actions/posts"
 
 interface EditPostPageProps {
   params: Promise<{

@@ -1,6 +1,6 @@
 import { PostForm } from "@/components/posts/post-form"
 import { getTaxonomies } from "@/lib/posts"
-import { createPost } from "@/lib/actions/posts"
+import { createPost } from "@/actions/posts"
 
 export default async function NewPostPage() {
   const { categories, tags } = await getTaxonomies()

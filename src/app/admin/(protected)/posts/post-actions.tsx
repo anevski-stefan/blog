@@ -2,7 +2,7 @@
 
 import { useTransition } from "react"
 import { Button } from "@/components/ui/button"
-import { togglePublish } from "@/lib/actions/posts"
+import { togglePublish } from "@/actions/posts"
 import { Loader2 } from "lucide-react"
 
 interface PostActionsProps {
