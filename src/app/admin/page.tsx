@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { prisma } from "@/lib/db"
+import { formatDate } from "@/lib/utils"
 
 export default async function AdminDashboard() {
   const posts = await prisma.post.findMany({
@@ -32,7 +33,7 @@ export default async function AdminDashboard() {
                 <h3 className="font-medium leading-none">{post.title}</h3>
                 <p className="text-sm text-muted-foreground">
                   {post.published ? "Published" : "Draft"} •{" "}
-                  {new Date(post.createdAt).toLocaleDateString()}
+                  {formatDate(post.createdAt)}
                 </p>
               </div>
               <div className="flex items-center gap-2">

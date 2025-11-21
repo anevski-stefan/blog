@@ -1,5 +1,7 @@
 import { ImageResponse } from "@vercel/og"
 import { NextRequest } from "next/server"
+import { getBaseUrl } from "@/lib/config"
+import { DEFAULT_METADATA } from "@/lib/constants"
 
 export const runtime = "edge"
 
@@ -7,10 +9,9 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
 
-    // Dynamic params
-    const title = searchParams.get("title") ?? "My Blog"
+    const title = searchParams.get("title") ?? DEFAULT_METADATA.title
     const description =
-      searchParams.get("description") ?? "A personal blog built with Next.js"
+      searchParams.get("description") ?? DEFAULT_METADATA.description
     const type = searchParams.get("type") ?? "article"
 
     return new ImageResponse(
@@ -80,7 +81,7 @@ export async function GET(req: NextRequest) {
               fontSize: "16px",
             }}
           >
-            {process.env.NEXT_PUBLIC_APP_URL || "yourblog.com"}
+            {new URL(getBaseUrl()).hostname}
           </div>
         </div>
       ),

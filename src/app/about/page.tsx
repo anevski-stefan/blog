@@ -9,7 +9,7 @@ export default function AboutPage() {
         </p>
         <p className="text-lg mb-4">
           This blog is built with modern technologies like Next.js, Tailwind
-          CSS, and Supabase, allowing me to create and share content
+          CSS, Prisma, and Clerk, allowing me to create and share content
           efficiently.
         </p>
         <p className="text-lg">

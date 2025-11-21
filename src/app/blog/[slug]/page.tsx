@@ -5,7 +5,6 @@ import { constructMetadata } from "@/lib/metadata"
 import { formatDate, calculateReadingTime } from "@/lib/utils"
 import { getPostBySlug } from "@/lib/posts"
 import { getAppUrl } from "@/lib/config"
-import type { Category, Tag } from "@/generated/prisma/client"
 import { PostContent } from "@/components/posts/post-content"
 import { StructuredData } from "@/components/shared/structured-data"
 import { SocialShare } from "@/components/shared/social-share"
@@ -115,7 +114,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">Categories:</span>
                 <div className="flex flex-wrap gap-2">
-                  {post.categories.map((category: Category) => (
+                  {post.categories.map(category => (
                     <a
                       key={category.id}
                       href={`/blog/category/${category.slug}`}
@@ -131,7 +130,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">Tags:</span>
                 <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag: Tag) => (
+                  {post.tags.map(tag => (
                     <a
                       key={tag.id}
                       href={`/blog/tag/${tag.slug}`}

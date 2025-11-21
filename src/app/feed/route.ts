@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/db"
+import { getBaseUrl } from "@/lib/config"
+import { DEFAULT_METADATA } from "@/lib/constants"
 
 export const dynamic = "force-static"
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 3600
 
 function escapeXml(unsafe: string): string {
   return unsafe
@@ -17,9 +19,9 @@ function formatRSSDate(date: Date): string {
 }
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001"
-  const siteName = "My Blog"
-  const siteDescription = "A modern blog built with Next.js"
+  const baseUrl = getBaseUrl()
+  const siteName = DEFAULT_METADATA.siteName
+  const siteDescription = DEFAULT_METADATA.description
 
   // Fetch published posts
   const posts = await prisma.post.findMany({

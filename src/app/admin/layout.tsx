@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation"
-import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
+import { requireAdmin } from "@/lib/auth"
 import { SignOutButtonWrapper } from "@/components/shared/sign-out-button-wrapper"
 
 export default async function AdminLayout({
@@ -8,11 +7,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { userId } = await auth()
-
-  if (!userId || userId !== process.env.ADMIN_USER_ID) {
-    redirect("/")
-  }
+  await requireAdmin()
 
   return (
     <div className="min-h-screen bg-background">
