@@ -1,4 +1,6 @@
 import { cookies } from "next/headers"
+import { decrypt } from "@/lib/session"
+import "server-only"
 
 export class UnauthorizedError extends Error {
   constructor(message = "Unauthorized: Admin access required") {
@@ -9,9 +11,10 @@ export class UnauthorizedError extends Error {
 
 export async function isAdmin(): Promise<boolean> {
   const cookieStore = await cookies()
-  const adminSecret = cookieStore.get("admin_secret")?.value
+  const session = cookieStore.get("session")?.value
+  const payload = await decrypt(session)
 
-  return adminSecret === process.env.ADMIN_SECRET
+  return !!payload
 }
 
 export async function requireAdmin(): Promise<void> {

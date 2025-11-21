@@ -1,14 +1,18 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { decrypt } from "@/lib/session"
+import { cookies } from "next/headers"
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Protect admin routes (except login page)
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    const adminSecret = request.cookies.get("admin_secret")?.value
+    const cookieStore = await cookies()
+    const session = cookieStore.get("session")?.value
+    const payload = await decrypt(session)
 
-    if (adminSecret !== process.env.ADMIN_SECRET) {
+    if (!payload) {
       return NextResponse.redirect(new URL("/admin/login", request.url))
     }
   }

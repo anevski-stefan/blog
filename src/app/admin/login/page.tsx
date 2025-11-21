@@ -1,5 +1,5 @@
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import { createSession } from "@/lib/session"
 
 async function login(formData: FormData) {
   "use server"
@@ -7,13 +7,7 @@ async function login(formData: FormData) {
   const secret = formData.get("secret") as string
 
   if (secret === process.env.ADMIN_SECRET) {
-    const cookieStore = await cookies()
-    cookieStore.set("admin_secret", secret, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    })
+    await createSession()
     redirect("/admin")
   }
 
