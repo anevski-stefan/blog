@@ -8,5 +8,9 @@ export function getBaseUrl(): string {
 
 export function getAppUrl(path: string = ""): string {
   const baseUrl = getBaseUrl()
-  return path.startsWith("/") ? `${baseUrl}${path}` : `${baseUrl}/${path}`
+  try {
+    return new URL(path, baseUrl).toString()
+  } catch {
+    return path.startsWith("/") ? `${baseUrl}${path}` : `${baseUrl}/${path}`
+  }
 }

@@ -1,5 +1,12 @@
 import { auth } from "@clerk/nextjs/server"
 
+export class UnauthorizedError extends Error {
+  constructor(message = "Unauthorized: Admin access required") {
+    super(message)
+    this.name = "UnauthorizedError"
+  }
+}
+
 export async function isAdmin(): Promise<boolean> {
   const { userId } = await auth()
   if (!userId) return false
@@ -10,7 +17,7 @@ export async function isAdmin(): Promise<boolean> {
 export async function requireAdmin(): Promise<void> {
   const isUserAdmin = await isAdmin()
   if (!isUserAdmin) {
-    throw new Error("Unauthorized: Admin access required")
+    throw new UnauthorizedError()
   }
 }
 

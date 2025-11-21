@@ -23,26 +23,34 @@ export function calculateReadingTime(content: unknown): number {
 
   function extractText(node: unknown): void {
     if (typeof node === "string") {
-      const words = node
+      wordCount += node
         .trim()
         .split(/\s+/)
-        .filter(word => word.length > 0)
-      wordCount += words.length
-    } else if (Array.isArray(node)) {
-      node.forEach(extractText)
-    } else if (node && typeof node === "object") {
-      if ("text" in node && typeof node.text === "string") {
-        const words = node.text
-          .trim()
-          .split(/\s+/)
-          .filter(word => word.length > 0)
-        wordCount += words.length
-      }
-      if ("content" in node) {
-        extractText(node.content)
-      }
-      Object.values(node).forEach(extractText)
+        .filter(word => word.length > 0).length
+      return
     }
+
+    if (Array.isArray(node)) {
+      node.forEach(extractText)
+      return
+    }
+
+    if (!node || typeof node !== "object") {
+      return
+    }
+
+    if ("text" in node && typeof node.text === "string") {
+      wordCount += node.text
+        .trim()
+        .split(/\s+/)
+        .filter(word => word.length > 0).length
+    }
+
+    if ("content" in node) {
+      extractText(node.content)
+    }
+
+    Object.values(node).forEach(extractText)
   }
 
   extractText(content)

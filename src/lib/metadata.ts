@@ -26,24 +26,24 @@ export function constructMetadata({
   const safeDescription =
     description || title || "A personal blog built with Next.js"
 
+  const normalizedBaseUrl = url.startsWith("http") ? url : `https://${url}`
+  const metadataBase = new URL(normalizedBaseUrl)
+
   const absoluteImageUrl =
     image.startsWith("http") || image.startsWith("//")
       ? image
-      : image.startsWith("/")
-        ? `${url}${image}`
-        : `${url}/${image}`
-
-  const absoluteUrl = url.startsWith("http") ? url : `https://${url}`
-  const baseUrl = url.startsWith("http") ? url : `https://${url}`
-  const metadataBase = new URL(baseUrl)
+      : new URL(
+          image.startsWith("/") ? image : `/${image}`,
+          normalizedBaseUrl
+        ).toString()
 
   const openGraph: Metadata["openGraph"] = {
-    title: title,
+    title,
     description: safeDescription,
-    url: absoluteUrl,
+    url: normalizedBaseUrl,
     siteName: DEFAULT_METADATA.siteName,
     locale: "en_US",
-    type: type,
+    type,
     images: [
       {
         url: absoluteImageUrl,
@@ -53,19 +53,19 @@ export function constructMetadata({
       },
     ],
     ...(type === "article" && {
-      publishedTime: publishedTime,
-      modifiedTime: modifiedTime,
-      authors: authors,
+      publishedTime,
+      modifiedTime,
+      authors,
     }),
   }
 
   return {
-    title: title,
+    title,
     description: safeDescription,
     openGraph,
     twitter: {
       card: "summary_large_image",
-      title: title,
+      title,
       description: safeDescription,
       images: [absoluteImageUrl],
       creator: "@yourtwitterhandle",
