@@ -70,7 +70,7 @@ export default async function TagPage(props: TagPageProps) {
           </p>
         </div>
       ) : (
-        <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post: Post & { categories: Category[]; tags: Tag[] }) => (
             <PostCard key={post.id} post={post} showTaxonomy={true} />
           ))}

@@ -28,7 +28,7 @@ export function PostCard({ post, showTaxonomy = true }: PostCardProps) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex flex-col overflow-hidden rounded-lg border bg-card p-4 transition-shadow hover:shadow-lg"
+      className="group flex flex-col overflow-hidden rounded-lg border bg-card p-5 transition-shadow hover:shadow-lg"
     >
       {post.coverImage && (
         <div className="relative mb-4 aspect-video overflow-hidden rounded-lg">
