@@ -17,6 +17,15 @@ import {
   Table as TableIcon,
   Link as LinkIcon,
   Image as ImageIcon,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  Underline as UnderlineIcon,
+  Highlighter,
+  CheckSquare,
+  Minus,
+  FileCode,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -98,6 +107,21 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
           <TooltipTrigger asChild>
             <Toggle
               size="sm"
+              pressed={editor.isActive("underline")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleUnderline().run()
+              }
+            >
+              <UnderlineIcon className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Underline</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
               pressed={editor.isActive("code")}
               onPressedChange={() => editor.chain().focus().toggleCode().run()}
             >
@@ -105,6 +129,38 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             </Toggle>
           </TooltipTrigger>
           <TooltipContent>Inline Code</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("highlight")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHighlight().run()
+              }
+            >
+              <Highlighter className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Highlight</TooltipContent>
+        </Tooltip>
+
+        <Separator orientation="vertical" className="mx-1 h-6" />
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("codeBlock")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleCodeBlock().run()
+              }
+            >
+              <FileCode className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Code Block</TooltipContent>
         </Tooltip>
 
         <Separator orientation="vertical" className="mx-1 h-6" />
@@ -122,6 +178,98 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             </Toggle>
           </TooltipTrigger>
           <TooltipContent>Heading</TooltipContent>
+        </Tooltip>
+
+        <Separator orientation="vertical" className="mx-1 h-6" />
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
+              pressed={editor.isActive({ textAlign: "left" })}
+              onPressedChange={() =>
+                editor.chain().focus().setTextAlign("left").run()
+              }
+            >
+              <AlignLeft className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Align Left</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
+              pressed={editor.isActive({ textAlign: "center" })}
+              onPressedChange={() =>
+                editor.chain().focus().setTextAlign("center").run()
+              }
+            >
+              <AlignCenter className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Align Center</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
+              pressed={editor.isActive({ textAlign: "right" })}
+              onPressedChange={() =>
+                editor.chain().focus().setTextAlign("right").run()
+              }
+            >
+              <AlignRight className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Align Right</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
+              pressed={editor.isActive({ textAlign: "justify" })}
+              onPressedChange={() =>
+                editor.chain().focus().setTextAlign("justify").run()
+              }
+            >
+              <AlignJustify className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Justify</TooltipContent>
+        </Tooltip>
+
+        <Separator orientation="vertical" className="mx-1 h-6" />
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("taskList")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleTaskList().run()
+              }
+            >
+              <CheckSquare className="h-4 w-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent>Task List</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => editor.chain().focus().setHorizontalRule().run()}
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Horizontal Rule</TooltipContent>
         </Tooltip>
 
         <Tooltip>

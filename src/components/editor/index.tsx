@@ -5,7 +5,18 @@ import StarterKit from "@tiptap/starter-kit"
 import Link from "@tiptap/extension-link"
 import Image from "@tiptap/extension-image"
 import Placeholder from "@tiptap/extension-placeholder"
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
+import TextAlign from "@tiptap/extension-text-align"
+import Underline from "@tiptap/extension-underline"
+import Highlight from "@tiptap/extension-highlight"
+import Color from "@tiptap/extension-color"
+import TextStyle from "@tiptap/extension-text-style"
+import TaskList from "@tiptap/extension-task-list"
+import TaskItem from "@tiptap/extension-task-item"
+import HorizontalRule from "@tiptap/extension-horizontal-rule"
+import { common, createLowlight } from "lowlight"
 import { EditorToolbar } from "./toolbar"
+import "./editor-styles.css"
 
 interface EditorProps {
   content: string
@@ -13,9 +24,32 @@ interface EditorProps {
   placeholder?: string
 }
 
+const lowlight = createLowlight(common)
+
 function createEditorExtensions(placeholder: string) {
   return [
-    StarterKit,
+    StarterKit.configure({
+      codeBlock: false, // Disable default code block to use CodeBlockLowlight
+    }),
+    CodeBlockLowlight.configure({
+      lowlight,
+      defaultLanguage: "javascript",
+    }),
+    TextAlign.configure({
+      types: ["heading", "paragraph"],
+      alignments: ["left", "center", "right", "justify"],
+    }),
+    Underline,
+    Highlight.configure({
+      multicolor: true,
+    }),
+    TextStyle,
+    Color,
+    TaskList,
+    TaskItem.configure({
+      nested: true,
+    }),
+    HorizontalRule,
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {

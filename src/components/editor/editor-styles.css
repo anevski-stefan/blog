@@ -1,0 +1,174 @@
+/* Syntax highlighting for code blocks using One Dark theme */
+.tiptap pre {
+  background: #282c34;
+  color: #abb2bf;
+  font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.tiptap pre code {
+  color: inherit;
+  padding: 0;
+  background: none;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Syntax highlighting colors */
+.tiptap .hljs-comment,
+.tiptap .hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+
+.tiptap .hljs-doctag,
+.tiptap .hljs-keyword,
+.tiptap .hljs-formula {
+  color: #c678dd;
+}
+
+.tiptap .hljs-section,
+.tiptap .hljs-name,
+.tiptap .hljs-selector-tag,
+.tiptap .hljs-deletion,
+.tiptap .hljs-subst {
+  color: #e06c75;
+}
+
+.tiptap .hljs-literal {
+  color: #56b6c2;
+}
+
+.tiptap .hljs-string,
+.tiptap .hljs-regexp,
+.tiptap .hljs-addition,
+.tiptap .hljs-attribute,
+.tiptap .hljs-meta .hljs-string {
+  color: #98c379;
+}
+
+.tiptap .hljs-attr,
+.tiptap .hljs-variable,
+.tiptap .hljs-template-variable,
+.tiptap .hljs-type,
+.tiptap .hljs-selector-class,
+.tiptap .hljs-selector-attr,
+.tiptap .hljs-selector-pseudo,
+.tiptap .hljs-number {
+  color: #d19a66;
+}
+
+.tiptap .hljs-symbol,
+.tiptap .hljs-bullet,
+.tiptap .hljs-link,
+.tiptap .hljs-meta,
+.tiptap .hljs-selector-id,
+.tiptap .hljs-title {
+  color: #61aeee;
+}
+
+.tiptap .hljs-built_in,
+.tiptap .hljs-title.class_,
+.tiptap .hljs-class .hljs-title {
+  color: #e6c07b;
+}
+
+.tiptap .hljs-emphasis {
+  font-style: italic;
+}
+
+.tiptap .hljs-strong {
+  font-weight: bold;
+}
+
+.tiptap .hljs-link {
+  text-decoration: underline;
+}
+
+/* Task list styles */
+.tiptap ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+}
+
+.tiptap ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.tiptap ul[data-type="taskList"] li > label {
+  flex: 0 0 auto;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+.tiptap ul[data-type="taskList"] li > div {
+  flex: 1 1 auto;
+}
+
+.tiptap ul[data-type="taskList"] input[type="checkbox"] {
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.25rem;
+}
+
+/* Horizontal rule */
+.tiptap hr {
+  border: none;
+  border-top: 2px solid hsl(var(--border));
+  margin: 2rem 0;
+}
+
+/* Text alignment */
+.tiptap .text-left {
+  text-align: left;
+}
+
+.tiptap .text-center {
+  text-align: center;
+}
+
+.tiptap .text-right {
+  text-align: right;
+}
+
+.tiptap .text-justify {
+  text-align: justify;
+}
+
+/* Highlight colors */
+.tiptap mark {
+  background-color: #fef08a;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.tiptap mark[data-color="#fef08a"] {
+  background-color: #fef08a;
+  /* yellow */
+}
+
+.tiptap mark[data-color="#bfdbfe"] {
+  background-color: #bfdbfe;
+  /* blue */
+}
+
+.tiptap mark[data-color="#bbf7d0"] {
+  background-color: #bbf7d0;
+  /* green */
+}
+
+.tiptap mark[data-color="#fecaca"] {
+  background-color: #fecaca;
+  /* red */
+}
+
+.tiptap mark[data-color="#e9d5ff"] {
+  background-color: #e9d5ff;
+  /* purple */
+}
