@@ -31,11 +31,7 @@ export function LoadingSpinner({
       loop
       autoplay
       style={dimensions}
-      className={cn(
-        "inline-block",
-        "dark:brightness-150 dark:contrast-125",
-        className
-      )}
+      className={cn("inline-block", className)}
       aria-label="Loading animation"
     />
   )

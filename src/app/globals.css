@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -79,40 +77,6 @@
   --sidebar-ring: #7cc6fe;
 }
 
-.dark {
-  --background: #08090a;
-  --foreground: #f4faff;
-  --card: #08090a;
-  --card-foreground: #f4faff;
-  --popover: #08090a;
-  --popover-foreground: #f4faff;
-  --primary: #7cc6fe;
-  --primary-foreground: #08090a;
-  --secondary: #8789c0;
-  --secondary-foreground: #f4faff;
-  --muted: #08090a;
-  --muted-foreground: #8789c0;
-  --accent: #5dfdcb;
-  --accent-foreground: #08090a;
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: rgba(135, 137, 192, 0.2);
-  --input: rgba(135, 137, 192, 0.3);
-  --ring: #7cc6fe;
-  --chart-1: #5dfdcb;
-  --chart-2: #7cc6fe;
-  --chart-3: #8789c0;
-  --chart-4: #5dfdcb;
-  --chart-5: #7cc6fe;
-  --sidebar: #08090a;
-  --sidebar-foreground: #f4faff;
-  --sidebar-primary: #7cc6fe;
-  --sidebar-primary-foreground: #08090a;
-  --sidebar-accent: #5dfdcb;
-  --sidebar-accent-foreground: #08090a;
-  --sidebar-border: rgba(135, 137, 192, 0.2);
-  --sidebar-ring: #7cc6fe;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -121,6 +85,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
   }
@@ -160,13 +125,5 @@
 
   .prose pre {
     @apply bg-muted border border-border;
-  }
-
-  .dark .prose {
-    @apply text-foreground;
-  }
-
-  .dark .prose p {
-    @apply text-foreground/90;
   }
 }
