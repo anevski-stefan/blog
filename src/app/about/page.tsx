@@ -1,3 +1,12 @@
+import type { Metadata } from "next"
+import { constructMetadata } from "@/lib/metadata"
+
+export const metadata: Metadata = constructMetadata({
+  title: "About",
+  description:
+    "Learn more about me, my background, and what this blog is all about.",
+})
+
 export default function AboutPage() {
   return (
     <div className="max-w-2xl mx-auto">
