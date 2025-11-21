@@ -3,20 +3,9 @@ import { GeistMono } from "geist/font/mono"
 import { ThemeProvider } from "@/components/layout/theme-provider"
 import { LayoutWrapper } from "@/components/layout/layout-wrapper"
 import { Toaster } from "@/components/ui/toaster"
-import { getBaseUrl } from "@/lib/config"
-import { DEFAULT_METADATA } from "@/lib/constants"
-import "./globals.css"
+import { constructMetadata } from "@/lib/metadata"
 
-export const metadata = {
-  metadataBase: new URL(getBaseUrl()),
-  title: DEFAULT_METADATA.title,
-  description: DEFAULT_METADATA.description,
-  alternates: {
-    types: {
-      "application/rss+xml": "/feed",
-    },
-  },
-}
+export const metadata = constructMetadata()
 
 export default function RootLayout({
   children,

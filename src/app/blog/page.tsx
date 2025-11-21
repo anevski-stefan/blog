@@ -2,6 +2,7 @@ import { Search } from "@/components/shared/search"
 import { Pagination } from "@/components/shared/pagination"
 import { PostCard } from "@/components/posts/post-card"
 import { getPosts } from "@/lib/posts"
+import { constructMetadata } from "@/lib/metadata"
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -9,6 +10,11 @@ interface BlogPageProps {
     page?: string
   }>
 }
+
+export const metadata = constructMetadata({
+  title: "Blog",
+  description: "Read my latest thoughts and tutorials.",
+})
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const resolvedSearchParams = await searchParams
