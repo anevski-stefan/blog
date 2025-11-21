@@ -30,17 +30,15 @@ interface EditorToolbarProps {
   editor: Editor
 }
 
+const TABLE_CONFIG = { rows: 3, cols: 3, withHeaderRow: true } as const
+
 export function EditorToolbar({ editor }: EditorToolbarProps) {
   if (!editor) {
     return null
   }
 
   const addTable = () => {
-    editor
-      .chain()
-      .focus()
-      .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-      .run()
+    editor.chain().focus().insertTable(TABLE_CONFIG).run()
   }
 
   const addLink = () => {

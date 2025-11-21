@@ -33,33 +33,38 @@ export function PostForm({
     post?.coverImage ?? undefined
   )
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    post?.categories?.map((c: Category) => c.id) ?? []
+    post?.categories?.map(c => c.id) ?? []
   )
   const [selectedTags, setSelectedTags] = useState<string[]>(
-    post?.tags?.map((t: Tag) => t.id) ?? []
+    post?.tags?.map(t => t.id) ?? []
   )
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
+
+  function generateExcerpt(html: string): string {
+    const tempDiv = document.createElement("div")
+    tempDiv.innerHTML = html
+    return (tempDiv.textContent?.slice(0, 200) ?? "") + "..."
+  }
+
+  function generateSlug(text: string): string {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s]/g, "")
+      .replace(/\s+/g, "-")
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
-      // Create an excerpt from the content by removing HTML tags and limiting to 200 chars
-      const tempDiv = document.createElement("div")
-      tempDiv.innerHTML = content
-      const excerpt = tempDiv.textContent?.slice(0, 200) + "..."
-
       await onSubmit({
         title,
         content,
-        excerpt,
+        excerpt: generateExcerpt(content),
         coverImage,
-        slug: title
-          .toLowerCase()
-          .replace(/[^\w\s]/g, "")
-          .replace(/\s+/g, "-"),
+        slug: generateSlug(title),
         categoryIds: selectedCategories,
         tagIds: selectedTags,
       })

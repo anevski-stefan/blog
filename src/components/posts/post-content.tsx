@@ -11,24 +11,22 @@ import TableHeader from "@tiptap/extension-table-header"
 
 const lowlight = createLowlight(common)
 
+const editorExtensions = [
+  StarterKit,
+  CodeBlockLowlight.configure({ lowlight }),
+  Table.configure({ resizable: false }),
+  TableRow,
+  TableCell,
+  TableHeader,
+]
+
 interface PostContentProps {
   content: Content
 }
 
 export function PostContent({ content }: PostContentProps) {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
-      Table.configure({
-        resizable: false,
-      }),
-      TableRow,
-      TableCell,
-      TableHeader,
-    ],
+    extensions: editorExtensions,
     content,
     editable: false,
   })

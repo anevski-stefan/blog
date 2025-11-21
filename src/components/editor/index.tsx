@@ -13,29 +13,31 @@ interface EditorProps {
   placeholder?: string
 }
 
+function createEditorExtensions(placeholder: string) {
+  return [
+    StarterKit,
+    Link.configure({
+      openOnClick: false,
+      HTMLAttributes: {
+        class: "text-primary underline decoration-primary cursor-pointer",
+      },
+    }),
+    Image.configure({
+      HTMLAttributes: {
+        class: "rounded-lg max-w-full",
+      },
+    }),
+    Placeholder.configure({ placeholder }),
+  ]
+}
+
 export function Editor({
   content,
   onChange,
   placeholder = "Write something amazing...",
 }: EditorProps) {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: "text-primary underline decoration-primary cursor-pointer",
-        },
-      }),
-      Image.configure({
-        HTMLAttributes: {
-          class: "rounded-lg max-w-full",
-        },
-      }),
-      Placeholder.configure({
-        placeholder,
-      }),
-    ],
+    extensions: createEditorExtensions(placeholder),
     content,
     editorProps: {
       attributes: {

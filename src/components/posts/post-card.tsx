@@ -2,19 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { formatDate } from "@/lib/utils"
 import { TaxonomyBadge } from "@/components/shared/taxonomy-badge"
-import type { Post } from "@/generated/prisma/client"
-
-interface Category {
-  id: string
-  name: string
-  slug: string
-}
-
-interface Tag {
-  id: string
-  name: string
-  slug: string
-}
+import type { Post, Category, Tag } from "@/generated/prisma/client"
 
 interface PostCardProps {
   post: Post & {
@@ -76,9 +64,7 @@ export function PostCard({ post, showTaxonomy = true }: PostCardProps) {
 
         <div className="mt-auto flex items-center justify-between text-sm text-muted-foreground">
           <time dateTime={post.publishedAt?.toISOString()}>
-            {post.publishedAt
-              ? formatDate(post.publishedAt)
-              : formatDate(post.createdAt)}
+            {formatDate(post.publishedAt ?? post.createdAt)}
           </time>
           <span>By {post.authorName || "Unknown"}</span>
         </div>
