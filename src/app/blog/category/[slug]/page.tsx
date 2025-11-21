@@ -48,7 +48,7 @@ export default async function CategoryPage(props: CategoryPageProps) {
         </div>
       ) : (
         <>
-          <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
             {posts.map(post => (
               <PostCard key={post.id} post={post} showTaxonomy={false} />
             ))}

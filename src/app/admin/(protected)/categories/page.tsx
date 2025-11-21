@@ -20,7 +20,7 @@ export default async function CategoriesPage() {
                 you assign them to posts.
               </p>
             ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 items-start justify-items-start">
                 {categories.map(category => (
                   <Link
                     key={category.id}

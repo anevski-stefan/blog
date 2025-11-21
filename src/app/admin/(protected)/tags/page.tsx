@@ -20,7 +20,7 @@ export default async function TagsPage() {
                 them to posts.
               </p>
             ) : (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 items-start justify-start">
                 {tags.map(tag => (
                   <Link
                     key={tag.id}
