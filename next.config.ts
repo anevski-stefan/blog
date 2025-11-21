@@ -5,15 +5,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "**",
+        hostname: "utfs.io",
       },
     ],
-    // Note: Allowing all domains for blog flexibility
-    // Consider restricting to specific domains in production for better security
+    // Security: Only allow images from trusted domains
+    // Add additional domains here as needed
   },
 }
 

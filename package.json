@@ -15,8 +15,6 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.22.0",
-    "@clerk/themes": "^2.2.50",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.1.1",
     "@prisma/client": "^6.10.1",
@@ -80,7 +78,7 @@
     "lint-staged": "^16.2.7",
     "next-sitemap": "^4.2.3",
     "prettier": "^3.6.2",
-    "prisma": "^7.0.0",
+    "prisma": "^6.10.1",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"

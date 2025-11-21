@@ -1,19 +1,20 @@
-"use client"
-
-import { useClerk } from "@clerk/nextjs"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
-export function SignOutButtonWrapper() {
-  const { signOut } = useClerk()
+async function logout() {
+  "use server"
+  const cookieStore = await cookies()
+  cookieStore.delete("admin_secret")
+  redirect("/")
+}
 
+export function SignOutButtonWrapper() {
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      className="text-muted-foreground hover:text-foreground"
-      onClick={() => signOut()}
-    >
-      Sign Out
-    </Button>
+    <form action={logout}>
+      <Button type="submit" variant="outline" size="sm">
+        Logout
+      </Button>
+    </form>
   )
 }

@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server"
+import { cookies } from "next/headers"
 
 export class UnauthorizedError extends Error {
   constructor(message = "Unauthorized: Admin access required") {
@@ -8,10 +8,10 @@ export class UnauthorizedError extends Error {
 }
 
 export async function isAdmin(): Promise<boolean> {
-  const { userId } = await auth()
-  if (!userId) return false
+  const cookieStore = await cookies()
+  const adminSecret = cookieStore.get("admin_secret")?.value
 
-  return userId === process.env.ADMIN_USER_ID
+  return adminSecret === process.env.ADMIN_SECRET
 }
 
 export async function requireAdmin(): Promise<void> {
@@ -22,6 +22,6 @@ export async function requireAdmin(): Promise<void> {
 }
 
 export async function getCurrentUserId(): Promise<string | null> {
-  const { userId } = await auth()
-  return userId
+  // No user IDs without authentication system
+  return null
 }

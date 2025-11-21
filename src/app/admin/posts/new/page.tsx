@@ -1,16 +1,8 @@
-import { redirect } from "next/navigation"
-import { auth } from "@clerk/nextjs/server"
 import { PostForm } from "@/components/posts/post-form"
 import { getTaxonomies } from "@/lib/posts"
 import { createPost } from "@/lib/actions/posts"
 
 export default async function NewPostPage() {
-  const { userId } = await auth()
-
-  if (!userId) {
-    redirect("/sign-in")
-  }
-
   const { categories, tags } = await getTaxonomies()
 
   return (

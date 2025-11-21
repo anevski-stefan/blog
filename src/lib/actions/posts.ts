@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { auth, currentUser } from "@clerk/nextjs/server"
+import { requireAdmin } from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import type { PostData } from "@/types/posts"
 import type { Prisma } from "@/generated/prisma/client"
@@ -18,14 +18,10 @@ function generateSlug(title: string): string {
 }
 
 /**
- * Get author name from current user
+ * Get author name (static for simple auth)
  */
-async function getAuthorName(): Promise<string> {
-  const user = await currentUser()
-  if (!user) return "Anonymous"
-
-  const name = `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim()
-  return name || "Anonymous"
+function getAuthorName(): string {
+  return "Admin"
 }
 
 /**
@@ -73,12 +69,11 @@ function buildUpdateData(
  */
 export async function createPost(data: PostData) {
   try {
-    const { userId } = await auth()
-    if (!userId) throw new Error("Unauthorized")
+    await requireAdmin()
     if (!data.title) throw new Error("Title is required")
     if (!data.content) throw new Error("Content is required")
 
-    const authorName = await getAuthorName()
+    const authorName = getAuthorName()
 
     await prisma.post.create({
       data: {
@@ -87,7 +82,7 @@ export async function createPost(data: PostData) {
         excerpt: data.excerpt ?? null,
         coverImage: data.coverImage ?? null,
         slug: data.slug ?? generateSlug(data.title),
-        authorId: userId,
+        authorId: "admin",
         authorName,
         published: false,
         ...(data.categoryIds?.length && {
@@ -113,12 +108,11 @@ export async function createPost(data: PostData) {
  */
 export async function updatePost(postId: string, data: Partial<PostData>) {
   try {
-    const { userId } = await auth()
-    if (!userId) throw new Error("Unauthorized")
+    await requireAdmin()
     if (data.title && !data.title.trim())
       throw new Error("Title cannot be empty")
 
-    const authorName = await getAuthorName()
+    const authorName = getAuthorName()
 
     await prisma.post.update({
       where: { id: postId },
@@ -144,8 +138,7 @@ export async function updatePost(postId: string, data: Partial<PostData>) {
  */
 export async function togglePublish(postId: string, publish: boolean) {
   try {
-    const { userId } = await auth()
-    if (!userId) throw new Error("Unauthorized")
+    await requireAdmin()
 
     await prisma.post.update({
       where: { id: postId },

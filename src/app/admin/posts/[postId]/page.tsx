@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation"
-import { auth } from "@clerk/nextjs/server"
 import { PostForm } from "@/components/posts/post-form"
 import { prisma } from "@/lib/db"
 import { getTaxonomies } from "@/lib/posts"
@@ -13,12 +12,6 @@ interface EditPostPageProps {
 
 export default async function EditPostPage(props: EditPostPageProps) {
   const params = await props.params
-  const { userId } = await auth()
-
-  if (!userId) {
-    redirect("/sign-in")
-  }
-
   const postId = params.postId
 
   const [post, { categories, tags }] = await Promise.all([
