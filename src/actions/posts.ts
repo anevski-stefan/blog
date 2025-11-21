@@ -96,11 +96,11 @@ export async function createPost(data: PostData) {
 
     revalidatePath("/admin/posts")
     revalidatePath("/blog")
-    redirect("/admin/posts")
   } catch (error) {
     console.error("Failed to create post:", error)
     throw new Error("Failed to create post. Please try again.")
   }
+  redirect("/admin/posts")
 }
 
 /**
@@ -126,11 +126,11 @@ export async function updatePost(postId: string, data: Partial<PostData>) {
     revalidatePath("/admin/posts")
     revalidatePath(`/blog/${postId}`)
     revalidatePath("/blog")
-    redirect("/admin/posts")
   } catch (error) {
     console.error("Failed to update post:", error)
     throw new Error("Failed to update post. Please try again.")
   }
+  redirect("/admin/posts")
 }
 
 /**
