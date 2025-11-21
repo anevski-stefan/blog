@@ -94,9 +94,9 @@ export async function createPost(data: PostData) {
       },
     })
 
-    revalidatePath("/admin")
+    revalidatePath("/admin/posts")
     revalidatePath("/blog")
-    redirect("/admin")
+    redirect("/admin/posts")
   } catch (error) {
     console.error("Failed to create post:", error)
     throw new Error("Failed to create post. Please try again.")
@@ -123,10 +123,10 @@ export async function updatePost(postId: string, data: Partial<PostData>) {
       },
     })
 
-    revalidatePath("/admin")
+    revalidatePath("/admin/posts")
     revalidatePath(`/blog/${postId}`)
     revalidatePath("/blog")
-    redirect("/admin")
+    redirect("/admin/posts")
   } catch (error) {
     console.error("Failed to update post:", error)
     throw new Error("Failed to update post. Please try again.")
@@ -148,10 +148,9 @@ export async function togglePublish(postId: string, publish: boolean) {
       },
     })
 
-    revalidatePath("/admin")
+    revalidatePath("/admin/posts")
     revalidatePath(`/blog/${postId}`)
     revalidatePath("/blog")
-    redirect("/admin")
   } catch (error) {
     console.error("Failed to update post status:", error)
     throw new Error("Failed to update post status. Please try again.")

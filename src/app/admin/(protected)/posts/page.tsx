@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { prisma } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
+import { PostActions } from "./post-actions"
 
 export default async function AdminPostsPage() {
   const posts = await prisma.post.findMany({
@@ -40,12 +41,7 @@ export default async function AdminPostsPage() {
                 <Button variant="outline" size="sm" asChild>
                   <Link href={`/admin/posts/${post.id}`}>Edit</Link>
                 </Button>
-                <Button
-                  variant={post.published ? "outline" : "default"}
-                  size="sm"
-                >
-                  {post.published ? "Unpublish" : "Publish"}
-                </Button>
+                <PostActions id={post.id} published={post.published} />
               </div>
             </div>
           ))
