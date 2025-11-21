@@ -21,7 +21,7 @@ export default function Error({
             Something went wrong
           </h1>
           <p className="text-muted-foreground">
-            We encountered an unexpected error. Please try again.
+            An unexpected error occurred. Please try again.
           </p>
         </div>
 
