@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import type { Post } from "@/types"
 import { prisma } from "@/lib/db"
 
 export default async function AdminDashboard() {
@@ -24,7 +23,7 @@ export default async function AdminDashboard() {
             No posts yet. Create your first post!
           </div>
         ) : (
-          posts.map((post: Post) => (
+          posts.map(post => (
             <div
               key={post.id}
               className="flex items-center justify-between p-4"
