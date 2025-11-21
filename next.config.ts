@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    // Note: Allowing all domains for blog flexibility
+    // Consider restricting to specific domains in production for better security
   },
 }
 
