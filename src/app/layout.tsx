@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/layout/theme-provider"
 import { LayoutWrapper } from "@/components/layout/layout-wrapper"
 import { Toaster } from "@/components/ui/toaster"
 import { constructMetadata } from "@/lib/metadata"
+import "./globals.css"
 
 export const metadata = constructMetadata()
 
