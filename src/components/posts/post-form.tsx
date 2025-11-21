@@ -8,6 +8,7 @@ import type { PostData } from "@/types/posts"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
 import { Editor } from "@/components/editor"
+import { LoadingSpinner } from "@/components/ui/loading-spinner"
 
 interface PostFormProps {
   post?: Post & {
@@ -153,6 +154,7 @@ export function PostForm({
 
       <div className="flex gap-4">
         <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting && <LoadingSpinner size="sm" className="mr-2" />}
           {isSubmitting ? "Saving..." : "Save"}
         </Button>
         {post && onPublish && (
@@ -162,6 +164,7 @@ export function PostForm({
             onClick={handlePublish}
             disabled={isPublishing}
           >
+            {isPublishing && <LoadingSpinner size="sm" className="mr-2" />}
             {isPublishing
               ? "Processing..."
               : post.published

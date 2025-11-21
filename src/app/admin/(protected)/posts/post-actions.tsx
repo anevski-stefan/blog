@@ -3,7 +3,7 @@
 import { useTransition } from "react"
 import { Button } from "@/components/ui/button"
 import { togglePublish } from "@/actions/posts"
-import { Loader2 } from "lucide-react"
+import { LoadingSpinner } from "@/components/ui/loading-spinner"
 
 interface PostActionsProps {
   id: string
@@ -24,7 +24,7 @@ export function PostActions({ id, published }: PostActionsProps) {
         })
       }}
     >
-      {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+      {isPending ? <LoadingSpinner size="sm" className="mr-2" /> : null}
       {published ? "Unpublish" : "Publish"}
     </Button>
   )
