@@ -23,7 +23,7 @@ export default async function CategoriesPage() {
                 {categories.map(category => (
                   <div
                     key={category.id}
-                    className="rounded-lg border p-4 hover:bg-accent transition-colors"
+                    className="rounded-lg border p-4 hover:border-primary transition-colors"
                   >
                     <h3 className="font-semibold">{category.name}</h3>
                     <p className="text-sm text-muted-foreground">

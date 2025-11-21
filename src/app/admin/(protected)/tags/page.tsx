@@ -23,7 +23,7 @@ export default async function TagsPage() {
                 {tags.map(tag => (
                   <div
                     key={tag.id}
-                    className="inline-flex items-center gap-2 rounded-full border px-4 py-2 hover:bg-accent transition-colors"
+                    className="inline-flex items-center gap-2 rounded-full border px-4 py-2 hover:border-primary transition-colors"
                   >
                     <span className="font-medium">{tag.name}</span>
                   </div>
