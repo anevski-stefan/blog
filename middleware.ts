@@ -1,7 +1,8 @@
 import { clerkMiddleware } from "@clerk/nextjs/server"
 
-// This example protects all routes including api/trpc routes
-// Please edit this to allow other routes to be public as needed.
+// Clerk middleware handles authentication
+// Public routes (blog, about, etc.) are accessible without auth
+// Protected routes (admin) are handled in their respective layouts
 export default clerkMiddleware()
 
 export const config = {
