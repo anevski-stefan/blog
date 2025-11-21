@@ -1,4 +1,5 @@
 import { getTaxonomies } from "@/lib/posts"
+import Link from "next/link"
 
 export default async function CategoriesPage() {
   const { categories } = await getTaxonomies()
@@ -21,15 +22,16 @@ export default async function CategoriesPage() {
             ) : (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {categories.map(category => (
-                  <div
+                  <Link
                     key={category.id}
-                    className="rounded-lg border p-4 hover:border-primary transition-colors"
+                    href={`/blog/category/${category.slug}`}
+                    className="rounded-lg border p-4 hover:border-primary transition-colors block"
                   >
                     <h3 className="font-semibold">{category.name}</h3>
                     <p className="text-sm text-muted-foreground">
                       {category.slug}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}

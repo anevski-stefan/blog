@@ -1,4 +1,5 @@
 import { getTaxonomies } from "@/lib/posts"
+import Link from "next/link"
 
 export default async function TagsPage() {
   const { tags } = await getTaxonomies()
@@ -21,12 +22,13 @@ export default async function TagsPage() {
             ) : (
               <div className="flex flex-wrap gap-2">
                 {tags.map(tag => (
-                  <div
+                  <Link
                     key={tag.id}
+                    href={`/blog/tag/${tag.slug}`}
                     className="inline-flex items-center gap-2 rounded-full border px-4 py-2 hover:border-primary transition-colors"
                   >
                     <span className="font-medium">{tag.name}</span>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}
