@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { WORDS_PER_MINUTE } from "@/lib/constants"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -46,6 +47,6 @@ export function calculateReadingTime(content: unknown): number {
 
   extractText(content)
 
-  const readingTime = Math.ceil(wordCount / 200)
+  const readingTime = Math.ceil(wordCount / WORDS_PER_MINUTE)
   return Math.max(1, readingTime)
 }

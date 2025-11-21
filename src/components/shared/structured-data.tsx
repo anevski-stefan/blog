@@ -1,5 +1,4 @@
-import type { Post } from "@/generated/prisma/client"
-import type { Category, Tag } from "@/generated/prisma"
+import type { Post, Category, Tag } from "@/generated/prisma/client"
 
 interface StructuredDataProps {
   post: Post & {

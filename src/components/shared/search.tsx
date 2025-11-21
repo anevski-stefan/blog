@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Input } from "./ui/input"
+import { Input } from "@/components/ui/input"
 import { useDebounce } from "@/hooks/use-debounce"
 
 export function Search() {
@@ -29,7 +29,9 @@ export function Search() {
       placeholder="Search posts..."
       className="w-full"
       value={search}
-      onChange={e => setSearch(e.target.value)}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        setSearch(e.target.value)
+      }
     />
   )
 }

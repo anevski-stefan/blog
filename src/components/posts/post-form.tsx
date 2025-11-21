@@ -2,8 +2,9 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ImageUpload } from "@/components/image-upload"
+import { ImageUpload } from "@/components/shared/image-upload"
 import type { Category, Post, Tag } from "@/generated/prisma/client"
+import type { PostData } from "@/types/posts"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
 import { Editor } from "@/components/editor"
@@ -15,15 +16,7 @@ interface PostFormProps {
   }
   categories: Category[]
   tags: Tag[]
-  onSubmit: (data: {
-    title: string
-    content: string
-    excerpt?: string
-    slug?: string
-    coverImage?: string
-    categoryIds?: string[]
-    tagIds?: string[]
-  }) => Promise<void>
+  onSubmit: (data: PostData) => Promise<void>
   onPublish?: (postId: string, publish: boolean) => Promise<void>
 }
 

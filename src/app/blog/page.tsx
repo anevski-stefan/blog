@@ -1,64 +1,13 @@
-import { Search } from "@/components/search"
-import { Pagination } from "@/components/pagination"
-import { PostCard } from "@/components/post-card"
-import { prisma } from "@/lib/db"
-import type { Post, Prisma } from "@/generated/prisma/client"
-
-const POSTS_PER_PAGE = 6
+import { Search } from "@/components/shared/search"
+import { Pagination } from "@/components/shared/pagination"
+import { PostCard } from "@/components/posts/post-card"
+import { getPosts } from "@/lib/posts"
 
 interface BlogPageProps {
   searchParams: Promise<{
     q?: string
     page?: string
   }>
-}
-
-async function getPosts(page: number, search?: string) {
-  const skip = (page - 1) * POSTS_PER_PAGE
-
-  // Build the where clause for search
-  const where: Prisma.PostWhereInput = {
-    published: true,
-    ...(search
-      ? {
-          OR: [
-            {
-              title: {
-                contains: search,
-                mode: "insensitive" as Prisma.QueryMode,
-              },
-            },
-            { content: { string_contains: search } },
-          ],
-        }
-      : {}),
-  }
-
-  const [posts, totalPosts] = await Promise.all([
-    prisma.post.findMany({
-      where,
-      orderBy: {
-        publishedAt: "desc",
-      },
-      take: POSTS_PER_PAGE,
-      skip,
-      include: {
-        categories: true,
-        tags: true,
-      },
-    }),
-    prisma.post.count({ where }),
-  ])
-
-  return {
-    posts,
-    totalPages: Math.ceil(totalPosts / POSTS_PER_PAGE),
-  }
-}
-
-interface PostWithRelations extends Post {
-  categories: { id: string; name: string; slug: string }[]
-  tags: { id: string; name: string; slug: string }[]
 }
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
@@ -90,7 +39,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       ) : (
         <>
           <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post: PostWithRelations) => (
+            {posts.map(post => (
               <PostCard key={post.id} post={post} showTaxonomy={true} />
             ))}
           </div>

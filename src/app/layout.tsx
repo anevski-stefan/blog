@@ -1,8 +1,8 @@
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { ClerkProvider } from "@clerk/nextjs"
-import { ThemeProvider } from "@/components/theme-provider"
-import { LayoutWrapper } from "@/components/layout-wrapper"
+import { ThemeProvider } from "@/components/layout/theme-provider"
+import { LayoutWrapper } from "@/components/layout/layout-wrapper"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 

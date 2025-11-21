@@ -1,4 +1,6 @@
 import { Metadata } from "next"
+import { getBaseUrl } from "@/lib/config"
+import { DEFAULT_METADATA } from "@/lib/constants"
 
 interface MetadataProps {
   title?: string
@@ -12,10 +14,10 @@ interface MetadataProps {
 }
 
 export function constructMetadata({
-  title = "My Blog",
-  description = "A personal blog built with Next.js",
-  image = "/og-image.png", // default OG image
-  url = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  title = DEFAULT_METADATA.title,
+  description = DEFAULT_METADATA.description,
+  image = "/og-image.png",
+  url = getBaseUrl(),
   type = "website",
   publishedTime,
   modifiedTime,
@@ -39,7 +41,7 @@ export function constructMetadata({
     title: title,
     description: safeDescription,
     url: absoluteUrl,
-    siteName: "My Blog",
+    siteName: DEFAULT_METADATA.siteName,
     locale: "en_US",
     type: type,
     images: [

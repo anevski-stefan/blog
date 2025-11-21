@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
-import { SignOutButtonWrapper } from "@/components/sign-out-button"
+import { SignOutButtonWrapper } from "@/components/shared/sign-out-button-wrapper"
 
 export default async function AdminLayout({
   children,

@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { MainNav } from "@/components/nav"
+import { MainNav } from "@/components/layout/main-nav"
 
 interface LayoutWrapperProps {
   children: React.ReactNode

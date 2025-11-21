@@ -1,8 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { formatDate } from "@/lib/utils"
-import { TaxonomyBadge } from "@/components/taxonomy-badge"
-import type { Post } from "@/generated/prisma"
+import { TaxonomyBadge } from "@/components/shared/taxonomy-badge"
+import type { Post } from "@/generated/prisma/client"
 
 interface Category {
   id: string

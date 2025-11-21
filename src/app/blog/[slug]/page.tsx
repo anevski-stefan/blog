@@ -1,13 +1,14 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Image from "next/image"
-import { prisma } from "@/lib/db"
 import { constructMetadata } from "@/lib/metadata"
 import { formatDate, calculateReadingTime } from "@/lib/utils"
-import type { Category, Tag } from "@/generated/prisma"
-import { PostContent } from "@/components/post-content"
-import { StructuredData } from "@/components/structured-data"
-import { SocialShare } from "@/components/social-share"
+import { getPostBySlug } from "@/lib/posts"
+import { getAppUrl } from "@/lib/config"
+import type { Category, Tag } from "@/generated/prisma/client"
+import { PostContent } from "@/components/posts/post-content"
+import { StructuredData } from "@/components/shared/structured-data"
+import { SocialShare } from "@/components/shared/social-share"
 import type { Content } from "@tiptap/react"
 
 interface BlogPostPageProps {
@@ -16,37 +17,18 @@ interface BlogPostPageProps {
   }>
 }
 
-async function getPost(slug: string) {
-  const post = await prisma.post.findUnique({
-    where: {
-      slug: slug,
-      published: true,
-    },
-    include: {
-      categories: true,
-      tags: true,
-    },
-  })
-
-  if (!post) {
-    return null
-  }
-
-  return post
-}
-
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = await getPost(slug)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     return constructMetadata()
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001"
-  const postUrl = `${baseUrl}/blog/${post.slug}`
+  const baseUrl = getAppUrl()
+  const postUrl = getAppUrl(`/blog/${post.slug}`)
 
   let ogImageUrl = post.coverImage
   if (!ogImageUrl) {
@@ -78,14 +60,14 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const post = await getPost(slug)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     notFound()
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001"
-  const postUrl = `${baseUrl}/blog/${post.slug}`
+  const baseUrl = getAppUrl()
+  const postUrl = getAppUrl(`/blog/${post.slug}`)
   const readingTime = calculateReadingTime(post.content)
 
   return (

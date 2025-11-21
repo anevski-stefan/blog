@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation"
-import { PostCard } from "@/components/post-card"
+import { PostCard } from "@/components/posts/post-card"
 import { prisma } from "@/lib/db"
-import type { Post, Tag, Category } from "@/generated/prisma"
+import { getPosts } from "@/lib/posts"
+import { Pagination } from "@/components/shared/pagination"
 
 interface TagPageProps {
   params: Promise<{
@@ -12,13 +13,10 @@ interface TagPageProps {
   }>
 }
 
-const POSTS_PER_PAGE = 6
-
 export default async function TagPage(props: TagPageProps) {
   const params = await props.params
   const searchParams = await props.searchParams
   const currentPage = Number(searchParams.page) || 1
-  const skip = (currentPage - 1) * POSTS_PER_PAGE
 
   const tag = await prisma.tag.findUnique({
     where: { slug: params.slug },
@@ -33,23 +31,9 @@ export default async function TagPage(props: TagPageProps) {
     notFound()
   }
 
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-      tags: {
-        some: { slug: params.slug },
-      },
-    },
-    include: {
-      categories: true,
-      tags: true,
-    },
-    orderBy: { publishedAt: "desc" },
-    take: POSTS_PER_PAGE,
-    skip,
+  const { posts, totalPages } = await getPosts(currentPage, undefined, {
+    tagSlug: params.slug,
   })
-
-  const totalPages = Math.ceil(tag._count.posts / POSTS_PER_PAGE)
 
   return (
     <div className="w-full px-4 py-8">
@@ -70,14 +54,19 @@ export default async function TagPage(props: TagPageProps) {
           </p>
         </div>
       ) : (
-        <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post: Post & { categories: Category[]; tags: Tag[] }) => (
-            <PostCard key={post.id} post={post} showTaxonomy={true} />
-          ))}
-        </div>
+        <>
+          <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map(post => (
+              <PostCard key={post.id} post={post} showTaxonomy={true} />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <div className="mt-8">
+              <Pagination totalPages={totalPages} currentPage={currentPage} />
+            </div>
+          )}
+        </>
       )}
-
-      {totalPages > 1 && <div className="mt-8"></div>}
     </div>
   )
 }
