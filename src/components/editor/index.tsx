@@ -19,7 +19,7 @@ import { EditorToolbar } from "./toolbar"
 import "./editor-styles.css"
 
 interface EditorProps {
-  content: string
+  content: string | object | null
   onChange: (content: string) => void
   placeholder?: string
 }
