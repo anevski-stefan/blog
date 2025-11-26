@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db"
 import { createLogger } from "@/lib/logger"
 import type { PostData } from "@/types/posts"
 import type { Prisma } from "@/generated/prisma/client"
+import { postSchema } from "@/lib/validations/post"
 
 const logger = createLogger("PostActions")
 
@@ -73,29 +74,43 @@ function buildUpdateData(
 export async function createPost(data: PostData) {
   try {
     await requireAdmin()
-    if (!data.title) throw new Error("Title is required")
-    if (!data.content) throw new Error("Content is required")
+
+    const validatedFields = postSchema.safeParse(data)
+
+    if (!validatedFields.success) {
+      throw new Error(validatedFields.error.errors[0].message)
+    }
+
+    const {
+      title,
+      content,
+      excerpt,
+      coverImage,
+      slug: providedSlug,
+      categoryIds,
+      tagIds,
+    } = validatedFields.data
 
     const authorName = getAuthorName()
-    const slug = data.slug ?? generateSlug(data.title)
+    const slug = providedSlug ?? generateSlug(title)
 
     logger.info("Creating new post", { title: data.title, slug })
 
     await prisma.post.create({
       data: {
-        title: data.title,
-        content: parseContent(data.content),
-        excerpt: data.excerpt ?? null,
-        coverImage: data.coverImage ?? null,
+        title,
+        content: parseContent(content),
+        excerpt: excerpt ?? null,
+        coverImage: coverImage ?? null,
         slug,
         authorId: "admin",
         authorName,
         published: false,
-        ...(data.categoryIds?.length && {
-          categories: { connect: data.categoryIds.map(id => ({ id })) },
+        ...(categoryIds?.length && {
+          categories: { connect: categoryIds.map(id => ({ id })) },
         }),
-        ...(data.tagIds?.length && {
-          tags: { connect: data.tagIds.map(id => ({ id })) },
+        ...(tagIds?.length && {
+          tags: { connect: tagIds.map(id => ({ id })) },
         }),
       },
     })
@@ -118,6 +133,13 @@ export async function createPost(data: PostData) {
 export async function updatePost(postId: string, data: Partial<PostData>) {
   try {
     await requireAdmin()
+
+    const validatedFields = postSchema.partial().safeParse(data)
+
+    if (!validatedFields.success) {
+      throw new Error(validatedFields.error.errors[0].message)
+    }
+
     if (data.title && !data.title.trim())
       throw new Error("Title cannot be empty")
 
