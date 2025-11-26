@@ -29,6 +29,7 @@ import { ImageUpload } from "@/components/shared/image-upload"
 import { MultiSelect } from "@/components/ui/multi-select"
 import { Editor } from "@/components/editor"
 import { Separator } from "@/components/ui/separator"
+import { toast } from "@/components/ui/use-toast"
 
 import type { Category, Post, Tag } from "@/generated/prisma/client"
 import type { PostData } from "@/types/posts"
@@ -109,8 +110,13 @@ export function PostForm({
         ...data,
         content: contentAsString,
       })
-    } catch (error) {
-      console.error("Error submitting post:", error)
+    } catch {
+      // Error is already logged by server action
+      toast({
+        title: "Error",
+        description: "Failed to save post. Please try again.",
+        variant: "destructive",
+      })
     }
   }
 
@@ -120,8 +126,13 @@ export function PostForm({
     setIsPublishing(true)
     try {
       await onPublish(post.id, !post.published)
-    } catch (error) {
-      console.error("Error publishing post:", error)
+    } catch {
+      // Error is already logged by server action
+      toast({
+        title: "Error",
+        description: "Failed to update publish status. Please try again.",
+        variant: "destructive",
+      })
     } finally {
       setIsPublishing(false)
     }

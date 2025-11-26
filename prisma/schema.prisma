@@ -32,6 +32,13 @@ model Post {
   authorName  String    // Internal admin name
   categories  Category[]
   tags        Tag[]
+
+  // Indexes for performance
+  @@index([published])
+  @@index([publishedAt])
+  @@index([published, publishedAt])
+  @@index([published, featured])
+  @@index([slug])
 }
 
 model Category {
@@ -42,6 +49,8 @@ model Category {
   posts       Post[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
 }
 
 model Tag {
@@ -51,4 +60,6 @@ model Tag {
   posts       Post[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
 }

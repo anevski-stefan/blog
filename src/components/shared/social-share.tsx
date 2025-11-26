@@ -34,9 +34,9 @@ export function SocialShare({ title, url, description }: SocialShareProps) {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(url)
-      // You could add a toast notification here
-    } catch (err) {
-      console.error("Failed to copy URL:", err)
+      // Silent success - could add toast notification if desired
+    } catch {
+      // Silent failure - clipboard access may be denied
     }
   }
 
@@ -54,11 +54,8 @@ export function SocialShare({ title, url, description }: SocialShareProps) {
           text: description,
           url,
         })
-      } catch (err) {
-        // User cancelled or error occurred
-        if ((err as Error).name !== "AbortError") {
-          console.error("Error sharing:", err)
-        }
+      } catch {
+        // User cancelled or error occurred - silent failure is acceptable
       }
     } else {
       // Fallback to copy

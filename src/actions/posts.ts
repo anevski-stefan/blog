@@ -1,11 +1,14 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
+import { redirect, unstable_rethrow } from "next/navigation"
 import { requireAdmin } from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { createLogger } from "@/lib/logger"
 import type { PostData } from "@/types/posts"
 import type { Prisma } from "@/generated/prisma/client"
+
+const logger = createLogger("PostActions")
 
 /**
  * Generate slug from title
@@ -74,6 +77,9 @@ export async function createPost(data: PostData) {
     if (!data.content) throw new Error("Content is required")
 
     const authorName = getAuthorName()
+    const slug = data.slug ?? generateSlug(data.title)
+
+    logger.info("Creating new post", { title: data.title, slug })
 
     await prisma.post.create({
       data: {
@@ -81,7 +87,7 @@ export async function createPost(data: PostData) {
         content: parseContent(data.content),
         excerpt: data.excerpt ?? null,
         coverImage: data.coverImage ?? null,
-        slug: data.slug ?? generateSlug(data.title),
+        slug,
         authorId: "admin",
         authorName,
         published: false,
@@ -94,10 +100,13 @@ export async function createPost(data: PostData) {
       },
     })
 
+    logger.info("Post created successfully", { slug })
+
     revalidatePath("/admin/posts")
     revalidatePath("/blog")
   } catch (error) {
-    console.error("Failed to create post:", error)
+    unstable_rethrow(error)
+    logger.error("Failed to create post", error, { title: data.title })
     throw new Error("Failed to create post. Please try again.")
   }
   redirect("/admin/posts")
@@ -114,6 +123,8 @@ export async function updatePost(postId: string, data: Partial<PostData>) {
 
     const authorName = getAuthorName()
 
+    logger.info("Updating post", { postId, fields: Object.keys(data) })
+
     await prisma.post.update({
       where: { id: postId },
       data: {
@@ -123,11 +134,14 @@ export async function updatePost(postId: string, data: Partial<PostData>) {
       },
     })
 
+    logger.info("Post updated successfully", { postId })
+
     revalidatePath("/admin/posts")
     revalidatePath(`/blog/${postId}`)
     revalidatePath("/blog")
   } catch (error) {
-    console.error("Failed to update post:", error)
+    unstable_rethrow(error)
+    logger.error("Failed to update post", error, { postId })
     throw new Error("Failed to update post. Please try again.")
   }
   redirect("/admin/posts")
@@ -140,6 +154,8 @@ export async function togglePublish(postId: string, publish: boolean) {
   try {
     await requireAdmin()
 
+    logger.info("Toggling post publish status", { postId, publish })
+
     await prisma.post.update({
       where: { id: postId },
       data: {
@@ -148,11 +164,14 @@ export async function togglePublish(postId: string, publish: boolean) {
       },
     })
 
+    logger.info("Post publish status updated", { postId, published: publish })
+
     revalidatePath("/admin/posts")
     revalidatePath(`/blog/${postId}`)
     revalidatePath("/blog")
   } catch (error) {
-    console.error("Failed to update post status:", error)
+    unstable_rethrow(error)
+    logger.error("Failed to update post status", error, { postId, publish })
     throw new Error("Failed to update post status. Please try again.")
   }
 }

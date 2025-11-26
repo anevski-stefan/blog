@@ -2,6 +2,9 @@ import { ImageResponse } from "@vercel/og"
 import { NextRequest } from "next/server"
 import { getBaseUrl } from "@/lib/config"
 import { DEFAULT_METADATA } from "@/lib/constants"
+import { createLogger } from "@/lib/logger"
+
+const logger = createLogger("OGImageAPI")
 
 export const runtime = "edge"
 
@@ -91,7 +94,13 @@ export async function GET(req: NextRequest) {
       }
     )
   } catch (e) {
-    console.error(e)
+    logger.error(
+      "Failed to generate OG image",
+      e instanceof Error ? e : undefined,
+      {
+        url: req.url,
+      }
+    )
     return new Response("Failed to generate image", { status: 500 })
   }
 }

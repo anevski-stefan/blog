@@ -1,36 +1,258 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Blog
+
+A modern, production-ready blog built with Next.js 15, React 19, TypeScript, Prisma, and PostgreSQL.
+
+## Features
+
+- ✨ **Modern Stack**: Next.js 15 App Router, React 19, TypeScript
+- 📝 **Rich Text Editor**: TipTap editor with full formatting support
+- 🎨 **Beautiful UI**: shadcn/ui components with Tailwind CSS
+- 🔒 **Secure Admin**: JWT-based authentication with middleware protection
+- 🗄️ **Database**: PostgreSQL with Prisma ORM
+- 🖼️ **Media**: Image uploads with UploadThing
+- 📱 **Responsive**: Mobile-first design
+- 🚀 **Performance**: Optimized with React Server Components and caching
+- 🔍 **SEO**: Automatic sitemap, OG images, structured data
+- 📊 **Analytics Ready**: Structured logging for easy integration
+
+## Prerequisites
+
+- Node.js 18+
+- PostgreSQL database
+- npm/pnpm/yarn/bun
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone and Install
+
+```bash
+git clone <your-repo-url>
+cd blog
+npm install
+```
+
+### 2. Environment Setup
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Update `.env.local` with your values:
+
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/blog?schema=public"
+DIRECT_URL="postgresql://user:password@localhost:5432/blog?schema=public"
+
+# Admin Authentication (generate with: openssl rand -base64 32)
+ADMIN_SECRET="your-secure-random-secret-here"
+
+# Application URL
+NEXT_PUBLIC_APP_URL="http://localhost:3001"
+
+# Environment
+NODE_ENV="development"
+```
+
+### 3. Database Setup
+
+Run Prisma migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+Generate Prisma Client:
+
+```bash
+npx prisma generate
+```
+
+### 4. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3001](http://localhost:3001) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Access Admin Panel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Navigate to `/admin/login` and enter your `ADMIN_SECRET` to access the admin panel.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+blog/
+├── prisma/
+│   ├── migrations/       # Database migrations
+│   └── schema.prisma     # Database schema
+├── public/              # Static assets
+├── src/
+│   ├── actions/         # Server actions
+│   ├── app/            # Next.js app router pages
+│   │   ├── admin/      # Admin panel
+│   │   ├── api/        # API routes
+│   │   └── blog/       # Public blog pages
+│   ├── components/     # React components
+│   │   ├── editor/     # Rich text editor
+│   │   ├── layout/     # Layout components
+│   │   ├── posts/      # Post-related components
+│   │   ├── shared/     # Shared components
+│   │   └── ui/         # UI components (shadcn)
+│   ├── lib/           # Utility functions
+│   │   ├── auth.ts    # Authentication helpers
+│   │   ├── db.ts      # Prisma client
+│   │   ├── logger.ts  # Structured logging
+│   │   └── session.ts # Session management
+│   └── types/         # TypeScript types
+└── package.json
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Development
+npm run dev              # Start dev server
+npm run build            # Build for production
+npm run start            # Start production server
 
-## Deploy on Vercel
+# Code Quality
+npm run lint             # Run ESLint
+npm run lint:fix         # Fix ESLint errors
+npm run format           # Format with Prettier
+npm run format:check     # Check formatting
+npm run type-check       # TypeScript type checking
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Database
+npx prisma studio        # Open Prisma Studio
+npx prisma migrate dev   # Create and apply migration
+npx prisma generate      # Generate Prisma Client
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Database Schema
+
+### Post
+
+- Rich content with TipTap JSON format
+- Categories and tags (many-to-many)
+- Draft/published status
+- SEO fields (slug, excerpt, cover image)
+- View counter
+
+### Category
+
+- Hierarchical organization
+- Unique slugs for URLs
+
+### Tag
+
+- Flexible tagging system
+- Unique slugs for URLs
+
+## Admin Features
+
+- Create, edit, and delete posts
+- Rich text editor with formatting
+- Image uploads
+- Category and tag management
+- Draft/publish workflow
+- SEO optimization fields
+- Preview before publishing
+
+## Production Deployment
+
+### Environment Variables
+
+Ensure all required environment variables are set in your production environment:
+
+- `DATABASE_URL`: Production PostgreSQL connection string
+- `DIRECT_URL`: Direct database connection (for migrations)
+- `ADMIN_SECRET`: Strong random secret (min 32 characters)
+- `NEXT_PUBLIC_APP_URL`: Your production domain
+- `NODE_ENV`: Set to `production`
+
+### Database Migration
+
+Run migrations in production:
+
+```bash
+npx prisma migrate deploy
+```
+
+### Build and Deploy
+
+```bash
+npm run build
+npm run start
+```
+
+### Recommended Platforms
+
+- **Vercel**: Zero-config deployment for Next.js
+- **Railway**: Easy PostgreSQL + Next.js hosting
+- **Fly.io**: Full-stack deployment with PostgreSQL
+
+## Security
+
+- JWT-based session management
+- HTTP-only secure cookies
+- Middleware-protected admin routes
+- Environment variable validation
+- Security headers (X-Frame-Options, CSP, etc.)
+- Input validation with Zod
+
+## Performance
+
+- React Server Components for optimal performance
+- Database indexes on frequently queried fields
+- Image optimization with next/image
+- Automatic code splitting
+- Static page generation where possible
+
+## Logging
+
+Structured logging system with:
+
+- Environment-aware formatting (pretty in dev, JSON in production)
+- Context-rich error tracking
+- Ready for integration with logging services (Sentry, LogRocket, etc.)
+
+## Troubleshooting
+
+### Database Connection Issues
+
+1. Verify PostgreSQL is running
+2. Check `DATABASE_URL` format
+3. Ensure database exists
+4. Test connection: `npx prisma db pull`
+
+### Build Errors
+
+1. Clear Next.js cache: `rm -rf .next`
+2. Reinstall dependencies: `rm -rf node_modules && npm install`
+3. Regenerate Prisma Client: `npx prisma generate`
+
+### Admin Login Issues
+
+1. Verify `ADMIN_SECRET` matches in `.env.local`
+2. Check browser cookies are enabled
+3. Clear browser cache and cookies
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run linting and type checking
+5. Submit a pull request
+
+## License
+
+MIT
+
+## Support
+
+For issues and questions, please open an issue on GitHub.
