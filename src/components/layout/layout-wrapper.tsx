@@ -11,11 +11,12 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const pathname = usePathname()
   const isAdmin = pathname?.startsWith("/admin")
   const isHome = pathname === "/"
-  const showMainPadding = !isAdmin && !isHome
+  const isBlog = pathname?.startsWith("/blog")
+  const showMainPadding = !isAdmin && !isHome && !isBlog
 
   return (
     <>
-      {!isAdmin && <MainNav />}
+      {!isAdmin && !isHome && !isBlog && <MainNav />}
       <main className={showMainPadding ? "min-h-screen py-10" : ""}>
         {children}
       </main>

@@ -1,11 +1,22 @@
-import { AnimatedHero } from "@/components/shared/animated-hero"
+import { HomeContent } from "@/components/home/HomeContent"
+import { WebGLBackground } from "@/components/home/WebGLBackground"
+import { CustomCursor } from "@/components/home/CustomCursor"
 import { constructMetadata } from "@/lib/metadata"
 
 export const metadata = constructMetadata({
-  title: "Home",
-  description: "Welcome to my personal blog.",
+  title: "Stefan Anevski — Creative Developer",
+  description:
+    "Award-winning creative developer specializing in immersive digital experiences.",
 })
 
 export default function Home() {
-  return <AnimatedHero />
+  return (
+    <main className="relative z-0 min-h-screen bg-home-primary custom-cursor-area">
+      <CustomCursor />
+      <WebGLBackground />
+      <div className="relative z-10">
+        <HomeContent />
+      </div>
+    </main>
+  )
 }
