@@ -1,69 +1,35 @@
+import { WebGLBackground } from "@/components/home/WebGLBackground"
+import { CustomCursor } from "@/components/home/CustomCursor"
+import { LoginForm } from "@/components/auth/LoginForm"
+import { Metadata } from "next"
+
+import { isAdmin } from "@/lib/auth"
 import { redirect } from "next/navigation"
-import { createSession } from "@/lib/session"
 
-async function login(formData: FormData) {
-  "use server"
-
-  const secret = formData.get("secret") as string
-
-  if (secret === process.env.ADMIN_SECRET) {
-    await createSession()
-    redirect("/admin")
-  }
-
-  redirect("/admin/login?error=1")
+export const metadata: Metadata = {
+  title: "Admin Login | Stefan Anevski",
+  description: "Sign in to the admin dashboard.",
 }
 
-export default async function AdminLogin({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>
-}) {
-  const params = await searchParams
-  const hasError = params.error === "1"
+export default async function AdminLoginPage() {
+  const isUserAdmin = await isAdmin()
+  if (isUserAdmin) {
+    redirect("/admin/dashboard")
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="w-full max-w-md space-y-8 rounded-lg border bg-card p-8 shadow-lg">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Admin Login</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Enter your admin secret to continue
-          </p>
-        </div>
+    <div className="relative min-h-screen w-full flex items-center justify-center py-10 px-4 overflow-hidden bg-home-primary cursor-none">
+      <WebGLBackground />
 
-        <form action={login} className="space-y-6">
-          <div>
-            <label
-              htmlFor="secret"
-              className="block text-sm font-medium text-foreground"
-            >
-              Admin Secret
-            </label>
-            <input
-              type="password"
-              name="secret"
-              id="secret"
-              className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="Enter your secret"
-              required
-              autoFocus
-            />
-          </div>
+      <CustomCursor />
 
-          {hasError && (
-            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              Invalid admin secret. Please try again.
-            </div>
-          )}
+      <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
+        <LoginForm />
+      </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          >
-            Login
-          </button>
-        </form>
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-10">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-home-accent/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px]" />
       </div>
     </div>
   )

@@ -1,7 +1,6 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { MainNav } from "@/components/layout/main-nav"
 
 interface LayoutWrapperProps {
   children: React.ReactNode
@@ -9,17 +8,12 @@ interface LayoutWrapperProps {
 
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const pathname = usePathname()
-  const isAdmin = pathname?.startsWith("/admin")
-  const isHome = pathname === "/"
-  const isBlog = pathname?.startsWith("/blog")
-  const showMainPadding = !isAdmin && !isHome && !isBlog
+  const isAbout = pathname === "/about"
+  const showMainPadding = isAbout
 
   return (
-    <>
-      {!isAdmin && !isHome && !isBlog && <MainNav />}
-      <main className={showMainPadding ? "min-h-screen py-10" : ""}>
-        {children}
-      </main>
-    </>
+    <main className={showMainPadding ? "min-h-screen py-10" : ""}>
+      {children}
+    </main>
   )
 }

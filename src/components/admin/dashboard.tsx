@@ -15,6 +15,7 @@ import { TagModal } from "./modals/TagModal"
 import { MediaDetailsModal } from "./modals/MediaDetailsModal"
 import { ReplyModal } from "./modals/ReplyModal"
 import { MediaItem } from "@/types/admin"
+import { User } from "@supabase/supabase-js"
 import {
   MOCK_POSTS,
   MOCK_CATEGORIES,
@@ -23,7 +24,11 @@ import {
   MOCK_COMMENTS,
 } from "@/lib/data/mock-admin-data"
 
-export function AdminDashboard() {
+interface AdminDashboardProps {
+  user: User | null
+}
+
+export function AdminDashboard({ user }: AdminDashboardProps) {
   const [currentSection, setCurrentSection] = useState("overview")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -125,6 +130,7 @@ export function AdminDashboard() {
         setCurrentSection={setCurrentSection}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
+        user={user}
       />
 
       <main className="flex-1 min-h-screen">
@@ -132,6 +138,7 @@ export function AdminDashboard() {
           currentSection={currentSection}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
+          user={user}
         />
 
         <div className="p-4 lg:p-8">{renderSection()}</div>

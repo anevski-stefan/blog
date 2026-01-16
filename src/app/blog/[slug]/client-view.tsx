@@ -53,31 +53,31 @@ export function BlogPostClientView({
     })
 
     const ctx = gsap.context(() => {
-      gsap.utils.toArray(".prose h2, .prose h3").forEach((elem: any) => {
-        // eslint-disable-line @typescript-eslint/no-explicit-any
-        gsap.from(elem, {
+      gsap.utils.toArray(".prose h2, .prose h3").forEach(elem => {
+        const el = elem as HTMLElement
+        gsap.from(el, {
           opacity: 0,
           x: -20,
           duration: 0.8,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: elem,
+            trigger: el,
             start: "top 80%",
             toggleActions: "play none none none",
           },
         })
       })
 
-      gsap.utils.toArray(".comment-item").forEach((elem: any, i: number) => {
-        // eslint-disable-line @typescript-eslint/no-explicit-any
-        gsap.from(elem, {
+      gsap.utils.toArray(".comment-item").forEach((node, i) => {
+        const el = node as HTMLElement
+        gsap.from(el, {
           opacity: 0,
           y: 30,
           duration: 0.6,
           delay: i * 0.1,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: elem,
+            trigger: el,
             start: "top 85%",
             toggleActions: "play none none none",
           },

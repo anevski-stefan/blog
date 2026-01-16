@@ -4,14 +4,18 @@ import React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { LogOut, Settings } from "lucide-react"
+import { signOut } from "@/actions/auth"
 import { ADMIN_NAV_ITEMS as navItems } from "@/config/admin-navigation"
 import { NavItem as NavItemType } from "@/types/admin"
+
+import { User } from "@supabase/supabase-js"
 
 interface SidebarProps {
   currentSection: string
   setCurrentSection: (section: string) => void
   mobileMenuOpen: boolean
   setMobileMenuOpen: (open: boolean) => void
+  user: User | null
 }
 
 export function Sidebar({
@@ -19,6 +23,7 @@ export function Sidebar({
   setCurrentSection,
   mobileMenuOpen,
   setMobileMenuOpen,
+  user,
 }: SidebarProps) {
   return (
     <>
@@ -28,12 +33,12 @@ export function Sidebar({
         <div className="flex flex-col h-full">
           <div className="p-6 border-b border-white/5">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#5865F2] rounded-xl flex items-center justify-center font-heading font-bold text-lg">
-                A
+              <div className="w-10 h-10 bg-[#5865F2] rounded-xl flex items-center justify-center font-heading font-bold text-lg text-white">
+                {user?.email?.charAt(0).toUpperCase() || "A"}
               </div>
               <div>
-                <div className="font-heading font-semibold text-white">
-                  Alex Chen
+                <div className="font-heading font-semibold text-white truncate max-w-[120px]">
+                  {user?.user_metadata?.full_name || "Admin"}
                 </div>
                 <div className="text-xs text-[#888888]">Blog Dashboard</div>
               </div>
@@ -100,18 +105,21 @@ export function Sidebar({
               />
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-sm truncate text-white">
-                  Alex Chen
+                  {user?.user_metadata?.full_name || "Admin"}
                 </div>
                 <div className="text-xs text-[#888888] truncate">
-                  admin@alexchen.dev
+                  {user?.email}
                 </div>
               </div>
-              <button
-                className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
-                title="Logout"
-              >
-                <LogOut className="w-4 h-4 text-[#888888]" />
-              </button>
+              <form action={signOut}>
+                <button
+                  type="submit"
+                  className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-4 h-4 text-[#888888]" />
+                </button>
+              </form>
             </div>
           </div>
         </div>

@@ -15,6 +15,15 @@ const nextConfig: NextConfig = {
     // Security: Only allow images from trusted domains
     // Add additional domains here as needed
   },
+  async redirects() {
+    return [
+      {
+        source: "/login",
+        destination: "/admin/login",
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default nextConfig

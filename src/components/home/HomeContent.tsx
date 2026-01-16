@@ -93,10 +93,10 @@ export function HomeContent() {
           )
       }
 
-      gsap.utils.toArray(".reveal").forEach((elem: any) => {
-        // eslint-disable-line @typescript-eslint/no-explicit-any
+      gsap.utils.toArray(".reveal").forEach(elem => {
+        const el = elem as HTMLElement
         gsap.fromTo(
-          elem,
+          el,
           { opacity: 0, y: 60 },
           {
             opacity: 1,
@@ -104,7 +104,7 @@ export function HomeContent() {
             duration: 1,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: elem,
+              trigger: el,
               start: "top 85%",
               toggleActions: "play none none none",
             },
@@ -112,9 +112,9 @@ export function HomeContent() {
         )
       })
 
-      gsap.utils.toArray(".stat-number").forEach((stat: any) => {
-        // eslint-disable-line @typescript-eslint/no-explicit-any
-        const target = parseInt(stat.dataset.count)
+      gsap.utils.toArray(".stat-number").forEach(statNode => {
+        const stat = statNode as HTMLElement
+        const target = parseInt(stat.dataset.count || "0")
         gsap.to(stat, {
           innerText: target,
           duration: 2,

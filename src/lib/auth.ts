@@ -1,56 +1,51 @@
-import { cookies } from "next/headers"
-import { decrypt } from "@/lib/session"
+import { createClient } from "@/lib/supabase/server"
+import { notFound } from "next/navigation"
 import "server-only"
 
 /**
- * Custom error class for unauthorized access attempts
- */
-export class UnauthorizedError extends Error {
-  constructor(message = "Unauthorized: Admin access required") {
-    super(message)
-    this.name = "UnauthorizedError"
-  }
-}
-
-/**
  * Check if the current user has admin privileges
- * @returns Promise resolving to true if user is authenticated as admin, false otherwise
- * @example
- * const hasAccess = await isAdmin()
- * if (hasAccess) {
- *   // Show admin UI
- * }
+ * Since there's only one user (the admin), any authenticated user is the admin.
+ * @returns Promise resolving to true if user is authenticated, false otherwise
  */
 export async function isAdmin(): Promise<boolean> {
-  const cookieStore = await cookies()
-  const session = cookieStore.get("session")?.value
-  const payload = await decrypt(session)
+  const supabase = await createClient()
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser()
 
-  return !!payload
+  if (error || !user) {
+    return false
+  }
+
+  return user.email === process.env.ADMIN_EMAIL
 }
 
 /**
- * Require admin authentication or throw an error
- * @throws {UnauthorizedError} If the user is not authenticated as admin
- * @example
- * export async function deletePost(id: string) {
- *   await requireAdmin() // Throws if not admin
- *   // ... delete logic
- * }
+ * Require admin authentication or trigger 404
  */
 export async function requireAdmin(): Promise<void> {
   const isUserAdmin = await isAdmin()
   if (!isUserAdmin) {
-    throw new UnauthorizedError()
+    notFound()
   }
 }
 
 /**
+ * Get the current user
+ */
+export async function getCurrentUser() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  return user
+}
+
+/**
  * Get the current user's ID
- * @returns Promise resolving to null (no user IDs in simple auth system)
- * @deprecated This function always returns null as the current auth system doesn't track user IDs
  */
 export async function getCurrentUserId(): Promise<string | null> {
-  // No user IDs without authentication system
-  return null
+  const user = await getCurrentUser()
+  return user?.id ?? null
 }

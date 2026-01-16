@@ -4,16 +4,20 @@ import React from "react"
 import Link from "next/link"
 import { Search, Bell, Plus, Menu } from "lucide-react"
 
+import { User } from "@supabase/supabase-js"
+
 interface DashboardHeaderProps {
   currentSection: string
   mobileMenuOpen: boolean
   setMobileMenuOpen: (open: boolean) => void
+  user: User | null
 }
 
 export function DashboardHeader({
   currentSection,
   mobileMenuOpen,
   setMobileMenuOpen,
+  user,
 }: DashboardHeaderProps) {
   return (
     <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/5 px-4 lg:px-8 py-4">
@@ -31,7 +35,7 @@ export function DashboardHeader({
             </h1>
             <p className="text-sm text-[#888888]">
               {currentSection === "overview"
-                ? "Welcome back, Alex"
+                ? `Welcome back, ${user?.user_metadata?.full_name?.split(" ")[0] || "Admin"}`
                 : `Manage your ${currentSection}`}
             </p>
           </div>
