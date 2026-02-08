@@ -381,13 +381,6 @@ export function NotFoundContent() {
             Blog
             <span className="absolute bottom-0 left-0 w-0 h-px bg-home-accent transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
           </Link>
-          <Link
-            href="/#work"
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group text-home-muted hover:text-white transition-colors"
-          >
-            Work
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-home-accent transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
         </div>
       </nav>
 
@@ -490,12 +483,6 @@ export function NotFoundContent() {
               className="link-effect text-white/80 hover:text-home-accent transition-colors"
             >
               Blog
-            </Link>
-            <Link
-              href="/#work"
-              className="link-effect text-white/80 hover:text-home-accent transition-colors"
-            >
-              Work
             </Link>
             <Link
               href="/#about"

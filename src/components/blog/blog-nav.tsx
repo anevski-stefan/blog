@@ -37,13 +37,6 @@ export function BlogNav() {
             ></span>
           </Link>
           <Link
-            href="/#work"
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group text-home-muted hover:text-white transition-colors"
-          >
-            Work
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
-          <Link
             href="/timeline"
             className={`nav-link text-sm font-normal tracking-widest uppercase relative py-2 group transition-colors ${pathname === "/timeline" ? "text-white" : "text-home-muted hover:text-white"}`}
           >
@@ -99,14 +92,6 @@ export function BlogNav() {
           style={{ transitionDelay: "150ms" }}
         >
           Projects
-        </Link>
-        <Link
-          href="/#work"
-          onClick={() => setMenuOpen(false)}
-          className={`mobile-link font-heading text-4xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          style={{ transitionDelay: "200ms" }}
-        >
-          Work
         </Link>
         <Link
           href="/timeline"
