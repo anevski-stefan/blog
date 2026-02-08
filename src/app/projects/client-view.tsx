@@ -5,7 +5,7 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Link from "next/link"
 import Image from "next/image"
-import { BlogNav } from "@/components/blog/blog-nav"
+import { SiteHeader } from "@/components/layout/SiteHeader"
 import { projectsData, Project } from "@/lib/data/projects"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -337,7 +337,7 @@ export function ProjectsClientView() {
         }}
       ></div>
 
-      <BlogNav />
+      <SiteHeader variant="solid" />
 
       <main className="pt-28 md:pt-36 pb-20 px-6 md:px-16">
         <div className="max-w-7xl mx-auto">

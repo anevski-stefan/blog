@@ -1,17 +1,17 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 import Link from "next/link"
 import Image from "next/image"
+import { SiteHeader } from "@/components/layout/SiteHeader"
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 export function HomeContent() {
   const loaderRef = useRef<HTMLDivElement>(null)
-  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -167,7 +167,6 @@ export function HomeContent() {
         ease: "power4.inOut",
       })
     }
-    setMenuOpen(false)
   }
 
   return (
@@ -188,154 +187,7 @@ export function HomeContent() {
         </div>
       </div>
 
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-16 py-6 md:py-8 flex justify-between items-center mix-blend-difference text-white">
-        <Link
-          href="/"
-          className="font-heading text-lg md:text-xl font-semibold tracking-tight"
-        >
-          Stefan Anevski
-        </Link>
-        <div className="hidden md:flex gap-8 lg:gap-12">
-          <Link
-            href="/blog"
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group"
-          >
-            Blog
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
-
-          <Link
-            href="/projects"
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group"
-          >
-            Projects
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
-
-          <Link
-            href="#work"
-            onClick={e => {
-              e.preventDefault()
-              scrollToSection("#work")
-            }}
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group cursor-pointer"
-          >
-            Work
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
-
-          <Link
-            href="/timeline"
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group"
-          >
-            Timeline
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
-
-          <Link
-            href="#about"
-            onClick={e => {
-              e.preventDefault()
-              scrollToSection("#about")
-            }}
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group cursor-pointer"
-          >
-            About
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
-
-          <Link
-            href="#contact"
-            onClick={e => {
-              e.preventDefault()
-              scrollToSection("#contact")
-            }}
-            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group cursor-pointer"
-          >
-            Contact
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-          </Link>
-        </div>
-        <button
-          id="menu-toggle"
-          className="md:hidden flex flex-col gap-1.5 p-2 bg-transparent border-none z-[101]"
-          aria-label="Toggle menu"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span
-            className={`w-7 h-px bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
-          ></span>
-          <span
-            className={`w-7 h-px bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-0.5" : ""}`}
-          ></span>
-        </button>
-      </nav>
-
-      <div
-        className={`fixed inset-0 bg-home-primary z-40 flex flex-col justify-center items-center gap-8 transition-opacity duration-500 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-      >
-        <Link
-          href="/blog"
-          onClick={() => setMenuOpen(false)}
-          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          style={{ transitionDelay: "100ms" }}
-        >
-          Blog
-        </Link>
-        <Link
-          href="/projects"
-          onClick={() => setMenuOpen(false)}
-          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          style={{ transitionDelay: "150ms" }}
-        >
-          Projects
-        </Link>
-
-        <Link
-          href="#work"
-          onClick={e => {
-            e.preventDefault()
-            scrollToSection("#work")
-          }}
-          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          style={{ transitionDelay: "200ms" }}
-        >
-          Work
-        </Link>
-
-        <Link
-          href="/timeline"
-          onClick={() => setMenuOpen(false)}
-          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          style={{ transitionDelay: "300ms" }}
-        >
-          Timeline
-        </Link>
-
-        <Link
-          href="#about"
-          onClick={e => {
-            e.preventDefault()
-            scrollToSection("#about")
-          }}
-          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          style={{ transitionDelay: "400ms" }}
-        >
-          About
-        </Link>
-
-        <Link
-          href="#contact"
-          onClick={e => {
-            e.preventDefault()
-            scrollToSection("#contact")
-          }}
-          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-          style={{ transitionDelay: "500ms" }}
-        >
-          Contact
-        </Link>
-      </div>
+      <SiteHeader />
 
       <section className="min-h-screen flex flex-col justify-center px-6 md:px-16 relative pt-20">
         <div className="max-w-7xl mx-auto w-full">
@@ -378,110 +230,6 @@ export function HomeContent() {
           </div>
         </div>
       </section>
-
-      <section className="py-16 md:py-24 border-y border-white/5 relative bg-home-secondary/30 backdrop-blur-sm overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage: "radial-gradient(#5865F2 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        ></div>
-
-        <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-home-primary to-transparent z-10 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-home-primary to-transparent z-10 pointer-events-none"></div>
-
-        <div className="flex flex-col gap-8 md:gap-10">
-          <div className="px-6 md:px-16 max-w-7xl mx-auto w-full mb-2">
-            <p className="text-xs font-mono font-medium tracking-widest uppercase text-home-accent/80 flex items-center gap-2">
-              <span className="w-2 h-2 bg-home-accent rounded-full animate-pulse"></span>
-              System Proficiency
-            </p>
-          </div>
-
-          <div className="flex animate-marquee w-max group hover:[animation-play-state:paused] relative z-0">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} className="flex gap-4 px-2">
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    React.js
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    TypeScript
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Next.js
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Solid.js
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Spring Boot
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-300 shadow-[0_0_8px_rgba(147,197,253,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    PostgreSQL
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Google Gen AI
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Tailwind CSS
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex animate-marquee-reverse w-max group hover:[animation-play-state:paused] relative z-0">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} className="flex gap-4 px-2">
-                {[
-                  "System Architecture",
-                  "Microservices",
-                  "CI/CD Pipelines",
-                  "RESTful APIs",
-                  "Cloud Infrastructure",
-                  "Database Scaling",
-                  "Web Security",
-                ].map(text => (
-                  <div
-                    key={text}
-                    className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-home-accent shadow-[0_0_8px_#5865F2]"></span>
-                    <span className="font-mono text-sm text-white/90 tracking-wide">
-                      {text}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section
         id="work"
         className="py-24 md:py-40 px-6 md:px-16 max-w-7xl mx-auto relative"
@@ -504,59 +252,54 @@ export function HomeContent() {
           </div>
         </div>
 
-        <div className="space-y-32 md:space-y-48">
-          <article className="relative group reveal">
-            <div className="w-full md:w-[85%] aspect-[16/10] md:aspect-[16/9] relative rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-black/20 z-10 group-hover:bg-black/0 transition-colors duration-700"></div>
+        <div className="flex flex-col gap-20 md:gap-32 max-w-5xl mx-auto">
+          <article className="group reveal grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+            <div className="md:col-span-6 relative aspect-[16/10] w-full overflow-hidden rounded-2xl">
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-700 z-10"></div>
               <Image
                 src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&q=80"
-                alt="Nebula Dashboard"
+                alt="Code Quest"
                 fill
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                className="object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </div>
 
-            <div className="relative mt-[-4rem] md:mt-0 md:absolute md:bottom-12 md:right-0 lg:right-12 md:w-[450px] z-20">
-              <div className="glass-card p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-home-accent/5">
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-mono text-xs text-home-accent tracking-widest uppercase">
-                    Project 01
-                  </span>
-                  <div className="flex gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-home-accent/50"></span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/20"></span>
-                  </div>
-                </div>
+            <div className="md:col-span-6 flex flex-col justify-center">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="w-10 h-px bg-home-accent"></span>
+                <span className="font-mono text-xs text-home-accent tracking-widest uppercase">
+                  2024
+                </span>
+              </div>
 
-                <h3 className="font-heading text-2xl md:text-3xl font-semibold mb-4 text-white">
-                  Code Quest
-                </h3>
-                <p className="text-home-muted text-sm md:text-base leading-relaxed mb-8">
-                  A full-stack web app for discovering and contributing to
-                  GitHub projects. Streamlining open-source onboarding by 30%.
-                </p>
+              <h3 className="font-heading text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 text-white group-hover:text-home-accent transition-colors">
+                Code Quest
+              </h3>
 
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    React.js
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    TypeScript
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    Tailwind CSS
-                  </span>
-                </div>
+              <p className="text-home-muted text-base leading-relaxed mb-8">
+                A full-stack web app for discovering and contributing to GitHub
+                projects. Streamlining open-source onboarding.
+              </p>
 
-                <Link
-                  href="#"
-                  className="magnetic inline-flex items-center gap-3 text-sm font-medium text-white hover:text-home-accent transition-colors group/link w-full"
-                >
-                  <span className="tracking-wide uppercase">
-                    View Case Study
+              <div className="flex flex-wrap gap-2 mb-8">
+                {["React.js", "TypeScript", "Tailwind"].map(tag => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-white/5 rounded-full text-xs font-mono text-white/60 border border-white/5"
+                  >
+                    {tag}
                   </span>
+                ))}
+              </div>
+
+              <Link
+                href="#"
+                className="inline-flex items-center gap-3 text-sm font-medium text-white hover:text-home-accent transition-colors group/link"
+              >
+                <span className="uppercase tracking-wide">View Project</span>
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-all duration-300 group-hover/link:bg-home-accent group-hover/link:text-white">
                   <svg
-                    className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1"
+                    className="w-4 h-4"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -564,63 +307,48 @@ export function HomeContent() {
                   >
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
-                </Link>
-              </div>
+                </div>
+              </Link>
             </div>
           </article>
 
-          <article className="relative group reveal flex flex-col md:items-end">
-            <div className="w-full md:w-[85%] aspect-[16/10] md:aspect-[16/9] relative rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-black/20 z-10 group-hover:bg-black/0 transition-colors duration-700"></div>
-              <Image
-                src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1600&q=80"
-                alt="Quantum Banking"
-                fill
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-            </div>
+          <article className="group reveal grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+            <div className="md:col-span-6 md:order-1 order-2 flex flex-col justify-center md:items-end md:text-right">
+              <div className="flex items-center gap-4 mb-6 md:flex-row-reverse">
+                <span className="w-10 h-px bg-home-accent"></span>
+                <span className="font-mono text-xs text-home-accent tracking-widest uppercase">
+                  2025
+                </span>
+              </div>
 
-            <div className="relative mt-[-4rem] md:mt-0 md:absolute md:bottom-12 md:left-0 lg:left-12 md:w-[450px] z-20 text-left">
-              <div className="glass-card p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-home-accent/5">
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-mono text-xs text-home-accent tracking-widest uppercase">
-                    Project 02
-                  </span>
-                  <div className="flex gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-home-accent/50"></span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/20"></span>
-                  </div>
-                </div>
+              <h3 className="font-heading text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 text-white group-hover:text-home-accent transition-colors">
+                Smart Cook
+              </h3>
 
-                <h3 className="font-heading text-2xl md:text-3xl font-semibold mb-4 text-white">
-                  Smart Cook
-                </h3>
-                <p className="text-home-muted text-sm md:text-base leading-relaxed mb-8">
-                  A sophisticated cooking assistant application with AI vision
-                  technology, enhancing recipe discovery by 45%.
-                </p>
+              <p className="text-home-muted text-base leading-relaxed mb-8">
+                A sophisticated cooking assistant application with AI vision
+                technology, enhancing recipe discovery by 45%.
+              </p>
 
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    Next.js
+              <div className="flex flex-wrap gap-2 mb-8 md:justify-end">
+                {["Next.js", "Google Gen AI", "TypeScript"].map(tag => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-white/5 rounded-full text-xs font-mono text-white/60 border border-white/5"
+                  >
+                    {tag}
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    TypeScript
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    Google Gen AI
-                  </span>
-                </div>
+                ))}
+              </div>
 
-                <Link
-                  href="#"
-                  className="magnetic inline-flex items-center gap-3 text-sm font-medium text-white hover:text-home-accent transition-colors group/link w-full"
-                >
-                  <span className="tracking-wide uppercase">
-                    View Case Study
-                  </span>
+              <Link
+                href="#"
+                className="inline-flex items-center gap-3 text-sm font-medium text-white hover:text-home-accent transition-colors group/link md:flex-row-reverse"
+              >
+                <span className="uppercase tracking-wide">View Project</span>
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-all duration-300 group-hover/link:bg-home-accent group-hover/link:text-white">
                   <svg
-                    className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1"
+                    className="w-4 h-4"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -628,8 +356,18 @@ export function HomeContent() {
                   >
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
-                </Link>
-              </div>
+                </div>
+              </Link>
+            </div>
+
+            <div className="md:col-span-6 md:order-2 order-1 relative aspect-[16/10] w-full overflow-hidden rounded-2xl">
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-700 z-10"></div>
+              <Image
+                src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1600&q=80"
+                alt="Smart Cook"
+                fill
+                className="object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
             </div>
           </article>
         </div>
@@ -661,11 +399,29 @@ export function HomeContent() {
               applications. My background spans from low-level system design to
               high-fidelity frontend interactions.
             </p>
-            <p className="text-base text-home-muted leading-relaxed mb-10 reveal">
+            <p className="text-base text-home-muted leading-relaxed mb-6 reveal">
               I believe in code that is not only functional but also
               maintainable, performant, and elegant. I bridge the gap between
               complex backend logic and seamless user experiences.
             </p>
+
+            <div className="mb-10 reveal">
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-home-accent transition-colors group"
+              >
+                <span className="uppercase tracking-wide">More about me</span>
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
 
             <div className="grid grid-cols-3 gap-6 md:gap-8 reveal">
               <div>

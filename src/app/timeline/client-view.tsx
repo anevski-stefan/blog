@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { BlogNav } from "@/components/blog/blog-nav"
+import { SiteHeader } from "@/components/layout/SiteHeader"
 import { TimelineBackground } from "@/components/timeline/timeline-background"
 import { timelineData, TimelineType } from "@/lib/data/timeline"
 import { cn } from "@/lib/utils"
@@ -383,7 +383,7 @@ export function TimelineClientView() {
         <div className="absolute top-2/3 right-[15%] w-16 h-16 border border-purple-500/10 rounded-full float float-delay-3"></div>
       </div>
 
-      <BlogNav />
+      <SiteHeader variant="solid" />
 
       <section className="pt-32 md:pt-44 pb-16 md:pb-24 px-6 md:px-16">
         <div className="max-w-7xl mx-auto">

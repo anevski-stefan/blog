@@ -7,7 +7,7 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { BlogPost } from "@/types/blog"
 
-import { BlogNav } from "@/components/blog/blog-nav"
+import { SiteHeader } from "@/components/layout/SiteHeader"
 import { Newsletter } from "@/components/blog/newsletter"
 import { TiptapEditor } from "@/components/blog/editor"
 import { Github, Twitter, Linkedin, Globe } from "lucide-react"
@@ -305,7 +305,7 @@ export function BlogPostClientView({
         }}
       ></div>
 
-      <BlogNav />
+      <SiteHeader variant="solid" />
 
       <header className="pt-32 md:pt-40 pb-12 px-6 md:px-16">
         <div className="max-w-4xl mx-auto">

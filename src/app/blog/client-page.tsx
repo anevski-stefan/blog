@@ -5,7 +5,7 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Link from "next/link"
 import Image from "next/image"
-import { BlogNav } from "@/components/blog/blog-nav"
+import { SiteHeader } from "@/components/layout/SiteHeader"
 import { Newsletter } from "@/components/blog/newsletter"
 import { SearchX } from "lucide-react"
 import type { BlogPost } from "@/types/blog"
@@ -131,7 +131,7 @@ export function BlogClientPage({ posts }: BlogClientPageProps) {
         }}
       ></div>
 
-      <BlogNav />
+      <SiteHeader variant="solid" />
 
       <section className="pt-32 md:pt-44 pb-12 md:pb-16 px-6 md:px-16">
         <div className="max-w-7xl mx-auto">
