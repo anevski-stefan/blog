@@ -5,7 +5,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { CustomCursor } from "@/components/home/CustomCursor"
 import { BlogNav } from "@/components/blog/blog-nav"
 import { TimelineBackground } from "@/components/timeline/timeline-background"
 import { timelineData, TimelineType } from "@/lib/data/timeline"
@@ -218,10 +217,8 @@ export function TimelineClientView() {
   return (
     <div
       ref={containerRef}
-      className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen custom-cursor-area"
+      className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen"
     >
-      <CustomCursor />
-
       <style jsx global>{`
         /* Timeline Line */
         .timeline-line {

@@ -5,7 +5,6 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Link from "next/link"
 import Image from "next/image"
-import { CustomCursor } from "@/components/home/CustomCursor"
 import { BlogNav } from "@/components/blog/blog-nav"
 import { Newsletter } from "@/components/blog/newsletter"
 import { SearchX } from "lucide-react"
@@ -123,9 +122,7 @@ export function BlogClientPage({ posts }: BlogClientPageProps) {
   }
 
   return (
-    <div className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen custom-cursor-area">
-      <CustomCursor />
-
+    <div className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
       <div
         className="fixed inset-0 -z-10 opacity-[0.03]"
         style={{

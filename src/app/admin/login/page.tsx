@@ -1,5 +1,4 @@
 import { WebGLBackground } from "@/components/home/WebGLBackground"
-import { CustomCursor } from "@/components/home/CustomCursor"
 import { LoginForm } from "@/components/auth/LoginForm"
 import { Metadata } from "next"
 
@@ -18,10 +17,8 @@ export default async function AdminLoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center py-10 px-4 overflow-hidden bg-home-primary cursor-none">
+    <div className="relative min-h-screen w-full flex items-center justify-center py-10 px-4 overflow-hidden bg-home-primary">
       <WebGLBackground />
-
-      <CustomCursor />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
         <LoginForm />

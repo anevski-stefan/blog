@@ -6,7 +6,7 @@ import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { BlogPost } from "@/types/blog"
-import { CustomCursor } from "@/components/home/CustomCursor"
+
 import { BlogNav } from "@/components/blog/blog-nav"
 import { Newsletter } from "@/components/blog/newsletter"
 import { TiptapEditor } from "@/components/blog/editor"
@@ -143,9 +143,7 @@ export function BlogPostClientView({
   }
 
   return (
-    <div className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen custom-cursor-area">
-      <CustomCursor />
-
+    <div className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
       <style jsx global>{`
         .prose {
           max-width: 65ch;
