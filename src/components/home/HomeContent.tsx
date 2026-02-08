@@ -642,7 +642,7 @@ export function HomeContent() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           <div className="aspect-[4/5] bg-home-secondary rounded-lg overflow-hidden relative reveal">
             <Image
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80"
+              src="/images/me.png"
               alt="Stefan Anevski"
               fill
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
