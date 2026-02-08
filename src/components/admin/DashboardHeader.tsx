@@ -11,6 +11,8 @@ interface DashboardHeaderProps {
   mobileMenuOpen: boolean
   setMobileMenuOpen: (open: boolean) => void
   user: User | null
+  onNotificationClick?: () => void
+  hasUnread?: boolean
 }
 
 export function DashboardHeader({
@@ -18,6 +20,8 @@ export function DashboardHeader({
   mobileMenuOpen,
   setMobileMenuOpen,
   user,
+  onNotificationClick,
+  hasUnread = false,
 }: DashboardHeaderProps) {
   return (
     <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/5 px-4 lg:px-8 py-4">
@@ -51,9 +55,14 @@ export function DashboardHeader({
             />
           </div>
 
-          <button className="relative p-2 hover:bg-white/5 rounded-lg transition-colors">
+          <button
+            onClick={onNotificationClick}
+            className="relative p-2 hover:bg-white/5 rounded-lg transition-colors"
+          >
             <Bell className="w-5 h-5 text-[#888888]" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#ef4444] rounded-full" />
+            {hasUnread && (
+              <span className="absolute top-1 right-1 w-2 h-2 bg-[#ef4444] rounded-full animate-pulse" />
+            )}
           </button>
 
           <Link

@@ -1,14 +1,27 @@
 "use client"
 
 import React from "react"
-import { TrendingUp, TrendingDown, LucideIcon } from "lucide-react"
+import {
+  TrendingUp,
+  TrendingDown,
+  LucideIcon,
+  FileText,
+  Eye,
+  Users,
+} from "lucide-react"
+
+const iconMap: Record<string, LucideIcon> = {
+  FileText,
+  Eye,
+  Users,
+}
 
 interface StatCardProps {
   label: string
   value: string
   change: string
   trend: "up" | "down"
-  icon: LucideIcon
+  icon: string
 }
 
 export function StatCard({
@@ -16,8 +29,9 @@ export function StatCard({
   value,
   change,
   trend,
-  icon: Icon,
+  icon: iconName,
 }: StatCardProps) {
+  const Icon = iconMap[iconName] || FileText
   return (
     <div className="bg-[#161616] rounded-xl border border-white/5 p-5 hover:transform hover:-translate-y-1 transition-all">
       <div className="flex items-start justify-between mb-4">

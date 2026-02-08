@@ -196,21 +196,63 @@ export function HomeContent() {
           Stefan Anevski
         </Link>
         <div className="hidden md:flex gap-8 lg:gap-12">
-          {["Work", "About", "Contact"].map(item => (
-            <button
-              key={item}
-              onClick={() => scrollToSection(`#${item.toLowerCase()}`)}
-              className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group cursor-none"
-            >
-              {item}
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
-            </button>
-          ))}
           <Link
             href="/blog"
             className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group"
           >
             Blog
+            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
+          </Link>
+
+          <Link
+            href="/projects"
+            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group"
+          >
+            Projects
+            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
+          </Link>
+
+          <Link
+            href="#work"
+            onClick={e => {
+              e.preventDefault()
+              scrollToSection("#work")
+            }}
+            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group cursor-pointer"
+          >
+            Work
+            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
+          </Link>
+
+          <Link
+            href="/timeline"
+            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group"
+          >
+            Timeline
+            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
+          </Link>
+
+          <Link
+            href="#about"
+            onClick={e => {
+              e.preventDefault()
+              scrollToSection("#about")
+            }}
+            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group cursor-pointer"
+          >
+            About
+            <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
+          </Link>
+
+          <Link
+            href="#contact"
+            onClick={e => {
+              e.preventDefault()
+              scrollToSection("#contact")
+            }}
+            className="nav-link text-sm font-normal tracking-widest uppercase relative py-2 group cursor-pointer"
+          >
+            Contact
             <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:w-full"></span>
           </Link>
         </div>
@@ -232,16 +274,67 @@ export function HomeContent() {
       <div
         className={`fixed inset-0 bg-home-primary z-40 flex flex-col justify-center items-center gap-8 transition-opacity duration-500 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       >
-        {["Work", "About", "Contact"].map((item, i) => (
-          <button
-            key={item}
-            onClick={() => scrollToSection(`#${item.toLowerCase()}`)}
-            className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
-            style={{ transitionDelay: `${100 + i * 100}ms` }}
-          >
-            {item}
-          </button>
-        ))}
+        <Link
+          href="/blog"
+          onClick={() => setMenuOpen(false)}
+          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          style={{ transitionDelay: "100ms" }}
+        >
+          Blog
+        </Link>
+        <Link
+          href="/projects"
+          onClick={() => setMenuOpen(false)}
+          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          style={{ transitionDelay: "150ms" }}
+        >
+          Projects
+        </Link>
+
+        <Link
+          href="#work"
+          onClick={e => {
+            e.preventDefault()
+            scrollToSection("#work")
+          }}
+          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          style={{ transitionDelay: "200ms" }}
+        >
+          Work
+        </Link>
+
+        <Link
+          href="/timeline"
+          onClick={() => setMenuOpen(false)}
+          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          style={{ transitionDelay: "300ms" }}
+        >
+          Timeline
+        </Link>
+
+        <Link
+          href="#about"
+          onClick={e => {
+            e.preventDefault()
+            scrollToSection("#about")
+          }}
+          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          style={{ transitionDelay: "400ms" }}
+        >
+          About
+        </Link>
+
+        <Link
+          href="#contact"
+          onClick={e => {
+            e.preventDefault()
+            scrollToSection("#contact")
+          }}
+          className={`mobile-link font-heading text-4xl md:text-6xl font-semibold transition-all duration-500 ${menuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+          style={{ transitionDelay: "500ms" }}
+        >
+          Contact
+        </Link>
       </div>
 
       <section className="min-h-screen flex flex-col justify-center px-6 md:px-16 relative pt-20">
@@ -287,7 +380,6 @@ export function HomeContent() {
       </section>
 
       <section className="py-16 md:py-24 border-y border-white/5 relative bg-home-secondary/30 backdrop-blur-sm overflow-hidden">
-        {/* Background Pattern */}
         <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
@@ -296,12 +388,10 @@ export function HomeContent() {
           }}
         ></div>
 
-        {/* Gradient Masks */}
         <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-home-primary to-transparent z-10 pointer-events-none"></div>
         <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-home-primary to-transparent z-10 pointer-events-none"></div>
 
         <div className="flex flex-col gap-8 md:gap-10">
-          {/* Section Header */}
           <div className="px-6 md:px-16 max-w-7xl mx-auto w-full mb-2">
             <p className="text-xs font-mono font-medium tracking-widest uppercase text-home-accent/80 flex items-center gap-2">
               <span className="w-2 h-2 bg-home-accent rounded-full animate-pulse"></span>
@@ -309,13 +399,11 @@ export function HomeContent() {
             </p>
           </div>
 
-          {/* Row 1: Languages & Frameworks */}
           <div className="flex animate-marquee w-max group hover:[animation-play-state:paused] relative z-0">
-            {/* Content Set 1 */}
             {[...Array(2)].map((_, i) => (
               <div key={i} className="flex gap-4 px-2">
                 <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]"></span>
                   <span className="font-mono text-sm text-white/90 tracking-wide">
                     React.js
                   </span>
@@ -333,42 +421,40 @@ export function HomeContent() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
+                  <span className="font-mono text-sm text-white/90 tracking-wide">
+                    Solid.js
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></span>
                   <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Node.js
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Python
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]"></span>
-                  <span className="font-mono text-sm text-white/90 tracking-wide">
-                    AWS
+                    Spring Boot
                   </span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-300 shadow-[0_0_8px_rgba(147,197,253,0.5)]"></span>
                   <span className="font-mono text-sm text-white/90 tracking-wide">
-                    Docker
+                    PostgreSQL
                   </span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.5)]"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></span>
                   <span className="font-mono text-sm text-white/90 tracking-wide">
-                    GraphQL
+                    Google Gen AI
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 px-5 py-2.5 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-home-accent/30 transition-colors duration-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.5)]"></span>
+                  <span className="font-mono text-sm text-white/90 tracking-wide">
+                    Tailwind CSS
                   </span>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Row 2: Concepts */}
           <div className="flex animate-marquee-reverse w-max group hover:[animation-play-state:paused] relative z-0">
-            {/* Content Set 1 */}
             {[...Array(2)].map((_, i) => (
               <div key={i} className="flex gap-4 px-2">
                 {[
@@ -396,7 +482,6 @@ export function HomeContent() {
         </div>
       </section>
 
-      {/* Work Section */}
       <section
         id="work"
         className="py-24 md:py-40 px-6 md:px-16 max-w-7xl mx-auto relative"
@@ -414,15 +499,13 @@ export function HomeContent() {
           </div>
           <div className="hidden md:block pb-2">
             <span className="text-home-muted text-sm tracking-widest uppercase">
-              (2023 — 2024)
+              (2023 — 2026)
             </span>
           </div>
         </div>
 
         <div className="space-y-32 md:space-y-48">
-          {/* Project 1 */}
           <article className="relative group reveal">
-            {/* Large Background Image */}
             <div className="w-full md:w-[85%] aspect-[16/10] md:aspect-[16/9] relative rounded-2xl overflow-hidden">
               <div className="absolute inset-0 bg-black/20 z-10 group-hover:bg-black/0 transition-colors duration-700"></div>
               <Image
@@ -433,7 +516,6 @@ export function HomeContent() {
               />
             </div>
 
-            {/* Floating Info Card */}
             <div className="relative mt-[-4rem] md:mt-0 md:absolute md:bottom-12 md:right-0 lg:right-12 md:w-[450px] z-20">
               <div className="glass-card p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-home-accent/5">
                 <div className="flex items-center justify-between mb-8">
@@ -447,23 +529,22 @@ export function HomeContent() {
                 </div>
 
                 <h3 className="font-heading text-2xl md:text-3xl font-semibold mb-4 text-white">
-                  Nebula Analytics
+                  Code Quest
                 </h3>
                 <p className="text-home-muted text-sm md:text-base leading-relaxed mb-8">
-                  A high-performance analytics engine capable of processing
-                  millions of data points in real-time. Built with a focus on
-                  scalability and data visualization.
+                  A full-stack web app for discovering and contributing to
+                  GitHub projects. Streamlining open-source onboarding by 30%.
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-8">
                   <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    React
+                    React.js
                   </span>
                   <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    Python
+                    TypeScript
                   </span>
                   <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    D3.js
+                    Tailwind CSS
                   </span>
                 </div>
 
@@ -488,9 +569,7 @@ export function HomeContent() {
             </div>
           </article>
 
-          {/* Project 2 */}
           <article className="relative group reveal flex flex-col md:items-end">
-            {/* Large Background Image */}
             <div className="w-full md:w-[85%] aspect-[16/10] md:aspect-[16/9] relative rounded-2xl overflow-hidden">
               <div className="absolute inset-0 bg-black/20 z-10 group-hover:bg-black/0 transition-colors duration-700"></div>
               <Image
@@ -501,7 +580,6 @@ export function HomeContent() {
               />
             </div>
 
-            {/* Floating Info Card */}
             <div className="relative mt-[-4rem] md:mt-0 md:absolute md:bottom-12 md:left-0 lg:left-12 md:w-[450px] z-20 text-left">
               <div className="glass-card p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-home-accent/5">
                 <div className="flex items-center justify-between mb-8">
@@ -515,11 +593,11 @@ export function HomeContent() {
                 </div>
 
                 <h3 className="font-heading text-2xl md:text-3xl font-semibold mb-4 text-white">
-                  Quantum Banking
+                  Smart Cook
                 </h3>
                 <p className="text-home-muted text-sm md:text-base leading-relaxed mb-8">
-                  A secure, ISO-compliant banking interface featuring end-to-end
-                  encryption and sub-millisecond transaction processing.
+                  A sophisticated cooking assistant application with AI vision
+                  technology, enhancing recipe discovery by 45%.
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-8">
@@ -530,75 +608,7 @@ export function HomeContent() {
                     TypeScript
                   </span>
                   <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    PostgreSQL
-                  </span>
-                </div>
-
-                <Link
-                  href="#"
-                  className="magnetic inline-flex items-center gap-3 text-sm font-medium text-white hover:text-home-accent transition-colors group/link w-full"
-                >
-                  <span className="tracking-wide uppercase">
-                    View Case Study
-                  </span>
-                  <svg
-                    className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </article>
-
-          {/* Project 3 */}
-          <article className="relative group reveal">
-            {/* Large Background Image */}
-            <div className="w-full md:w-[85%] aspect-[16/10] md:aspect-[16/9] relative rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-black/20 z-10 group-hover:bg-black/0 transition-colors duration-700"></div>
-              <Image
-                src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=1600&q=80"
-                alt="Prism Studios"
-                fill
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-            </div>
-
-            {/* Floating Info Card */}
-            <div className="relative mt-[-4rem] md:mt-0 md:absolute md:bottom-12 md:right-0 lg:right-12 md:w-[450px] z-20">
-              <div className="glass-card p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-home-accent/5">
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-mono text-xs text-home-accent tracking-widest uppercase">
-                    Project 03
-                  </span>
-                  <div className="flex gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-home-accent/50"></span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/20"></span>
-                  </div>
-                </div>
-
-                <h3 className="font-heading text-2xl md:text-3xl font-semibold mb-4 text-white">
-                  Prism Design System
-                </h3>
-                <p className="text-home-muted text-sm md:text-base leading-relaxed mb-8">
-                  An enterprise-grade component library and documentation
-                  platform facilitating consistent UI implementation across 20+
-                  micro-frontends.
-                </p>
-
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    Storybook
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    React
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] uppercase tracking-wider text-white/70 border border-white/5 font-mono">
-                    CI/CD
+                    Google Gen AI
                   </span>
                 </div>
 
@@ -646,7 +656,7 @@ export function HomeContent() {
               I build the digital infrastructure of tomorrow.
             </h3>
             <p className="text-base text-home-muted leading-relaxed mb-6 reveal">
-              With over 8 years of experience in software engineering and
+              With over 3 years of experience in software engineering and
               distributed systems, I specialize in building robust, scalable web
               applications. My background spans from low-level system design to
               high-fidelity frontend interactions.
@@ -661,7 +671,7 @@ export function HomeContent() {
               <div>
                 <div
                   className="font-heading text-3xl md:text-4xl lg:text-5xl font-semibold text-home-accent stat-number"
-                  data-count="50"
+                  data-count="20"
                 >
                   0
                 </div>
@@ -672,7 +682,7 @@ export function HomeContent() {
               <div>
                 <div
                   className="font-heading text-3xl md:text-4xl lg:text-5xl font-semibold text-home-accent stat-number"
-                  data-count="8"
+                  data-count="3"
                 >
                   0
                 </div>
@@ -683,7 +693,7 @@ export function HomeContent() {
               <div>
                 <div
                   className="font-heading text-3xl md:text-4xl lg:text-5xl font-semibold text-home-accent stat-number"
-                  data-count="30"
+                  data-count="5"
                 >
                   0
                 </div>

@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db"
 import { POSTS_PER_PAGE } from "@/lib/constants"
 import type { PostWithRelations } from "@/types/posts"
 import type { Prisma } from "@/generated/prisma/client"
+import { formatDate, calculateReadingTime } from "@/lib/utils"
+import type { BlogPost } from "@/types/blog"
 
 /**
  * Get a single published post by slug
@@ -102,4 +104,46 @@ export async function getTaxonomies() {
   ])
 
   return { categories, tags }
+}
+
+/**
+ * Get all published posts for client-side filtering/animation
+ */
+export async function getAllPosts() {
+  const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
+    orderBy: {
+      publishedAt: "desc",
+    },
+    include: {
+      categories: true,
+      tags: true,
+    },
+  })
+
+  return posts as PostWithRelations[]
+}
+
+export function mapPostToUi(post: PostWithRelations): BlogPost {
+  return {
+    id: post.id,
+    title: post.title,
+    excerpt: post.excerpt || "",
+    image:
+      post.coverImage ||
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+    category: post.categories[0]?.name.toLowerCase() || "uncategorized",
+    tags: post.tags.map(t => t.name),
+    date: post.publishedAt
+      ? formatDate(post.publishedAt)
+      : formatDate(post.createdAt),
+    readTime: calculateReadingTime(post.content),
+    featured: post.featured,
+    slug: post.slug,
+    authorName: post.authorName,
+    authorImage: post.authorImage || undefined,
+    content: post.content,
+  }
 }

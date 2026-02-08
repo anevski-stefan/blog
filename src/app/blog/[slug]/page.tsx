@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation"
-import { getPostBySlug, blogPosts } from "@/lib/blog-data"
+import { getPostBySlug, getPosts, mapPostToUi, getAllPosts } from "@/lib/posts"
 import { BlogPostClientView } from "./client-view"
 import { Metadata } from "next"
 
 export async function generateStaticParams() {
-  return blogPosts.map(post => ({
+  const posts = await getAllPosts()
+  return posts.map(post => ({
     slug: post.slug,
   }))
 }
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const post = getPostBySlug(slug)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     return {
@@ -25,13 +26,15 @@ export async function generateMetadata({
 
   return {
     title: post.title,
-    description: post.excerpt,
+    description: post.excerpt || `Read more about ${post.title}`,
     openGraph: {
       title: post.title,
-      description: post.excerpt,
+      description: post.excerpt || `Read more about ${post.title}`,
       images: [
         {
-          url: post.image,
+          url:
+            post.coverImage ||
+            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
           width: 800,
           height: 600,
         },
@@ -47,13 +50,21 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const post = getPostBySlug(slug)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     notFound()
   }
 
-  const relatedPosts = blogPosts.filter(p => p.id !== post.id).slice(0, 3)
+  // Fetch recent posts for "Related" section (simulated)
+  // Ideally we filter by tag/category, but for now just recent posts excluding current
+  const { posts: allPosts } = await getPosts(1)
+  const relatedPosts = allPosts
+    .filter(p => p.id !== post.id)
+    .slice(0, 3)
+    .map(mapPostToUi)
 
-  return <BlogPostClientView post={post} relatedPosts={relatedPosts} />
+  const uiPost = mapPostToUi(post)
+
+  return <BlogPostClientView post={uiPost} relatedPosts={relatedPosts} />
 }

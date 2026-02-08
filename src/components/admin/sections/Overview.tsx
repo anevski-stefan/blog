@@ -5,7 +5,6 @@ import Link from "next/link"
 import {
   FileText,
   Eye,
-  MessageSquare,
   Users,
   Plus,
   FolderOpen,
@@ -16,66 +15,19 @@ import { OverviewProps } from "@/types/admin"
 import { StatCard } from "../ui/StatCard"
 import { Card } from "../ui/Card"
 
+const iconMap = {
+  FileText,
+  Eye,
+  Users,
+}
+
 export function Overview({
+  stats,
+  activities,
   setShowCategoryModal,
   setShowTagModal,
   setCurrentSection,
 }: OverviewProps) {
-  const stats = [
-    {
-      label: "Total Posts",
-      value: "12",
-      change: "+12%",
-      trend: "up" as const,
-      icon: FileText,
-    },
-    {
-      label: "Total Views",
-      value: "24.5K",
-      change: "+28%",
-      trend: "up" as const,
-      icon: Eye,
-    },
-    {
-      label: "Comments",
-      value: "89",
-      change: "-5%",
-      trend: "down" as const,
-      icon: MessageSquare,
-    },
-    {
-      label: "Subscribers",
-      value: "1,247",
-      change: "+18%",
-      trend: "up" as const,
-      icon: Users,
-    },
-  ]
-
-  const activities = [
-    {
-      icon: FileText,
-      color: "text-[#22c55e]",
-      bgColor: "bg-[#22c55e]/10",
-      text: 'Published "Building Scalable Microservices"',
-      time: "2 hours ago",
-    },
-    {
-      icon: MessageSquare,
-      color: "text-[#5865F2]",
-      bgColor: "bg-[#5865F2]/10",
-      text: "David Kim commented on your post",
-      time: "5 hours ago",
-    },
-    {
-      icon: Users,
-      color: "text-pink-500",
-      bgColor: "bg-pink-500/10",
-      text: "3 new subscribers this week",
-      time: "1 day ago",
-    },
-  ]
-
   const quickActions = [
     { label: "New Post", icon: Plus, href: "/blog/new" },
     {
@@ -109,22 +61,31 @@ export function Overview({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         <Card title="Recent Activity">
           <div className="space-y-4">
-            {activities.map((activity, i) => (
-              <div key={i} className="flex gap-4">
-                <div
-                  className={`flex-shrink-0 w-8 h-8 ${activity.bgColor} rounded-full flex items-center justify-center`}
-                >
-                  <activity.icon className={`w-4 h-4 ${activity.color}`} />
+            {activities.map((activity, i) => {
+              const ActivityIcon =
+                (
+                  iconMap as Record<
+                    string,
+                    React.ComponentType<{ className?: string }>
+                  >
+                )[activity.icon] || FileText
+              return (
+                <div key={i} className="flex gap-4">
+                  <div
+                    className={`flex-shrink-0 w-8 h-8 ${activity.bgColor} rounded-full flex items-center justify-center`}
+                  >
+                    <ActivityIcon className={`w-4 h-4 ${activity.color}`} />
+                  </div>
+                  <div>
+                    <p
+                      className="text-sm text-white"
+                      dangerouslySetInnerHTML={{ __html: activity.text }}
+                    />
+                    <p className="text-xs text-[#888888]">{activity.time}</p>
+                  </div>
                 </div>
-                <div>
-                  <p
-                    className="text-sm text-white"
-                    dangerouslySetInnerHTML={{ __html: activity.text }}
-                  />
-                  <p className="text-xs text-[#888888]">{activity.time}</p>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </Card>
 

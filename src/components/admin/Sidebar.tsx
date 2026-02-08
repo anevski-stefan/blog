@@ -16,6 +16,12 @@ interface SidebarProps {
   mobileMenuOpen: boolean
   setMobileMenuOpen: (open: boolean) => void
   user: User | null
+  counts: {
+    posts: number
+    categories: number
+    tags: number
+    media: number
+  }
 }
 
 export function Sidebar({
@@ -24,6 +30,7 @@ export function Sidebar({
   mobileMenuOpen,
   setMobileMenuOpen,
   user,
+  counts,
 }: SidebarProps) {
   return (
     <>
@@ -32,15 +39,12 @@ export function Sidebar({
       >
         <div className="flex flex-col h-full">
           <div className="p-6 border-b border-white/5">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#5865F2] rounded-xl flex items-center justify-center font-heading font-bold text-lg text-white">
-                {user?.email?.charAt(0).toUpperCase() || "A"}
+            <Link href="/" className="block">
+              <div className="font-heading font-bold text-lg text-white tracking-tight">
+                {user?.user_metadata?.full_name || "Admin"}
               </div>
-              <div>
-                <div className="font-heading font-semibold text-white truncate max-w-[120px]">
-                  {user?.user_metadata?.full_name || "Admin"}
-                </div>
-                <div className="text-xs text-[#888888]">Blog Dashboard</div>
+              <div className="text-xs text-[#888888] font-medium">
+                Blog Dashboard
               </div>
             </Link>
           </div>
@@ -49,33 +53,52 @@ export function Sidebar({
             <SectionTitle title="Main" />
             {navItems
               .filter(i => i.group === "Main")
-              .map(item => (
-                <NavItem
-                  key={item.id}
-                  item={item as NavItemType}
-                  active={currentSection === item.id}
-                  onClick={() => {
-                    setCurrentSection(item.id)
-                    setMobileMenuOpen(false)
-                  }}
-                />
-              ))}
+              .map(item => {
+                const count =
+                  item.id === "posts"
+                    ? counts.posts
+                    : item.id === "categories"
+                      ? counts.categories
+                      : item.id === "tags"
+                        ? counts.tags
+                        : null
+                return (
+                  <NavItem
+                    key={item.id}
+                    item={{
+                      ...(item as NavItemType),
+                      badge: count ? count.toString() : null,
+                    }}
+                    active={currentSection === item.id}
+                    onClick={() => {
+                      setCurrentSection(item.id)
+                      setMobileMenuOpen(false)
+                    }}
+                  />
+                )
+              })}
 
             <SectionTitle title="Content" className="mt-6" />
             {navItems
               .filter(i => i.group === "Content")
-              .map(item => (
-                <NavItem
-                  key={item.id}
-                  item={item as NavItemType}
-                  active={currentSection === item.id}
-                  onClick={() => {
-                    setCurrentSection(item.id)
-                    setMobileMenuOpen(false)
-                  }}
-                  badgeColor={item.id === "comments" ? "amber" : "blue"}
-                />
-              ))}
+              .map(item => {
+                const count = item.id === "media" ? counts.media : null
+                return (
+                  <NavItem
+                    key={item.id}
+                    item={{
+                      ...(item as NavItemType),
+                      badge: count ? count.toString() : null,
+                    }}
+                    active={currentSection === item.id}
+                    onClick={() => {
+                      setCurrentSection(item.id)
+                      setMobileMenuOpen(false)
+                    }}
+                    badgeColor="blue"
+                  />
+                )
+              })}
 
             <SectionTitle title="System" className="mt-6" />
             <button
@@ -96,13 +119,30 @@ export function Sidebar({
 
           <div className="p-4 border-t border-white/5">
             <div className="flex items-center gap-3 p-2">
-              <Image
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
-                alt="Alex Chen"
-                width={40}
-                height={40}
-                className="rounded-full object-cover"
-              />
+              <div className="w-10 h-10 rounded-full bg-home-accent/20 border border-home-accent/30 flex items-center justify-center text-home-accent text-xs font-bold overflow-hidden">
+                {user?.user_metadata?.avatar_url ||
+                user?.user_metadata?.picture ? (
+                  <Image
+                    src={
+                      (user?.user_metadata?.avatar_url ||
+                        user?.user_metadata?.picture) as string
+                    }
+                    alt={user?.user_metadata?.full_name || "Admin"}
+                    width={40}
+                    height={40}
+                    className="object-cover rounded-full"
+                    unoptimized
+                    referrerPolicy="no-referrer"
+                  />
+                ) : user?.user_metadata?.full_name ? (
+                  (user.user_metadata.full_name as string)
+                    .split(" ")
+                    .map((n: string) => n[0])
+                    .join("")
+                ) : (
+                  "A"
+                )}
+              </div>
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-sm truncate text-white">
                   {user?.user_metadata?.full_name || "Admin"}

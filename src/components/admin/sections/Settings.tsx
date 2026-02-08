@@ -16,13 +16,6 @@ export function Settings({
 
   return (
     <div className="space-y-6">
-      <div className="mb-6">
-        <h2 className="font-heading text-xl font-semibold text-white">
-          Settings
-        </h2>
-        <p className="text-sm text-[#888888]">Configure your blog settings</p>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
           <Card className="!p-0 overflow-hidden">
@@ -61,14 +54,6 @@ export function Settings({
                   </h4>
                   <div className="space-y-4">
                     {[
-                      {
-                        label: "Enable Comments",
-                        desc: "Allow users to comment on posts",
-                      },
-                      {
-                        label: "Moderate Comments",
-                        desc: "Review comments before publishing",
-                      },
                       {
                         label: "Show Author Info",
                         desc: "Display author details on posts",
@@ -142,6 +127,110 @@ export function Settings({
                 )}
                 <div className="pt-4 border-t border-white/10 flex items-center justify-end">
                   <Button onClick={() => showToast("Social links saved!")}>
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {settingsTab === "email" && (
+              <div className="space-y-6">
+                <div className="p-4 bg-white/5 rounded-lg border border-white/5 space-y-4">
+                  <h4 className="text-sm font-medium text-white">
+                    Newsletter Provider
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    {["Mailchimp", "ConvertKit", "Substack", "Beehiiv"].map(
+                      provider => (
+                        <button
+                          key={provider}
+                          className="px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-white text-left transition-all"
+                        >
+                          {provider}
+                        </button>
+                      )
+                    )}
+                  </div>
+                </div>
+                <Input
+                  label="API Key"
+                  type="password"
+                  placeholder="sk_live_..."
+                />
+                <Input
+                  label="Audience ID"
+                  placeholder="Leave empty for default"
+                />
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                  <Button variant="ghost">Test Connection</Button>
+                  <Button onClick={() => showToast("Email settings saved!")}>
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {settingsTab === "analytics" && (
+              <div className="space-y-6">
+                <div className="p-4 bg-white/5 rounded-lg border border-white/5">
+                  <p className="text-sm text-[#888888] mb-4">
+                    Enable tracking to see how users interact with your blog.
+                  </p>
+                  <Input
+                    label="Google Analytics ID"
+                    placeholder="G-XXXXXXXXXX"
+                  />
+                </div>
+                <div className="p-4 bg-white/5 rounded-lg border border-white/5">
+                  <h4 className="text-sm font-medium text-white mb-4">
+                    Privacy-Focused Analytics
+                  </h4>
+                  <Input label="Plausible Domain" placeholder="example.com" />
+                  <div className="mt-4">
+                    <Input label="Fathom Site ID" placeholder="ABCDEF" />
+                  </div>
+                </div>
+                <div className="pt-4 border-t border-white/10 flex items-center justify-end">
+                  <Button onClick={() => showToast("Analytics configured!")}>
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {settingsTab === "advanced" && (
+              <div className="space-y-6">
+                <TextArea
+                  label="Custom Header Scripts"
+                  rows={4}
+                  placeholder="<script>...</script>"
+                  className="font-mono text-xs"
+                />
+                <TextArea
+                  label="Robots.txt"
+                  rows={4}
+                  defaultValue={`User-agent: *\nAllow: /`}
+                  className="font-mono text-xs"
+                />
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <h4 className="text-sm font-medium text-red-400 mb-2">
+                    Danger Zone
+                  </h4>
+                  <p className="text-xs text-red-400/80 mb-4">
+                    Permanently delete all blog data. This action cannot be
+                    undone.
+                  </p>
+                  <Button
+                    variant="ghost"
+                    className="text-red-400 hover:bg-red-500/20 border-red-500/20"
+                  >
+                    Purge Cache & Rebuild
+                  </Button>
+                </div>
+                <div className="pt-4 border-t border-white/10 flex items-center justify-end">
+                  <Button
+                    onClick={() => showToast("Advanced settings updated!")}
+                  >
                     Save Changes
                   </Button>
                 </div>

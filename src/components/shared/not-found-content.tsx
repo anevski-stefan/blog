@@ -5,7 +5,6 @@ import { gsap } from "gsap"
 import * as THREE from "three"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { CustomCursor } from "@/components/home/CustomCursor"
 
 interface ScrambleItem {
   from: string
@@ -282,8 +281,6 @@ export function NotFoundContent() {
     <div className="relative font-body bg-home-primary text-white min-h-screen overflow-hidden scanlines">
       <div className="noise"></div>
       <div className="broken-grid"></div>
-
-      <CustomCursor />
 
       <canvas
         ref={canvasRef}

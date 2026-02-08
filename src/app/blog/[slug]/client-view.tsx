@@ -1,14 +1,17 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { BlogPost } from "@/lib/blog-data"
+import { BlogPost } from "@/types/blog"
 import { CustomCursor } from "@/components/home/CustomCursor"
 import { BlogNav } from "@/components/blog/blog-nav"
 import { Newsletter } from "@/components/blog/newsletter"
+import { TiptapEditor } from "@/components/blog/editor"
+import { Github, Twitter, Linkedin, Globe } from "lucide-react"
+import { toEditorContent, calculateReadingTime } from "@/lib/utils"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -23,11 +26,9 @@ export function BlogPostClientView({
 }: BlogPostClientViewProps) {
   const [activeSection, setActiveSection] = useState<string>("")
   const [copyState, setCopyState] = useState<"default" | "copied">("default")
+  const articleRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    // Load Prism CSS and JS dynamically if not present
-    // For this implementation, we will inject the CSS and rely on a simple effect for highlighting
-    // or assume standard styles. To match the snippet exactly we inject the CSS.
     const link = document.createElement("link")
     link.rel = "stylesheet"
     link.href =
@@ -40,19 +41,18 @@ export function BlogPostClientView({
   }, [])
 
   useEffect(() => {
-    // Scroll Progress Bar
-    gsap.to("#reading-progress", {
-      scaleX: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "article",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.3,
-      },
-    })
-
     const ctx = gsap.context(() => {
+      gsap.to("#reading-progress", {
+        scaleX: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: articleRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.3,
+        },
+      })
+
       gsap.utils.toArray(".prose h2, .prose h3").forEach(elem => {
         const el = elem as HTMLElement
         gsap.from(el, {
@@ -85,7 +85,18 @@ export function BlogPostClientView({
       })
     })
 
-    return () => ctx.revert()
+    const resizeObserver = new ResizeObserver(() => {
+      ScrollTrigger.refresh()
+    })
+
+    if (articleRef.current) {
+      resizeObserver.observe(articleRef.current)
+    }
+
+    return () => {
+      ctx.revert()
+      resizeObserver.disconnect()
+    }
   }, [])
 
   useEffect(() => {
@@ -349,20 +360,7 @@ export function BlogPostClientView({
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 6v6l4 2" />
                 </svg>
-                {post.readTime} min read
-              </span>
-              <span className="flex items-center gap-1.5">
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                2.4k views
+                {calculateReadingTime(post.content)} min read
               </span>
             </div>
           </div>
@@ -378,16 +376,21 @@ export function BlogPostClientView({
             <div className="flex items-center gap-4">
               <div className="relative w-12 h-12">
                 <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
-                  alt="Alex Chen"
+                  src={
+                    post.authorImage ||
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
+                  }
+                  alt={post.authorName || "Author"}
                   fill
                   className="rounded-full object-cover border-2 border-home-accent/30"
                 />
               </div>
               <div>
-                <p className="font-heading font-medium">Alex Chen</p>
+                <p className="font-heading font-medium">
+                  {post.authorName || "Stefan Anevski"}
+                </p>
                 <p className="text-sm text-home-muted">
-                  Senior Software Engineer
+                  Full Stack Software Engineer
                 </p>
               </div>
             </div>
@@ -491,67 +494,35 @@ export function BlogPostClientView({
                     On this page
                   </h4>
                   <nav id="toc" className="space-y-1">
-                    {/* Note: This is hardcoded for the demo as requested. Ideally generated from content. */}
                     <a
                       href="#introduction"
                       className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "introduction" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
                     >
                       Introduction
                     </a>
-                    <a
-                      href="#why-microservices"
-                      className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "why-microservices" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
-                    >
-                      Why Microservices?
-                    </a>
-                    <a
-                      href="#architecture-overview"
-                      className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "architecture-overview" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
-                    >
-                      Architecture Overview
-                    </a>
-                    <a
-                      href="#implementation"
-                      className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "implementation" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
-                    >
-                      Implementation
-                    </a>
-                    <a
-                      href="#communication"
-                      className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "communication" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
-                    >
-                      Service Communication
-                    </a>
-                    <a
-                      href="#deployment"
-                      className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "deployment" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
-                    >
-                      Deployment Strategy
-                    </a>
-                    <a
-                      href="#monitoring"
-                      className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "monitoring" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
-                    >
-                      Monitoring & Logging
-                    </a>
-                    <a
-                      href="#conclusion"
-                      className={`toc-link block py-2 pl-4 text-sm border-l-2 hover:text-white ${activeSection === "conclusion" ? "active text-home-accent border-home-accent" : "text-home-muted border-white/10"}`}
-                    >
-                      Conclusion
-                    </a>
                   </nav>
                 </div>
               </div>
             </aside>
 
-            <article className="lg:col-span-9 order-1 lg:order-2">
-              <div
-                className="prose max-w-none"
-                dangerouslySetInnerHTML={{
-                  __html: post.content || "<p>Content coming soon...</p>",
-                }}
-              />
+            <article
+              ref={articleRef}
+              className="lg:col-span-9 order-1 lg:order-2"
+            >
+              {typeof post.content === "string" ? (
+                <div
+                  className="prose max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: post.content || "<p>Content coming soon...</p>",
+                  }}
+                />
+              ) : (
+                <TiptapEditor
+                  content={toEditorContent(post.content)}
+                  readOnly={true}
+                  className="prose-invert max-w-none px-0"
+                />
+              )}
 
               <div className="mt-12 pt-8 border-t border-white/10">
                 <div className="flex flex-wrap gap-2">
@@ -572,57 +543,48 @@ export function BlogPostClientView({
                 <div className="flex flex-col sm:flex-row gap-6">
                   <div className="relative w-20 h-20 flex-shrink-0">
                     <Image
-                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80"
-                      alt="Alex Chen"
+                      src={
+                        post.authorImage ||
+                        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80"
+                      }
+                      alt={post.authorName || "Author"}
                       fill
                       className="rounded-full object-cover border-2 border-home-accent/30"
                     />
                   </div>
                   <div>
                     <h4 className="font-heading text-lg font-semibold mb-1">
-                      Written by Alex Chen
+                      Written by {post.authorName || "Stefan Anevski"}
                     </h4>
                     <p className="text-sm text-home-muted mb-4">
-                      Senior Software Engineer with 8+ years of experience
-                      building scalable distributed systems. Passionate about
-                      clean code and developer experience.
+                      {!post.authorName || post.authorName === "Stefan Anevski"
+                        ? "Full Stack Software Engineer bridging the gap between design and development. Passionate about building premium web experiences and AI-native applications."
+                        : `Contributor at ${post.authorName}'s blog. Passionate about software development and sharing knowledge with the community.`}
                     </p>
                     <div className="flex gap-3">
                       <Link
                         href="#"
-                        className="text-home-muted hover:text-home-accent transition-colors"
+                        className="p-2 bg-white/5 rounded-lg text-home-muted hover:text-home-accent hover:bg-home-accent/10 transition-all"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
+                        <Twitter className="w-4 h-4" />
                       </Link>
                       <Link
                         href="#"
-                        className="text-home-muted hover:text-home-accent transition-colors"
+                        className="p-2 bg-white/5 rounded-lg text-home-muted hover:text-home-accent hover:bg-home-accent/10 transition-all"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                        </svg>
+                        <Linkedin className="w-4 h-4" />
                       </Link>
                       <Link
                         href="#"
-                        className="text-home-muted hover:text-home-accent transition-colors"
+                        className="p-2 bg-white/5 rounded-lg text-home-muted hover:text-home-accent hover:bg-home-accent/10 transition-all"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                        </svg>
+                        <Github className="w-4 h-4" />
+                      </Link>
+                      <Link
+                        href="#"
+                        className="p-2 bg-white/5 rounded-lg text-home-muted hover:text-home-accent hover:bg-home-accent/10 transition-all"
+                      >
+                        <Globe className="w-4 h-4" />
                       </Link>
                     </div>
                   </div>
@@ -647,7 +609,7 @@ export function BlogPostClientView({
                     Previous Post
                   </span>
                   <span className="font-heading font-medium group-hover:text-home-accent transition-colors line-clamp-2">
-                    Advanced React Patterns You Should Know
+                    Previous Post Title
                   </span>
                 </Link>
                 <Link
@@ -667,7 +629,7 @@ export function BlogPostClientView({
                     </svg>
                   </span>
                   <span className="font-heading font-medium group-hover:text-home-accent transition-colors line-clamp-2">
-                    Zero-Downtime Deployments with Docker & K8s
+                    Next Post Title
                   </span>
                 </Link>
               </div>
@@ -736,197 +698,11 @@ export function BlogPostClientView({
         </div>
       </section>
 
-      <section className="py-20 px-6 md:px-16 border-t border-white/5 bg-home-secondary/20">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-4 mb-10">
-            <h3 className="font-heading text-2xl font-semibold">Comments</h3>
-            <span className="px-3 py-1 bg-home-accent/20 text-home-accent text-sm font-mono rounded-full">
-              12
-            </span>
-          </div>
-          <form
-            className="mb-12"
-            onSubmit={e => {
-              e.preventDefault()
-              alert("Comment posted! (This is a demo)")
-              ;(e.target as HTMLFormElement).reset()
-            }}
-          >
-            <div className="flex gap-4 mb-4">
-              <div className="relative w-10 h-10 flex-shrink-0">
-                <Image
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"
-                  alt="Your avatar"
-                  fill
-                  className="rounded-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <textarea
-                  placeholder="Share your thoughts..."
-                  rows={3}
-                  className="w-full bg-home-secondary/50 border border-white/10 rounded-xl p-4 text-white placeholder:text-home-muted focus:outline-none focus:border-home-accent/50 resize-none transition-all"
-                ></textarea>
-                <div className="flex justify-between items-center mt-3">
-                  <p className="text-xs text-home-muted">Markdown supported</p>
-                  <button
-                    type="submit"
-                    className="px-6 py-2 bg-home-accent text-white font-heading text-sm font-medium rounded-full hover:bg-home-accent/90 transition-all"
-                  >
-                    Post Comment
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-
-          <div className="space-y-8">
-            <div className="comment-item">
-              <div className="flex gap-4">
-                <div className="relative w-10 h-10 flex-shrink-0">
-                  <Image
-                    src="https://images.unsplash.com/photo-1599566150163-29194dcabd36?w=100&q=80"
-                    alt="User avatar"
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="font-heading font-medium">David Kim</span>
-                    <span className="text-xs text-home-muted">2 days ago</span>
-                  </div>
-                  <p className="text-home-muted text-sm leading-relaxed mb-3">
-                    This is exactly what I needed! The circuit breaker pattern
-                    explanation was particularly helpful. I&apos;ve been
-                    struggling with handling cascading failures in our
-                    microservices setup.
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-1.5 text-xs text-home-muted hover:text-home-accent transition-colors">
-                      <svg
-                        className="w-4 h-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-                      </svg>
-                      24
-                    </button>
-                    <button className="text-xs text-home-muted hover:text-home-accent transition-colors">
-                      Reply
-                    </button>
-                  </div>
-                  <div className="mt-6 pl-6 border-l-2 border-white/10">
-                    <div className="flex gap-4">
-                      <div className="relative w-8 h-8 flex-shrink-0">
-                        <Image
-                          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
-                          alt="Author avatar"
-                          fill
-                          className="rounded-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="font-heading font-medium">
-                            Alex Chen
-                          </span>
-                          <span className="px-2 py-0.5 bg-home-accent/20 text-home-accent text-[10px] font-mono uppercase rounded">
-                            Author
-                          </span>
-                          <span className="text-xs text-home-muted">
-                            2 days ago
-                          </span>
-                        </div>
-                        <p className="text-home-muted text-sm leading-relaxed mb-3">
-                          Thanks David! Glad you found it helpful. Circuit
-                          breakers are definitely a game-changer. Let me know if
-                          you have any questions about implementing them in your
-                          specific setup.
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <button className="flex items-center gap-1.5 text-xs text-home-muted hover:text-home-accent transition-colors">
-                            <svg
-                              className="w-4 h-4"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-                            </svg>
-                            8
-                          </button>
-                          <button className="text-xs text-home-muted hover:text-home-accent transition-colors">
-                            Reply
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="comment-item">
-              <div className="flex gap-4">
-                <div className="relative w-10 h-10 flex-shrink-0">
-                  <Image
-                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80"
-                    alt="User avatar"
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="font-heading font-medium">
-                      Sarah Johnson
-                    </span>
-                    <span className="text-xs text-home-muted">3 days ago</span>
-                  </div>
-                  <p className="text-home-muted text-sm leading-relaxed mb-3">
-                    Great article! One question: How do you handle distributed
-                    transactions across multiple services? We&apos;re running
-                    into consistency issues when a service fails
-                    mid-transaction.
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-1.5 text-xs text-home-muted hover:text-home-accent transition-colors">
-                      <svg
-                        className="w-4 h-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-                      </svg>
-                      15
-                    </button>
-                    <button className="text-xs text-home-muted hover:text-home-accent transition-colors">
-                      Reply
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button className="mt-10 w-full py-4 border border-white/10 rounded-xl text-sm text-home-muted hover:border-home-accent/50 hover:text-home-accent transition-all">
-            Load More Comments
-          </button>
-        </div>
-      </section>
-
       <Newsletter />
 
       <footer className="py-8 md:py-12 px-6 md:px-16 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
         <p className="text-sm text-home-muted">
-          © {new Date().getFullYear()} Alex Chen. All rights reserved.
+          © {new Date().getFullYear()} Stefan Anevski. All rights reserved.
         </p>
         <div className="flex gap-6 md:gap-8">
           <Link

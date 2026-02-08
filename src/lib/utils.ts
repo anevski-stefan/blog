@@ -48,11 +48,13 @@ export function calculateReadingTime(content: unknown): number {
   let wordCount = 0
 
   function extractText(node: unknown): void {
+    if (!node) return
+
     if (typeof node === "string") {
       wordCount += node
         .trim()
         .split(/\s+/)
-        .filter(word => word.length > 0).length
+        .filter(w => w.length > 0).length
       return
     }
 
@@ -61,26 +63,93 @@ export function calculateReadingTime(content: unknown): number {
       return
     }
 
-    if (!node || typeof node !== "object") {
-      return
-    }
+    if (typeof node === "object") {
+      const nodeObj = node as Record<string, unknown>
+      if ("text" in nodeObj && typeof nodeObj.text === "string") {
+        wordCount += nodeObj.text
+          .trim()
+          .split(/\s+/)
+          .filter(w => w.length > 0).length
+      }
 
-    if ("text" in node && typeof node.text === "string") {
-      wordCount += node.text
-        .trim()
-        .split(/\s+/)
-        .filter(word => word.length > 0).length
+      if ("content" in nodeObj && Array.isArray(nodeObj.content)) {
+        extractText(nodeObj.content)
+      }
     }
-
-    if ("content" in node) {
-      extractText(node.content)
-    }
-
-    Object.values(node).forEach(extractText)
   }
 
   extractText(content)
 
   const readingTime = Math.ceil(wordCount / WORDS_PER_MINUTE)
   return Math.max(1, readingTime)
+}
+
+/**
+ * TipTap-compatible content type
+ * Used for passing content to the TiptapEditor component
+ */
+export type TiptapContent = string | object | null | undefined
+
+/**
+ * Safely convert Prisma JsonValue to TipTap editor content
+ * Handles the type mismatch between Prisma's JsonValue (which includes number | boolean)
+ * and TipTap's expected content type (string | object | null | undefined)
+ * @param value - Prisma JsonValue or any content value
+ * @returns TipTap-compatible content, or undefined if the value is not valid content
+ * @example
+ * toEditorContent(post.content) // Safely converts for TiptapEditor
+ */
+export function toEditorContent(value: unknown): TiptapContent {
+  if (value === null || value === undefined) {
+    return value
+  }
+  if (typeof value === "string" || typeof value === "object") {
+    return value
+  }
+  // For number, boolean, or other primitives, return undefined
+  // as they're not valid TipTap content
+  return undefined
+}
+
+/**
+ * Format a date to a relative time string (e.g. "2 minutes ago")
+ * @param date - Date object or ISO date string
+ * @returns Relative time string
+ */
+export function timeAgo(date: Date | string) {
+  const seconds = Math.floor(
+    (new Date().getTime() - new Date(date).getTime()) / 1000
+  )
+
+  let interval = seconds / 31536000
+  if (interval > 1) {
+    const years = Math.floor(interval)
+    return years + (years === 1 ? " year ago" : " years ago")
+  }
+
+  interval = seconds / 2592000
+  if (interval > 1) {
+    const months = Math.floor(interval)
+    return months + (months === 1 ? " month ago" : " months ago")
+  }
+
+  interval = seconds / 86400
+  if (interval > 1) {
+    const days = Math.floor(interval)
+    return days + (days === 1 ? " day ago" : " days ago")
+  }
+
+  interval = seconds / 3600
+  if (interval > 1) {
+    const hours = Math.floor(interval)
+    return hours + (hours === 1 ? " hour ago" : " hours ago")
+  }
+
+  interval = seconds / 60
+  if (interval > 1) {
+    const minutes = Math.floor(interval)
+    return minutes + (minutes === 1 ? " minute ago" : " minutes ago")
+  }
+
+  return "just now"
 }

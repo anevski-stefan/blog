@@ -4,7 +4,6 @@ import {
   FolderOpen,
   Tag,
   Image as ImageIcon,
-  MessageSquare,
 } from "lucide-react"
 
 export const ADMIN_NAV_ITEMS = [
@@ -15,7 +14,7 @@ export const ADMIN_NAV_ITEMS = [
     badge: null,
     group: "Main",
   },
-  { id: "posts", icon: FileText, label: "Posts", badge: "12", group: "Main" },
+  { id: "posts", icon: FileText, label: "Posts", badge: null, group: "Main" },
   {
     id: "categories",
     icon: FolderOpen,
@@ -29,13 +28,6 @@ export const ADMIN_NAV_ITEMS = [
     icon: ImageIcon,
     label: "Media",
     badge: null,
-    group: "Content",
-  },
-  {
-    id: "comments",
-    icon: MessageSquare,
-    label: "Comments",
-    badge: "3",
     group: "Content",
   },
 ]

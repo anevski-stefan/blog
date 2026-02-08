@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -16,24 +10,27 @@ datasource db {
 }
 
 model Post {
-  id          String    @id @default(cuid())
-  title       String
-  slug        String    @unique
-  content     Json?     // Using JSON for Tiptap content
-  excerpt     String?   @db.Text
-  coverImage  String?
-  published   Boolean   @default(false)
-  featured    Boolean   @default(false)
-  views       Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  publishedAt DateTime?
-  authorId    String    // Internal admin ID
-  authorName  String    // Internal admin name
-  categories  Category[]
-  tags        Tag[]
+  id             String     @id @default(cuid())
+  title          String
+  slug           String     @unique
+  content        Json?
+  excerpt        String?
+  coverImage     String?
+  published      Boolean    @default(false)
+  featured       Boolean    @default(false)
+  views          Int        @default(0)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  publishedAt    DateTime?
+  authorId       String
+  authorName     String
+  seoTitle       String?
+  seoDescription String?
+  readingTime    Int?       @default(0)
+  authorImage    String?
+  categories     Category[] @relation("CategoryToPost")
+  tags           Tag[]      @relation("PostToTag")
 
-  // Indexes for performance
   @@index([published])
   @@index([publishedAt])
   @@index([published, publishedAt])
@@ -42,24 +39,56 @@ model Post {
 }
 
 model Category {
-  id          String    @id @default(cuid())
-  name        String    @unique
-  slug        String    @unique
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
   description String?
-  posts       Post[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  posts       Post[]   @relation("CategoryToPost")
 
   @@index([slug])
 }
 
 model Tag {
-  id          String    @id @default(cuid())
-  name        String    @unique
-  slug        String    @unique
-  posts       Post[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]   @relation("PostToTag")
 
   @@index([slug])
+}
+
+model Draft {
+  id          String   @id @default(cuid())
+  title       String?
+  slug        String?
+  content     Json?
+  excerpt     String?
+  coverImage  String?
+  category    String?
+  tags        String?  @default("")
+  isFeatured  Boolean  @default(false)
+  publishDate String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  authorId    String?
+  authorImage String?
+  authorName  String?
+
+  @@index([updatedAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  link      String?  
+  
+  @@index([read])
 }

@@ -122,10 +122,6 @@
   --sidebar-ring: #7cc6fe;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -162,13 +158,6 @@
   .text-outline {
     -webkit-text-stroke: 1px white;
     color: transparent;
-  }
-
-  @media (hover: hover) {
-    .custom-cursor-area,
-    .custom-cursor-area * {
-      cursor: none !important;
-    }
   }
 
   .glass-card {
@@ -340,7 +329,6 @@
     animation-delay: -4s;
   }
 
-  /* Scan Line Effect */
   .scanlines {
     position: relative;
     overflow: hidden;
@@ -456,6 +444,35 @@
     animation: orbit 25s linear infinite reverse;
   }
 
+  @keyframes shimmer {
+    0% {
+      background-position: -100% 0;
+    }
+
+    100% {
+      background-position: 100% 0;
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+    background-size: 200% 100%;
+  }
+
+  .list-view .project-card {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .list-view .project-card {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
   /* ASCII Border */
   .ascii-border {
     position: relative;
@@ -493,5 +510,13 @@
   .link-effect:hover::after {
     transform: scaleX(1);
     transform-origin: left;
+  }
+
+  .ProseMirror p.is-editor-empty:first-child::before {
+    color: #888888;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
   }
 }

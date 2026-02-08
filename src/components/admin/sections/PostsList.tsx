@@ -2,6 +2,7 @@
 
 import React from "react"
 import { Edit, Eye, Trash2 } from "lucide-react"
+import Link from "next/link"
 import { PostsListProps } from "@/types/admin"
 import { Badge } from "../ui/Badge"
 import { Button } from "../ui/Button"
@@ -27,13 +28,7 @@ export function PostsList({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="font-heading text-xl font-semibold text-white">
-            All Posts
-          </h2>
-          <p className="text-sm text-[#888888]">Manage your blog posts</p>
-        </div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-4">
         <div className="flex items-center gap-3">
           <Input
             type="text"
@@ -83,81 +78,94 @@ export function PostsList({
               </tr>
             </thead>
             <tbody>
-              {filteredPosts.map(post => (
-                <tr
-                  key={post.id}
-                  className="border-b border-white/5 hover:bg-white/[0.03] transition-colors"
-                >
-                  <td className="p-4">
-                    <input
-                      type="checkbox"
-                      checked={selectedPosts.includes(post.id)}
-                      onChange={() => {
-                        setSelectedPosts(prev =>
-                          prev.includes(post.id)
-                            ? prev.filter(p => p !== post.id)
-                            : [...prev, post.id]
-                        )
-                      }}
-                      className="w-4 h-4 rounded accent-[#5865F2]"
-                    />
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      {post.featured && (
-                        <span className="w-1 h-8 bg-[#5865F2] rounded-full" />
-                      )}
-                      <div>
-                        <p className="font-medium text-sm text-white">
-                          {post.title}
-                        </p>
-                        <p className="text-xs text-[#888888]">
-                          /blog/{post.slug}
-                        </p>
+              {filteredPosts.length > 0 ? (
+                filteredPosts.map(post => (
+                  <tr
+                    key={post.id}
+                    className="border-b border-white/5 hover:bg-white/[0.03] transition-colors"
+                  >
+                    <td className="p-4">
+                      <input
+                        type="checkbox"
+                        checked={selectedPosts.includes(post.id)}
+                        onChange={() => {
+                          setSelectedPosts(prev =>
+                            prev.includes(post.id)
+                              ? prev.filter(p => p !== post.id)
+                              : [...prev, post.id]
+                          )
+                        }}
+                        className="w-4 h-4 rounded accent-[#5865F2]"
+                      />
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        {post.featured && (
+                          <span className="w-1 h-8 bg-[#5865F2] rounded-full" />
+                        )}
+                        <div>
+                          <p className="font-medium text-sm text-white">
+                            {post.title}
+                          </p>
+                          <p className="text-xs text-[#888888]">
+                            /blog/{post.slug}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="p-4 hidden md:table-cell">
-                    <Badge variant="info">{post.category}</Badge>
-                  </td>
-                  <td className="p-4 hidden lg:table-cell">
-                    <Badge
-                      variant={
-                        post.status === "published" ? "success" : "warning"
-                      }
-                    >
-                      {post.status}
-                    </Badge>
-                  </td>
-                  <td className="p-4 hidden lg:table-cell">
-                    <span className="text-sm text-[#888888]">
-                      {post.views.toLocaleString()}
-                    </span>
-                  </td>
-                  <td className="p-4 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        icon={Edit}
-                        title="Edit"
-                      />
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        icon={Eye}
-                        title="View"
-                      />
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        icon={Trash2}
-                        title="Delete"
-                      />
-                    </div>
+                    </td>
+                    <td className="p-4 hidden md:table-cell">
+                      <Badge variant="info">{post.category}</Badge>
+                    </td>
+                    <td className="p-4 hidden lg:table-cell">
+                      <Badge
+                        variant={
+                          post.status === "published" ? "success" : "warning"
+                        }
+                      >
+                        {post.status}
+                      </Badge>
+                    </td>
+                    <td className="p-4 hidden lg:table-cell">
+                      <span className="text-sm text-[#888888]">
+                        {post.views.toLocaleString()}
+                      </span>
+                    </td>
+                    <td className="p-4 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <Link href={`/blog/edit/${post.id}`}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            icon={Edit}
+                            title="Edit"
+                          />
+                        </Link>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          icon={Eye}
+                          title="View"
+                        />
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          icon={Trash2}
+                          title="Delete"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="p-12 text-center text-[#888888] text-sm italic border-none"
+                  >
+                    No posts found matching your search.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

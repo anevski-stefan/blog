@@ -1,7 +1,7 @@
 import { LucideIcon } from "lucide-react"
 
 export interface Post {
-  id: number
+  id: string | number
   title: string
   slug: string
   category: string
@@ -12,7 +12,7 @@ export interface Post {
 }
 
 export interface Category {
-  id: number
+  id: string | number
   name: string
   slug: string
   color?: string
@@ -20,14 +20,14 @@ export interface Category {
 }
 
 export interface Tag {
-  id: number
+  id: string | number
   name: string
   slug: string
   count: number
 }
 
 export interface MediaItem {
-  id: number
+  id: string | number
   url: string
   name: string
   size: string
@@ -35,14 +35,19 @@ export interface MediaItem {
   uploadedAt: string
 }
 
-export interface Comment {
-  id: number
-  author: string
-  avatar: string
-  content: string
-  post: string
-  date: string
-  status: "pending" | "approved" | "spam"
+export interface Activity {
+  icon: string
+  color: string
+  bgColor: string
+  text: string
+  time: string
+}
+
+export interface AdminData {
+  posts: Post[]
+  categories: Category[]
+  tags: Tag[]
+  mediaItems: MediaItem[]
 }
 
 export interface AdminStats {
@@ -50,7 +55,7 @@ export interface AdminStats {
   value: string
   change: string
   trend: "up" | "down"
-  icon: LucideIcon
+  icon: string
 }
 
 export interface NavItem {
@@ -62,6 +67,8 @@ export interface NavItem {
 }
 
 export interface OverviewProps {
+  stats: AdminStats[]
+  activities: Activity[]
   setShowCategoryModal: (show: boolean) => void
   setShowTagModal: (show: boolean) => void
   setCurrentSection: (section: string) => void
@@ -73,18 +80,20 @@ export interface PostsListProps {
   setSearchQuery: (query: string) => void
   statusFilter: string
   setStatusFilter: (filter: string) => void
-  selectedPosts: number[]
-  setSelectedPosts: React.Dispatch<React.SetStateAction<number[]>>
+  selectedPosts: (string | number)[]
+  setSelectedPosts: React.Dispatch<React.SetStateAction<(string | number)[]>>
 }
 
 export interface CategoriesProps {
   categories: Category[]
   setShowCategoryModal: (show: boolean) => void
+  onDelete?: (id: string | number) => void
 }
 
 export interface TagsProps {
   tags: Tag[]
   setShowTagModal: (show: boolean) => void
+  onDelete?: (id: string | number) => void
 }
 
 export interface MediaLibraryProps {
@@ -93,14 +102,6 @@ export interface MediaLibraryProps {
   setMediaView: (view: "grid" | "list") => void
   setSelectedMediaItem: (item: MediaItem) => void
   setShowMediaModal: (show: boolean) => void
-}
-
-export interface CommentsProps {
-  comments: Comment[]
-  commentFilter: string
-  setCommentFilter: (filter: string) => void
-  showToast: (msg: string) => void
-  setShowReplyModal: (show: boolean) => void
 }
 
 export interface SettingsProps {

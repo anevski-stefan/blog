@@ -1,11 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { UploadDropzone } from "@uploadthing/react"
+import { UploadDropzone } from "@/lib/uploadthing"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import Image from "next/image"
-import type { OurFileRouter } from "@/app/api/uploadthing/core"
 import { useToast } from "@/components/ui/use-toast"
 
 interface ImageUploadProps {
@@ -46,7 +45,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
           </div>
         ) : (
           <div className="w-full max-w-[300px]">
-            <UploadDropzone<OurFileRouter, "imageUploader">
+            <UploadDropzone
               endpoint="imageUploader"
               onUploadBegin={() => {
                 setIsLoading(true)

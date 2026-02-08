@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
@@ -11,81 +12,122 @@ import {
   Eye,
   Send,
   X,
-  Image as ImageIcon,
-  Bold,
-  Italic,
-  Strikethrough,
-  Heading2,
-  Heading3,
-  List,
-  ListOrdered,
-  Quote,
-  Code,
-  Braces,
-  Link as LinkIcon,
-  Minus,
   Check,
-  Clock,
-  Calendar,
-  Tag,
+  Twitter,
+  Linkedin,
+  Github,
   FolderOpen,
   Settings,
 } from "lucide-react"
+import { createPost, updatePost } from "@/actions/blog"
+import { saveDraft } from "@/actions/drafts"
+import { TiptapEditor } from "@/components/blog/editor"
+import { User } from "@supabase/supabase-js"
+import { UploadDropzone } from "@/lib/uploadthing"
+import { calculateReadingTime } from "@/lib/utils"
+import { PostWithRelations } from "@/types/posts"
 
-export function CreatePostForm() {
-  const [title, setTitle] = useState("")
-  const [slug, setSlug] = useState("")
-  const [excerpt, setExcerpt] = useState("")
-  const [content, setContent] = useState("")
-  const [category, setCategory] = useState("")
-  const [tags, setTags] = useState<string[]>([])
+interface CreatePostFormProps {
+  user?: User | null
+  categories?: { name: string; slug: string }[]
+  availableTags?: { name: string; slug: string }[]
+  initialDraftId?: string
+  initialPost?: PostWithRelations
+}
+
+export function CreatePostForm({
+  user,
+  categories = [],
+  availableTags = [],
+  initialDraftId,
+  initialPost,
+}: CreatePostFormProps) {
+  const router = useRouter()
+  const [draftId, setDraftId] = useState<string | undefined>(initialDraftId)
+
+  const [title, setTitle] = useState(initialPost?.title || "")
+  const [slug, setSlug] = useState(initialPost?.slug || "")
+  const [excerpt, setExcerpt] = useState(initialPost?.excerpt || "")
+  const [content, setContent] = useState<string | object>(
+    (initialPost?.content as object) || ""
+  )
+
+  const [category, setCategory] = useState(
+    initialPost?.categories?.[0]?.name || ""
+  )
+
+  const [tags, setTags] = useState<string[]>(
+    initialPost?.tags?.map(t => t.name) || []
+  )
+
   const [tagInput, setTagInput] = useState("")
-  const [featuredImage, setFeaturedImage] = useState<string | null>(null)
-  const [isFeatured, setIsFeatured] = useState(false)
-  const [status, setStatus] = useState<"draft" | "published">("draft")
-  const [publishDate, setPublishDate] = useState("")
+  const [showTagSuggestions, setShowTagSuggestions] = useState(false)
+  const filteredTags = availableTags
+    .filter(
+      t =>
+        t.name.toLowerCase().includes(tagInput.toLowerCase()) &&
+        !tags.includes(t.name)
+    )
+    .slice(0, 5)
+
+  const [featuredImage, setFeaturedImage] = useState<string | null>(
+    initialPost?.coverImage || null
+  )
+  const [isFeatured, setIsFeatured] = useState(initialPost?.featured || false)
+  const [status, setStatus] = useState<"draft" | "published">(
+    initialPost?.published ? "published" : "draft"
+  )
+
+  const getInitialDate = () => {
+    if (initialPost?.publishedAt) {
+      const date = new Date(initialPost.publishedAt)
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+      return date.toISOString().slice(0, 16)
+    }
+    return ""
+  }
+
+  const [publishDate, setPublishDate] = useState(getInitialDate())
   const [showPreview, setShowPreview] = useState(false)
   const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "idle">(
     "idle"
   )
 
-  const [showLinkModal, setShowLinkModal] = useState(false)
-  const [showImageModal, setShowImageModal] = useState(false)
-  const [linkData, setLinkData] = useState({ text: "", url: "" })
-  const [imageData, setImageData] = useState({ alt: "", url: "" })
-
   const containerRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLInputElement>(null)
-  const contentRef = useRef<HTMLTextAreaElement>(null)
-  const sidebarRef = useRef<HTMLElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
   const cursorDotRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const now = new Date()
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
-    setPublishDate(now.toISOString().slice(0, 16))
-    const saved = localStorage.getItem("blog-draft")
-    if (saved) {
-      try {
-        const data = JSON.parse(saved)
-        setTitle(data.title || "")
-        setSlug(data.slug || "")
-        setExcerpt(data.excerpt || "")
-        setContent(data.content || "")
-        setCategory(data.category || "")
-        setTags(data.tags || [])
-        setIsFeatured(data.isFeatured || false)
-        setStatus(data.status || "draft")
-        if (data.featuredImage && data.featuredImage.startsWith("data:")) {
-          setFeaturedImage(data.featuredImage)
+    if (!initialPost) {
+      if (!publishDate) {
+        const now = new Date()
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
+        setPublishDate(now.toISOString().slice(0, 16))
+      }
+
+      const saved = localStorage.getItem("blog-draft")
+      if (saved) {
+        try {
+          const data = JSON.parse(saved)
+          setDraftId(data.draftId)
+          setTitle(data.title || "")
+          setSlug(data.slug || "")
+          setExcerpt(data.excerpt || "")
+          setContent(data.content || "")
+          setCategory(data.category || "")
+          setTags(data.tags || [])
+          setIsFeatured(data.isFeatured || false)
+          setStatus(data.status || "draft")
+          if (data.featuredImage && data.featuredImage.startsWith("data:")) {
+            setFeaturedImage(data.featuredImage)
+          }
+          if (data.publishDate) setPublishDate(data.publishDate)
+        } catch (e) {
+          console.error("Failed to load draft", e)
         }
-        if (data.publishDate) setPublishDate(data.publishDate)
-      } catch (e) {
-        console.error("Failed to load draft", e)
       }
     }
-  }, [])
+  }, [initialPost, publishDate])
 
   useGSAP(
     () => {
@@ -169,6 +211,7 @@ export function CreatePostForm() {
 
     saveTimeoutRef.current = setTimeout(() => {
       const data = {
+        draftId,
         title,
         slug,
         excerpt,
@@ -197,6 +240,7 @@ export function CreatePostForm() {
     status,
     publishDate,
     featuredImage,
+    draftId,
   ])
 
   useEffect(() => {
@@ -231,58 +275,89 @@ export function CreatePostForm() {
     setTags(tags.filter(t => t !== tagToRemove))
   }
 
-  const handleImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement> | React.DragEvent
-  ) => {
-    e.preventDefault()
-    let file: File | undefined
+  const handleSaveDraft = async () => {
+    setSaveStatus("saving")
+    try {
+      const result = await saveDraft({
+        id: draftId,
+        title,
+        slug,
+        content:
+          typeof content === "string" ? content : JSON.stringify(content),
+        excerpt,
+        coverImage: featuredImage,
+        category,
+        tags,
+        isFeatured,
+        publishDate,
+      })
 
-    if ("files" in e.target && e.target.files) {
-      file = e.target.files[0]
-    } else if ("dataTransfer" in e && e.dataTransfer.files) {
-      file = e.dataTransfer.files[0]
+      if (result.success && result.draftId) {
+        setDraftId(result.draftId)
+        setSaveStatus("saved")
+        const currentDraft = JSON.parse(
+          localStorage.getItem("blog-draft") || "{}"
+        )
+        localStorage.setItem(
+          "blog-draft",
+          JSON.stringify({ ...currentDraft, draftId: result.draftId })
+        )
+      } else {
+        console.error(result.error)
+        setSaveStatus("idle")
+      }
+    } catch (e) {
+      console.error("Failed to save draft:", e)
+      setSaveStatus("idle")
     }
 
-    if (file && file.type.startsWith("image/")) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Image must be less than 5MB")
-        return
-      }
-      const reader = new FileReader()
-      reader.onload = ev => {
-        setFeaturedImage(ev.target?.result as string)
-      }
-      reader.readAsDataURL(file)
+    setTimeout(() => setSaveStatus("idle"), 3000)
+  }
+
+  const handlePublish = async () => {
+    setSaveStatus("saving")
+    const formData = new FormData()
+    formData.set("title", title)
+    formData.set("slug", slug)
+    formData.set("excerpt", excerpt)
+    formData.set(
+      "content",
+      typeof content === "string" ? content : JSON.stringify(content)
+    )
+    formData.set("category", category)
+    formData.set("tags", tags.join(","))
+    formData.set("coverImage", featuredImage || "")
+    formData.set("status", status)
+    formData.set("featured", String(isFeatured))
+    formData.set("publishDate", publishDate)
+    if (draftId) formData.set("draftId", draftId)
+
+    if (draftId) formData.set("draftId", draftId)
+
+    const readingTime = calculateReadingTime(content)
+    formData.set("readingTime", String(readingTime))
+
+    formData.set("seoTitle", title)
+    formData.set("seoDescription", excerpt)
+
+    let result
+
+    if (initialPost) {
+      formData.set("postId", initialPost.id)
+      result = await updatePost(formData)
+    } else {
+      result = await createPost(formData)
+    }
+
+    if (result?.error) {
+      console.error(result.error)
+      alert(`Error: ${result.error}`)
+      setSaveStatus("idle")
+    } else if (result?.success && result?.slug) {
+      localStorage.removeItem("blog-draft")
+      router.push(`/blog/${result.slug}`)
     }
   }
-
-  const insertText = (before: string, after: string = "") => {
-    const textarea = contentRef.current
-    if (!textarea) return
-
-    const start = textarea.selectionStart
-    const end = textarea.selectionEnd
-    const text = textarea.value
-    const selected = text.substring(start, end)
-
-    const insertion = `${before}${selected}${after}`
-    const newValue = text.substring(0, start) + insertion + text.substring(end)
-
-    setContent(newValue)
-
-    setTimeout(() => {
-      textarea.focus()
-      const newCursorPos =
-        start + before.length + selected.length + after.length
-      textarea.setSelectionRange(newCursorPos, newCursorPos)
-    }, 0)
-  }
-
-  const wordCount = content
-    .trim()
-    .split(/\s+/)
-    .filter(w => w).length
-  const readingTime = Math.max(1, Math.ceil(wordCount / 200))
 
   return (
     <div
@@ -318,7 +393,7 @@ export function CreatePostForm() {
             </Link>
             <div className="w-px h-6 bg-white/10 hidden sm:block" />
             <h1 className="font-heading font-semibold text-lg tracking-tight">
-              Create New Post
+              {initialPost ? "Edit Post" : "Create New Post"}
             </h1>
           </div>
 
@@ -353,18 +428,25 @@ export function CreatePostForm() {
               </span>
             </button>
             <button
-              onClick={() => {
-                setStatus("draft")
-                triggerAutoSave()
-              }}
-              className="flex items-center gap-2 px-4 py-2 text-sm bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all"
+              onClick={() =>
+                status === "published" || initialPost
+                  ? handlePublish()
+                  : handleSaveDraft()
+              }
+              disabled={saveStatus === "saving"}
+              className="flex items-center gap-2 px-5 py-2 text-sm bg-[#5865F2] hover:bg-[#5865F2]/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all shadow-lg shadow-[#5865F2]/20"
             >
-              <Save className="w-4 h-4" />
-              <span className="hidden sm:inline">Save Draft</span>
-            </button>
-            <button className="flex items-center gap-2 px-5 py-2 text-sm bg-[#5865F2] hover:bg-[#5865F2]/90 text-white font-medium rounded-lg transition-all shadow-lg shadow-[#5865F2]/20">
-              <Send className="w-4 h-4" />
-              <span>Publish</span>
+              {status === "published" ? (
+                <>
+                  <Send className="w-4 h-4" />
+                  <span>{initialPost ? "Update Post" : "Publish"}</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  <span>Save Draft</span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -378,7 +460,6 @@ export function CreatePostForm() {
             <div className="space-y-8 animate-in">
               <div>
                 <input
-                  ref={titleRef}
                   type="text"
                   placeholder="Post title..."
                   value={title}
@@ -435,8 +516,6 @@ export function CreatePostForm() {
                 </label>
                 <div
                   className={`relative border-2 border-dashed border-white/10 rounded-xl p-8 text-center transition-all ${featuredImage ? "border-none p-0 overflow-hidden" : "hover:border-[#5865F2]/50 hover:bg-[#5865F2]/5"}`}
-                  onDragOver={e => e.preventDefault()}
-                  onDrop={handleImageUpload}
                 >
                   {featuredImage ? (
                     <div className="relative group">
@@ -446,6 +525,7 @@ export function CreatePostForm() {
                         width={800}
                         height={400}
                         className="w-full h-auto rounded-xl object-cover"
+                        unoptimized
                       />
                       <button
                         onClick={() => setFeaturedImage(null)}
@@ -455,26 +535,26 @@ export function CreatePostForm() {
                       </button>
                     </div>
                   ) : (
-                    <>
-                      <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
-                        <ImageIcon className="w-6 h-6 text-[#888888]" />
-                      </div>
-                      <p className="text-[#888888] mb-2">
-                        Drag & drop an image, or{" "}
-                        <label className="text-[#5865F2] cursor-pointer hover:underline">
-                          browse
-                          <input
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                          />
-                        </label>
-                      </p>
-                      <p className="text-xs text-[#888888]/60">
-                        Recommended: 1600×900px, max 5MB
-                      </p>
-                    </>
+                    <UploadDropzone
+                      endpoint="imageUploader"
+                      onClientUploadComplete={res => {
+                        if (res?.[0]) {
+                          setFeaturedImage(res[0].url)
+                        }
+                      }}
+                      onUploadError={(error: Error) => {
+                        alert(`Upload failed: ${error.message}`)
+                      }}
+                      appearance={{
+                        container: "border-none bg-transparent h-auto p-0",
+                        uploadIcon: "text-[#5865F2]",
+                        label:
+                          "text-[#888888] hover:text-white transition-colors",
+                        allowedContent: "text-[#888888]/60",
+                        button:
+                          "bg-[#5865F2] hover:bg-[#5865F2]/90 transition-all px-6 py-2 shadow-lg shadow-[#5865F2]/20 ut-ready:bg-[#5865F2] ut-uploading:bg-[#5865F2]/50",
+                      }}
+                    />
                   )}
                 </div>
               </div>
@@ -484,107 +564,11 @@ export function CreatePostForm() {
                   Content
                 </label>
                 <div className="border border-white/10 rounded-xl overflow-hidden bg-[#111111]/30 focus-within:border-[#5865F2] focus-within:ring-1 focus-within:ring-[#5865F2] transition-all">
-                  <div className="flex flex-wrap items-center gap-1 p-2 border-b border-white/10 bg-[#111111]/50 sticky top-0 z-10">
-                    {[
-                      {
-                        icon: Bold,
-                        action: () => insertText("**", "**"),
-                        title: "Bold",
-                      },
-                      {
-                        icon: Italic,
-                        action: () => insertText("*", "*"),
-                        title: "Italic",
-                      },
-                      {
-                        icon: Strikethrough,
-                        action: () => insertText("~~", "~~"),
-                        title: "Strike",
-                      },
-                      { separator: true },
-                      {
-                        icon: Heading2,
-                        action: () => insertText("\n## "),
-                        title: "H2",
-                      },
-                      {
-                        icon: Heading3,
-                        action: () => insertText("\n### "),
-                        title: "H3",
-                      },
-                      { separator: true },
-                      {
-                        icon: List,
-                        action: () => insertText("\n- "),
-                        title: "List",
-                      },
-                      {
-                        icon: ListOrdered,
-                        action: () => insertText("\n1. "),
-                        title: "Ordered List",
-                      },
-                      {
-                        icon: Quote,
-                        action: () => insertText("\n> "),
-                        title: "Quote",
-                      },
-                      { separator: true },
-                      {
-                        icon: Code,
-                        action: () => insertText("`", "`"),
-                        title: "Code",
-                      },
-                      {
-                        icon: Braces,
-                        action: () =>
-                          insertText("\n```javascript\n", "\n```\n"),
-                        title: "Code Block",
-                      },
-                      { separator: true },
-                      {
-                        icon: LinkIcon,
-                        action: () => setShowLinkModal(true),
-                        title: "Link",
-                      },
-                      {
-                        icon: ImageIcon,
-                        action: () => setShowImageModal(true),
-                        title: "Image",
-                      },
-                      { separator: true },
-                      {
-                        icon: Minus,
-                        action: () => insertText("\n---\n"),
-                        title: "Divider",
-                      },
-                    ].map((item, i) =>
-                      item.separator ? (
-                        <div key={i} className="w-px h-5 bg-white/10 mx-1" />
-                      ) : (
-                        item.icon && (
-                          <button
-                            key={i}
-                            onClick={item.action}
-                            className="p-1.5 text-[#888888] hover:text-[#5865F2] hover:bg-[#5865F2]/10 rounded transition-colors"
-                            title={item.title}
-                          >
-                            <item.icon className="w-4 h-4" />
-                          </button>
-                        )
-                      )
-                    )}
-                    <div className="flex-1" />
-                    <span className="text-xs font-mono text-[#888888] px-2">
-                      {wordCount} words
-                    </span>
-                  </div>
-
-                  <textarea
-                    ref={contentRef}
-                    value={content}
-                    onChange={e => setContent(e.target.value)}
+                  <TiptapEditor
+                    content={content}
+                    onChange={setContent}
                     placeholder="Write your story..."
-                    className="w-full h-[600px] bg-transparent p-6 outline-none font-mono text-sm leading-relaxed resize-none"
+                    className="min-h-[600px] bg-transparent text-white prose-invert border-none shadow-none rounded-none focus:outline-none"
                   />
                 </div>
               </div>
@@ -593,8 +577,7 @@ export function CreatePostForm() {
         </div>
 
         <aside
-          ref={sidebarRef}
-          className={`hidden lg:block w-80 border-l border-white/5 bg-[#111111]/20 p-6 sidebar-animate-in ${showPreview ? "hidden" : "block"}`}
+          className={`hidden lg:block w-80 border-l border-white/5 bg-[#111111]/20 p-6 sidebar-animate-in ${showPreview ? "!hidden" : ""}`}
         >
           <div className="sticky top-24 space-y-6">
             <div className="bg-[#111111]/40 border border-white/5 rounded-xl p-5 space-y-4">
@@ -625,12 +608,11 @@ export function CreatePostForm() {
                   Publish Date
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
                   <input
                     type="datetime-local"
                     value={publishDate}
                     onChange={e => setPublishDate(e.target.value)}
-                    className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg py-2 pl-10 pr-3 text-xs focus:border-[#5865F2] outline-none"
+                    className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg py-2 px-3 text-xs focus:border-[#5865F2] outline-none appearance-none"
                   />
                 </div>
               </div>
@@ -664,10 +646,11 @@ export function CreatePostForm() {
                   className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg py-2 px-3 text-sm focus:border-[#5865F2] outline-none appearance-none"
                 >
                   <option value="">Select category...</option>
-                  <option value="architecture">Architecture</option>
-                  <option value="react">React</option>
-                  <option value="devops">DevOps</option>
-                  <option value="typescript">TypeScript</option>
+                  {categories.map(cat => (
+                    <option key={cat.slug} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -675,27 +658,57 @@ export function CreatePostForm() {
                 <label className="block text-xs text-[#888888] mb-2">
                   Tags
                 </label>
-                <div className="bg-[#0a0a0a] border border-white/10 rounded-lg p-2">
-                  <div className="flex flex-wrap gap-2 mb-2">
+                <div className="relative">
+                  <div className="bg-[#0a0a0a] border border-white/10 rounded-lg p-2 flex flex-wrap gap-2 items-center min-h-[42px] focus-within:border-[#5865F2] transition-colors">
                     {tags.map(tag => (
                       <span
                         key={tag}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#5865F2]/20 text-[#5865F2] text-[10px] rounded hover:bg-[#5865F2]/30 transition-colors"
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-[#5865F2]/20 text-[#5865F2] text-[10px] font-medium rounded hover:bg-[#5865F2]/30 transition-colors"
                       >
                         {tag}
-                        <button onClick={() => removeTag(tag)}>
+                        <button
+                          onClick={() => removeTag(tag)}
+                          className="hover:text-white transition-colors"
+                        >
                           <X className="w-3 h-3" />
                         </button>
                       </span>
                     ))}
+                    <input
+                      value={tagInput}
+                      onChange={e => {
+                        setTagInput(e.target.value)
+                        setShowTagSuggestions(true)
+                      }}
+                      onFocus={() => setShowTagSuggestions(true)}
+                      onBlur={() =>
+                        setTimeout(() => setShowTagSuggestions(false), 200)
+                      }
+                      onKeyDown={handleTagAdd}
+                      placeholder={tags.length === 0 ? "Add tags..." : ""}
+                      className="flex-1 bg-transparent text-xs outline-none min-w-[80px] py-1"
+                    />
                   </div>
-                  <input
-                    value={tagInput}
-                    onChange={e => setTagInput(e.target.value)}
-                    onKeyDown={handleTagAdd}
-                    placeholder="Add tag..."
-                    className="w-full bg-transparent text-xs outline-none"
-                  />
+                  {showTagSuggestions &&
+                    tagInput &&
+                    filteredTags.length > 0 && (
+                      <div className="absolute left-0 right-0 top-full mt-2 bg-[#111111] border border-white/10 rounded-lg shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                        {filteredTags.map(tag => (
+                          <button
+                            key={tag.slug}
+                            onMouseDown={e => {
+                              e.preventDefault()
+                              setTags([...tags, tag.name])
+                              setTagInput("")
+                              setShowTagSuggestions(false)
+                            }}
+                            className="w-full text-left px-3 py-2 text-xs text-[#888888] hover:bg-[#5865F2]/10 hover:text-white transition-colors border-b border-white/5 last:border-0"
+                          >
+                            #{tag.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
@@ -709,9 +722,12 @@ export function CreatePostForm() {
                 <div className="text-[#1a0dab] text-sm font-medium truncate hover:underline cursor-pointer">
                   {title || "Post Title"}
                 </div>
-                <div className="text-[#006621] text-xs flex items-center gap-1">
-                  alexchen.dev <span className="text-gray-400">›</span> blog{" "}
-                  <span className="text-gray-400">›</span> {slug || "post-slug"}
+                <div className="text-[#006621] text-xs flex items-center gap-1 truncate max-w-full">
+                  <span className="shrink-0">anevski.xyz</span>
+                  <span className="text-gray-400 shrink-0">›</span>
+                  <span className="shrink-0">blog</span>
+                  <span className="text-gray-400 shrink-0">›</span>
+                  <span className="truncate">{slug || "post-slug"}</span>
                 </div>
                 <div className="text-[#545454] text-xs line-clamp-2 mt-1">
                   {excerpt || "Meta description will appear here..."}
@@ -722,149 +738,119 @@ export function CreatePostForm() {
         </aside>
 
         {showPreview && (
-          <div className="flex-1 max-w-4xl mx-auto px-6 py-8 animate-in">
-            <div className="prose prose-invert prose-lg max-w-none">
-              <div className="mb-8 not-prose">
-                {category && (
-                  <span className="text-[#5865F2] font-mono text-xs uppercase tracking-wider mb-4 block">
-                    {category}
-                  </span>
-                )}
-                <h1 className="text-4xl md:text-5xl font-heading font-bold mb-6 text-white">
-                  {title || "Untitled"}
+          <div className="flex-1 w-full bg-home-primary text-white min-h-screen animate-in overflow-y-auto overflow-x-hidden">
+            <header className="pt-20 md:pt-24 pb-12 px-6 md:px-16">
+              <div className="max-w-4xl mx-auto">
+                <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] mb-8 text-white">
+                  {title || "Untitled Post"}
                 </h1>
-                <div className="flex items-center gap-4 text-[#888888] text-sm border-b border-white/10 pb-8">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />{" "}
-                    {new Date(publishDate).toLocaleDateString()}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" /> {readingTime} min read
-                  </span>
-                  {tags.length > 0 && (
-                    <div className="flex items-center gap-2 ml-auto">
-                      <Tag className="w-4 h-4" />
-                      {tags.join(", ")}
+
+                {excerpt && (
+                  <p className="text-lg md:text-xl text-home-muted leading-relaxed mb-10 max-w-3xl">
+                    {excerpt}
+                  </p>
+                )}
+
+                <div className="flex items-center justify-between flex-wrap gap-6 pb-10 border-b border-white/10">
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-12 h-12">
+                      <div className="w-full h-full rounded-full bg-home-accent/20 border border-home-accent/30 flex items-center justify-center text-home-accent text-xs font-bold overflow-hidden">
+                        {user?.user_metadata?.avatar_url ||
+                        user?.user_metadata?.picture ? (
+                          <Image
+                            src={
+                              (user?.user_metadata?.avatar_url ||
+                                user?.user_metadata?.picture) as string
+                            }
+                            alt={user?.user_metadata?.full_name || "Author"}
+                            fill
+                            className="object-cover rounded-full"
+                            unoptimized
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : user?.user_metadata?.full_name ? (
+                          (user.user_metadata.full_name as string)
+                            .split(" ")
+                            .map((n: string) => n[0])
+                            .join("")
+                        ) : (
+                          "SA"
+                        )}
+                      </div>
                     </div>
-                  )}
+                    <div>
+                      <p className="font-heading font-medium text-white">
+                        {user?.user_metadata?.full_name || "Stefan Anevski"}
+                      </p>
+                      <p className="text-sm text-home-muted">
+                        Full Stack Software Engineer
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="p-2 bg-white/5 rounded-lg text-home-muted transition-all">
+                      <Twitter className="w-4 h-4" />
+                    </div>
+                    <div className="p-2 bg-white/5 rounded-lg text-home-muted transition-all">
+                      <Linkedin className="w-4 h-4" />
+                    </div>
+                    <div className="p-2 bg-white/5 rounded-lg text-home-muted transition-all">
+                      <Github className="w-4 h-4" />
+                    </div>
+                  </div>
                 </div>
               </div>
+            </header>
 
-              {featuredImage && (
-                <div className="mb-10 rounded-2xl overflow-hidden border border-white/10">
-                  <Image
-                    src={featuredImage}
-                    alt="Featured"
-                    width={1200}
-                    height={600}
-                    className="w-full h-auto"
-                  />
+            {featuredImage && (
+              <div className="px-6 md:px-16 mb-16">
+                <div className="max-w-5xl mx-auto">
+                  <div className="relative aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl">
+                    <Image
+                      src={featuredImage}
+                      alt={title || "Featured"}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-home-primary/60 via-transparent to-transparent"></div>
+                  </div>
                 </div>
-              )}
+              </div>
+            )}
 
-              <div className="text-[#d1d5db] font-light leading-loose whitespace-pre-wrap">
-                {content || (
-                  <span className="italic text-[#888888]">
-                    Start writing to see the preview...
-                  </span>
-                )}
+            <div className="px-6 md:px-16 pb-32">
+              <div className="max-w-4xl mx-auto">
+                <article>
+                  <TiptapEditor
+                    content={content}
+                    readOnly={true}
+                    className="prose-invert max-w-none px-0"
+                  />
+
+                  {tags.length > 0 && (
+                    <div className="mt-12 pt-8 border-t border-white/10">
+                      <div className="flex flex-wrap gap-2">
+                        <span className="text-sm text-home-muted mr-2">
+                          Tags:
+                        </span>
+                        {tags.map(tag => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-mono text-white/70"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </article>
               </div>
             </div>
           </div>
         )}
       </main>
-
-      {showLinkModal && (
-        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
-          <div className="bg-[#111111] border border-white/10 rounded-xl p-6 w-full max-w-md space-y-4">
-            <h3 className="font-heading font-bold text-lg">Insert Link</h3>
-            <div>
-              <label className="text-xs text-[#888888]">Text</label>
-              <input
-                className="w-full bg-[#0a0a0a] border border-white/10 rounded p-2 text-sm focus:border-[#5865F2] outline-none"
-                value={linkData.text}
-                onChange={e =>
-                  setLinkData({ ...linkData, text: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label className="text-xs text-[#888888]">URL</label>
-              <input
-                className="w-full bg-[#0a0a0a] border border-white/10 rounded p-2 text-sm focus:border-[#5865F2] outline-none"
-                value={linkData.url}
-                onChange={e =>
-                  setLinkData({ ...linkData, url: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                onClick={() => setShowLinkModal(false)}
-                className="px-4 py-2 text-sm text-[#888888] hover:text-white"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  insertText(`[${linkData.text}](${linkData.url})`)
-                  setLinkData({ text: "", url: "" })
-                  setShowLinkModal(false)
-                }}
-                className="px-4 py-2 bg-[#5865F2] text-white text-sm rounded hover:bg-[#5865F2]/90"
-              >
-                Insert
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showImageModal && (
-        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
-          <div className="bg-[#111111] border border-white/10 rounded-xl p-6 w-full max-w-md space-y-4">
-            <h3 className="font-heading font-bold text-lg">Insert Image URL</h3>
-            <div>
-              <label className="text-xs text-[#888888]">Alt Text</label>
-              <input
-                className="w-full bg-[#0a0a0a] border border-white/10 rounded p-2 text-sm focus:border-[#5865F2] outline-none"
-                value={imageData.alt}
-                onChange={e =>
-                  setImageData({ ...imageData, alt: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label className="text-xs text-[#888888]">Image URL</label>
-              <input
-                className="w-full bg-[#0a0a0a] border border-white/10 rounded p-2 text-sm focus:border-[#5865F2] outline-none"
-                value={imageData.url}
-                onChange={e =>
-                  setImageData({ ...imageData, url: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                onClick={() => setShowImageModal(false)}
-                className="px-4 py-2 text-sm text-[#888888] hover:text-white"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  insertText(`![${imageData.alt}](${imageData.url})`)
-                  setImageData({ alt: "", url: "" })
-                  setShowImageModal(false)
-                }}
-                className="px-4 py-2 bg-[#5865F2] text-white text-sm rounded hover:bg-[#5865F2]/90"
-              >
-                Insert
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
