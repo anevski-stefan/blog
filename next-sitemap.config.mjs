@@ -5,14 +5,14 @@ const config = {
   generateIndexSitemap: false,
   changefreq: "daily",
   priority: 0.7,
-  exclude: ["/api/*", "/admin/*"],
+  exclude: ["/api/*", "/admin/*", "/auth/*", "/robots.txt", "/sitemap*"],
   robotsTxtOptions: {
     additionalSitemaps: [],
     policies: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/*", "/admin/*"],
+        disallow: ["/api/*", "/admin/*", "/auth/*"],
       },
     ],
   },
