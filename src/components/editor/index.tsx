@@ -14,6 +14,10 @@ import TextStyle from "@tiptap/extension-text-style"
 import TaskList from "@tiptap/extension-task-list"
 import TaskItem from "@tiptap/extension-task-item"
 import HorizontalRule from "@tiptap/extension-horizontal-rule"
+import Table from "@tiptap/extension-table"
+import TableRow from "@tiptap/extension-table-row"
+import TableHeader from "@tiptap/extension-table-header"
+import TableCell from "@tiptap/extension-table-cell"
 import { common, createLowlight } from "lowlight"
 import { EditorToolbar } from "./toolbar"
 import "./editor-styles.css"
@@ -50,6 +54,12 @@ function createEditorExtensions(placeholder: string) {
       nested: true,
     }),
     HorizontalRule,
+    Table.configure({
+      resizable: true,
+    }),
+    TableRow,
+    TableHeader,
+    TableCell,
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {
