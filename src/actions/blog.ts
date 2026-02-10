@@ -5,6 +5,17 @@ import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/db"
 import { requireAdmin, getCurrentUser } from "@/lib/auth"
 import { z } from "zod"
+import type { Prisma } from "@/generated/prisma/client"
+
+function parseJsonValue(value: string): Prisma.InputJsonValue {
+  try {
+    const parsed = JSON.parse(value) as unknown
+    if (parsed === null) return value as Prisma.InputJsonValue
+    return parsed as Prisma.InputJsonValue
+  } catch {
+    return value as Prisma.InputJsonValue
+  }
+}
 
 const CreatePostSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -76,7 +87,7 @@ export async function createPost(formData: FormData) {
     seoDescription,
     draftId,
   } = validatedData.data
-  const contentJson = JSON.parse(content)
+  const contentJson = parseJsonValue(content)
 
   const existingPost = await prisma.post.findUnique({
     where: { slug },
@@ -257,7 +268,7 @@ export async function updatePost(formData: FormData) {
     seoTitle,
     seoDescription,
   } = validatedData.data
-  const contentJson = JSON.parse(content)
+  const contentJson = parseJsonValue(content)
 
   const existingPost = await prisma.post.findFirst({
     where: {

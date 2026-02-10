@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import "server-only"
+import { getAdminEnv } from "@/lib/env"
 
 /**
  * Check if the current user has admin privileges
@@ -9,6 +10,7 @@ import "server-only"
  */
 export async function isAdmin(): Promise<boolean> {
   const supabase = await createClient()
+  const { ADMIN_EMAIL } = getAdminEnv()
   const {
     data: { user },
     error,
@@ -18,7 +20,7 @@ export async function isAdmin(): Promise<boolean> {
     return false
   }
 
-  return user.email === process.env.ADMIN_EMAIL
+  return user.email === ADMIN_EMAIL
 }
 
 /**

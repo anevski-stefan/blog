@@ -2,6 +2,7 @@
 
 import { UTApi } from "uploadthing/server"
 import { MediaItem } from "@/types/admin"
+import { requireAdmin } from "@/lib/auth"
 
 export async function getMediaItems(): Promise<{
   success: boolean
@@ -9,6 +10,7 @@ export async function getMediaItems(): Promise<{
   error?: string
 }> {
   try {
+    await requireAdmin()
     const utapi = new UTApi()
     const { files } = await utapi.listFiles({ limit: 50 })
 

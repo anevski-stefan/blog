@@ -7,16 +7,3 @@ export type PostWithRelations = Post & {
   categories: Category[]
   tags: Tag[]
 }
-
-/**
- * Post data for creation/update
- */
-export interface PostData {
-  title: string
-  content: string
-  excerpt?: string
-  slug?: string
-  coverImage?: string
-  categoryIds?: string[]
-  tagIds?: string[]
-}

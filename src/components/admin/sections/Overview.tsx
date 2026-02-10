@@ -29,7 +29,7 @@ export function Overview({
   setCurrentSection,
 }: OverviewProps) {
   const quickActions = [
-    { label: "New Post", icon: Plus, href: "/blog/new" },
+    { label: "New Post", icon: Plus, href: "/admin/posts/new" },
     {
       label: "Add Category",
       icon: FolderOpen,

@@ -1,14 +1,15 @@
-import { PostForm } from "@/components/posts/post-form"
-import { getTaxonomies } from "@/lib/posts"
-import { createPost } from "@/actions/posts"
+import { CreatePostForm } from "@/components/blog/create-post-form"
+import { getCurrentUser } from "@/lib/auth"
+import { getAvailableCategories, getAvailableTags } from "@/lib/admin"
 
 export default async function NewPostPage() {
-  const { categories, tags } = await getTaxonomies()
+  const [user, categories, tags] = await Promise.all([
+    getCurrentUser(),
+    getAvailableCategories(),
+    getAvailableTags(),
+  ])
 
   return (
-    <div className="mx-auto max-w-4xl py-12">
-      <h1 className="text-3xl font-bold mb-8">Create New Post</h1>
-      <PostForm onSubmit={createPost} categories={categories} tags={tags} />
-    </div>
+    <CreatePostForm user={user} categories={categories} availableTags={tags} />
   )
 }

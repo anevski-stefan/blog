@@ -1,10 +1,12 @@
 "use server"
 
 import { prisma } from "@/lib/db"
+import { requireAdmin } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
 
 export async function getNotifications() {
   try {
+    await requireAdmin()
     const notifications = await prisma.notification.findMany({
       orderBy: {
         createdAt: "desc",
@@ -20,6 +22,7 @@ export async function getNotifications() {
 
 export async function markAllAsRead() {
   try {
+    await requireAdmin()
     await prisma.notification.updateMany({
       where: { read: false },
       data: { read: true },
@@ -34,6 +37,7 @@ export async function markAllAsRead() {
 
 export async function markAsRead(id: string) {
   try {
+    await requireAdmin()
     await prisma.notification.update({
       where: { id },
       data: { read: true },
@@ -53,6 +57,7 @@ export async function createNotification(data: {
   link?: string
 }) {
   try {
+    await requireAdmin()
     await prisma.notification.create({
       data,
     })
@@ -66,6 +71,7 @@ export async function createNotification(data: {
 
 export async function getUnreadStatus() {
   try {
+    await requireAdmin()
     const count = await prisma.notification.count({
       where: { read: false },
     })

@@ -203,6 +203,10 @@ function NavItem({
   badgeColor?: "blue" | "amber"
 }) {
   const Icon = item.icon
+  const badgeClasses =
+    badgeColor === "blue"
+      ? "bg-[#5865F2]/20 text-[#5865F2]"
+      : "bg-[#f59e0b]/20 text-[#f59e0b]"
   return (
     <button
       onClick={onClick}
@@ -215,9 +219,7 @@ function NavItem({
       <Icon className="w-5 h-5" />
       <span className="flex-1 text-left">{item.label}</span>
       {item.badge && (
-        <span
-          className={`bg-${badgeColor === "blue" ? "[#5865F2]" : "[#f59e0b]"}/20 text-${badgeColor === "blue" ? "[#5865F2]" : "[#f59e0b]"} text-xs px-2 py-0.5 rounded-full`}
-        >
+        <span className={`${badgeClasses} text-xs px-2 py-0.5 rounded-full`}>
           {item.badge}
         </span>
       )}

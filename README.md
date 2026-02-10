@@ -7,7 +7,7 @@ A modern, production-ready blog built with Next.js 15, React 19, TypeScript, Pri
 - ✨ **Modern Stack**: Next.js 15 App Router, React 19, TypeScript
 - 📝 **Rich Text Editor**: TipTap editor with full formatting support
 - 🎨 **Beautiful UI**: shadcn/ui components with Tailwind CSS
-- 🔒 **Secure Admin**: JWT-based authentication with middleware protection
+- 🔒 **Secure Admin**: Supabase Auth with `ADMIN_EMAIL` gating
 - 🗄️ **Database**: PostgreSQL with Prisma ORM
 - 🖼️ **Media**: Image uploads with UploadThing
 - 📱 **Responsive**: Mobile-first design
@@ -46,8 +46,12 @@ Update `.env.local` with your values:
 DATABASE_URL="postgresql://user:password@localhost:5432/blog?schema=public"
 DIRECT_URL="postgresql://user:password@localhost:5432/blog?schema=public"
 
-# Admin Authentication (generate with: openssl rand -base64 32)
-ADMIN_SECRET="your-secure-random-secret-here"
+# Supabase (Auth/session via @supabase/ssr)
+NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
+
+# Admin access (single-admin model)
+ADMIN_EMAIL="you@example.com"
 
 # Application URL
 NEXT_PUBLIC_APP_URL="http://localhost:3001"
@@ -80,7 +84,7 @@ Open [http://localhost:3001](http://localhost:3001) in your browser.
 
 ### 5. Access Admin Panel
 
-Navigate to `/admin/login` and enter your `ADMIN_SECRET` to access the admin panel.
+Navigate to `/admin/login` and sign in with a Supabase Auth user whose email matches `ADMIN_EMAIL`.
 
 ## Project Structure
 
@@ -97,7 +101,7 @@ blog/
 │   │   ├── api/        # API routes
 │   │   └── blog/       # Public blog pages
 │   ├── components/     # React components
-│   │   ├── editor/     # Rich text editor
+│   │   ├── blog/       # Blog UI + TipTap editor
 │   │   ├── layout/     # Layout components
 │   │   ├── posts/      # Post-related components
 │   │   ├── shared/     # Shared components
@@ -106,7 +110,6 @@ blog/
 │   │   ├── auth.ts    # Authentication helpers
 │   │   ├── db.ts      # Prisma client
 │   │   ├── logger.ts  # Structured logging
-│   │   └── session.ts # Session management
 │   └── types/         # TypeScript types
 └── package.json
 ```
@@ -170,7 +173,9 @@ Ensure all required environment variables are set in your production environment
 
 - `DATABASE_URL`: Production PostgreSQL connection string
 - `DIRECT_URL`: Direct database connection (for migrations)
-- `ADMIN_SECRET`: Strong random secret (min 32 characters)
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase anon key
+- `ADMIN_EMAIL`: Email address allowed to access admin
 - `NEXT_PUBLIC_APP_URL`: Your production domain
 - `NODE_ENV`: Set to `production`
 
@@ -197,10 +202,9 @@ npm run start
 
 ## Security
 
-- JWT-based session management
-- HTTP-only secure cookies
-- Middleware-protected admin routes
-- Environment variable validation
+- Supabase Auth-backed sessions
+- HTTP-only secure cookies (via Supabase SSR helpers)
+- Middleware refresh + server-side admin gating (`ADMIN_EMAIL`)
 - Security headers (X-Frame-Options, CSP, etc.)
 - Input validation with Zod
 
@@ -237,9 +241,9 @@ Structured logging system with:
 
 ### Admin Login Issues
 
-1. Verify `ADMIN_SECRET` matches in `.env.local`
-2. Check browser cookies are enabled
-3. Clear browser cache and cookies
+1. Verify `ADMIN_EMAIL` matches the Supabase user email you’re signing in with
+2. Verify `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
+3. Check browser cookies are enabled and clear cookies if needed
 
 ## Contributing
 

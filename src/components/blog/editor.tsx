@@ -7,17 +7,6 @@ import {
   type Editor,
   type Content,
 } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Placeholder from "@tiptap/extension-placeholder"
-import Underline from "@tiptap/extension-underline"
-import Link from "@tiptap/extension-link"
-import Image from "@tiptap/extension-image"
-import TextAlign from "@tiptap/extension-text-align"
-import TextStyle from "@tiptap/extension-text-style"
-import Color from "@tiptap/extension-color"
-import Highlight from "@tiptap/extension-highlight"
-import Subscript from "@/lib/tiptap/marks/subscript"
-import Superscript from "@/lib/tiptap/marks/superscript"
 import {
   Bold,
   Italic,
@@ -46,6 +35,7 @@ import {
   X,
 } from "lucide-react"
 import { cn, type TiptapContent } from "@/lib/utils"
+import { createTiptapExtensions } from "@/lib/tiptap/extensions"
 
 interface EditorProps {
   content?: TiptapContent
@@ -315,33 +305,7 @@ export function TiptapEditor({
   readOnly = false,
 }: EditorProps & { readOnly?: boolean }) {
   const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3, 4, 5, 6],
-        },
-      }),
-      Placeholder.configure({
-        placeholder: readOnly ? "" : placeholder,
-        emptyEditorClass: "is-editor-empty",
-      }),
-      Underline,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-      Image.configure({
-        allowBase64: true,
-      }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
-      TextStyle,
-      Color,
-      Highlight,
-      Subscript,
-      Superscript,
-    ],
+    extensions: createTiptapExtensions({ placeholder, readOnly }),
     editorProps: {
       attributes: {
         class: cn(

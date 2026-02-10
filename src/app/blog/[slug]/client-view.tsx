@@ -9,7 +9,7 @@ import { BlogPost } from "@/types/blog"
 
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { Newsletter } from "@/components/blog/newsletter"
-import { TiptapEditor } from "@/components/blog/editor"
+import { TiptapRenderer } from "@/components/tiptap/Renderer"
 import { Github, Twitter, Linkedin, Globe } from "lucide-react"
 import { toEditorContent, calculateReadingTime } from "@/lib/utils"
 
@@ -27,18 +27,7 @@ export function BlogPostClientView({
   const [activeSection, setActiveSection] = useState<string>("")
   const [copyState, setCopyState] = useState<"default" | "copied">("default")
   const articleRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const link = document.createElement("link")
-    link.rel = "stylesheet"
-    link.href =
-      "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
-    document.head.appendChild(link)
-
-    return () => {
-      document.head.removeChild(link)
-    }
-  }, [])
+  const editorContent = toEditorContent(post.content)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -507,17 +496,16 @@ export function BlogPostClientView({
               ref={articleRef}
               className="lg:col-span-9 order-1 lg:order-2"
             >
-              {typeof post.content === "string" ? (
+              {typeof editorContent === "string" ? (
                 <div
                   className="prose max-w-none"
                   dangerouslySetInnerHTML={{
-                    __html: post.content || "<p>Content coming soon...</p>",
+                    __html: editorContent || "<p>Content coming soon...</p>",
                   }}
                 />
               ) : (
-                <TiptapEditor
-                  content={toEditorContent(post.content)}
-                  readOnly={true}
+                <TiptapRenderer
+                  content={editorContent}
                   className="prose-invert max-w-none px-0"
                 />
               )}

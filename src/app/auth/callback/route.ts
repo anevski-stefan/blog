@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { getAdminEnv } from "@/lib/env"
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -8,6 +9,7 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient()
+    const { ADMIN_EMAIL } = getAdminEnv()
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
@@ -17,7 +19,7 @@ export async function GET(request: Request) {
         error: userError,
       } = await supabase.auth.getUser()
 
-      if (userError || user?.email !== process.env.ADMIN_EMAIL) {
+      if (userError || user?.email !== ADMIN_EMAIL) {
         await supabase.auth.signOut()
         return NextResponse.redirect(
           `${origin}/auth/auth-error?error=Unauthorized`

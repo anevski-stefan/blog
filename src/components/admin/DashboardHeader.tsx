@@ -66,7 +66,7 @@ export function DashboardHeader({
           </button>
 
           <Link
-            href="/blog/new"
+            href="/admin/posts/new"
             className="flex items-center gap-2 px-4 py-2 bg-[#5865F2] hover:bg-[#5865F2]/90 text-white text-sm font-medium rounded-lg transition-colors"
           >
             <Plus className="w-4 h-4" />

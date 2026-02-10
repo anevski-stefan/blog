@@ -41,6 +41,34 @@ export function formatDate(date: Date | string) {
  * calculateReadingTime(content) // => 1 (minimum)
  */
 export function calculateReadingTime(content: unknown): number {
+  if (typeof content === "string") {
+    const raw = content.trim()
+
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw) as unknown
+        if (parsed && typeof parsed === "object") {
+          return calculateReadingTime(parsed)
+        }
+      } catch {}
+
+      const text = raw
+        .replace(/<[^>]*>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .trim()
+
+      const wordCount = text
+        ? text
+            .split(/\s+/)
+            .map(w => w.trim())
+            .filter(w => w.length > 0).length
+        : 0
+
+      const readingTime = Math.ceil(wordCount / WORDS_PER_MINUTE)
+      return Math.max(1, readingTime)
+    }
+  }
+
   if (!content || typeof content !== "object") {
     return 1
   }
@@ -103,7 +131,19 @@ export function toEditorContent(value: unknown): TiptapContent {
   if (value === null || value === undefined) {
     return value
   }
-  if (typeof value === "string" || typeof value === "object") {
+  if (typeof value === "string") {
+    const raw = value.trim()
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw) as unknown
+        if (parsed && typeof parsed === "object") {
+          return parsed
+        }
+      } catch {}
+    }
+    return value
+  }
+  if (typeof value === "object") {
     return value
   }
   // For number, boolean, or other primitives, return undefined

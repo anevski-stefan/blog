@@ -27,9 +27,6 @@ export function ProjectsClientView() {
     setIsLoadingMore(false)
   }
 
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const cursorDotRef = useRef<HTMLDivElement>(null)
-
   const filteredProjects = useMemo(() => {
     let filtered = [...projectsData]
 
@@ -219,78 +216,6 @@ export function ProjectsClientView() {
     }
   }, [selectedProject])
 
-  const mousePos = useRef({ x: 0, y: 0 })
-  const cursorPos = useRef({ x: 0, y: 0 })
-
-  useEffect(() => {
-    const cursor = cursorRef.current
-    const cursorDot = cursorDotRef.current
-    if (!cursor || !cursorDot) return
-
-    const moveCursor = (e: MouseEvent) => {
-      mousePos.current.x = e.clientX
-      mousePos.current.y = e.clientY
-      cursorDot.style.left = mousePos.current.x + "px"
-      cursorDot.style.top = mousePos.current.y + "px"
-    }
-
-    const animateCursor = () => {
-      cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.15
-      cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.15
-      cursor.style.left = cursorPos.current.x + "px"
-      cursor.style.top = cursorPos.current.y + "px"
-      requestAnimationFrame(animateCursor)
-    }
-
-    window.addEventListener("mousemove", moveCursor)
-    const animationFrame = requestAnimationFrame(animateCursor)
-
-    return () => {
-      window.removeEventListener("mousemove", moveCursor)
-      cancelAnimationFrame(animationFrame)
-    }
-  }, [])
-
-  useEffect(() => {
-    const cursor = cursorRef.current
-    if (!cursor) return
-
-    const handleMouseEnter = () => {
-      cursor.classList.add(
-        "w-12",
-        "h-12",
-        "border-home-accent",
-        "bg-home-accent/10"
-      )
-      cursor.classList.remove("w-5", "h-5", "border-white/50")
-    }
-
-    const handleMouseLeave = () => {
-      cursor.classList.remove(
-        "w-12",
-        "h-12",
-        "border-home-accent",
-        "bg-home-accent/10"
-      )
-      cursor.classList.add("w-5", "h-5", "border-white/50")
-    }
-
-    const interactables = document.querySelectorAll(
-      "a, button, .project-card, input, select"
-    )
-    interactables.forEach(el => {
-      el.addEventListener("mouseenter", handleMouseEnter)
-      el.addEventListener("mouseleave", handleMouseLeave)
-    })
-
-    return () => {
-      interactables.forEach(el => {
-        el.removeEventListener("mouseenter", handleMouseEnter)
-        el.removeEventListener("mouseleave", handleMouseLeave)
-      })
-    }
-  }, [displayedProjects, selectedProject, currentFilter])
-
   const getStatusBadge = (status: Project["status"]) => {
     switch (status) {
       case "live":
@@ -320,15 +245,6 @@ export function ProjectsClientView() {
 
   return (
     <div className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
-      <div
-        ref={cursorRef}
-        className="fixed w-5 h-5 border border-white/50 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-all duration-150 ease-out hidden md:block"
-      ></div>
-      <div
-        ref={cursorDotRef}
-        className="fixed w-1.5 h-1.5 bg-home-accent rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 hidden md:block"
-      ></div>
-
       <div
         className="fixed inset-0 -z-10 opacity-[0.02]"
         style={{

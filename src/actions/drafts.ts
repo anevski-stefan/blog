@@ -3,6 +3,17 @@
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/db"
 import { requireAdmin } from "@/lib/auth"
+import { Prisma } from "@/generated/prisma/client"
+
+function parseJsonValue(value: string): Prisma.InputJsonValue {
+  try {
+    const parsed = JSON.parse(value) as unknown
+    if (parsed === null) return value as Prisma.InputJsonValue
+    return parsed as Prisma.InputJsonValue
+  } catch {
+    return value as Prisma.InputJsonValue
+  }
+}
 
 export async function saveDraft(data: {
   id?: string
@@ -30,7 +41,7 @@ export async function saveDraft(data: {
     isFeatured,
     publishDate,
   } = data
-  const contentJson = content ? JSON.parse(content) : null
+  const contentJson = content ? parseJsonValue(content) : Prisma.DbNull
 
   try {
     if (id) {

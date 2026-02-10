@@ -132,7 +132,7 @@ export function PostsList({
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <Link href={`/blog/edit/${post.id}`}>
+                        <Link href={`/admin/posts/${post.id}`}>
                           <Button
                             variant="ghost"
                             size="sm"

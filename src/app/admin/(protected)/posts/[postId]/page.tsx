@@ -1,8 +1,11 @@
-import { redirect } from "next/navigation"
-import { PostForm } from "@/components/posts/post-form"
-import { prisma } from "@/lib/db"
-import { getTaxonomies } from "@/lib/posts"
-import { updatePost, togglePublish } from "@/actions/posts"
+import { notFound } from "next/navigation"
+import { CreatePostForm } from "@/components/blog/create-post-form"
+import { getCurrentUser } from "@/lib/auth"
+import {
+  getAvailableCategories,
+  getAvailableTags,
+  getPostById,
+} from "@/lib/admin"
 
 interface EditPostPageProps {
   params: Promise<{
@@ -14,49 +17,23 @@ export default async function EditPostPage(props: EditPostPageProps) {
   const params = await props.params
   const postId = params.postId
 
-  const [post, { categories, tags }] = await Promise.all([
-    prisma.post.findUnique({
-      where: { id: postId },
-      include: {
-        categories: true,
-        tags: true,
-      },
-    }),
-    getTaxonomies(),
+  const [user, categories, tags, post] = await Promise.all([
+    getCurrentUser(),
+    getAvailableCategories(),
+    getAvailableTags(),
+    getPostById(postId),
   ])
 
   if (!post) {
-    redirect("/admin")
-  }
-
-  const handleUpdate = async (data: {
-    title: string
-    content: string
-    excerpt?: string
-    slug?: string
-    coverImage?: string
-    categoryIds?: string[]
-    tagIds?: string[]
-  }) => {
-    "use server"
-    await updatePost(postId, data)
-  }
-
-  const handleTogglePublish = async (_postId: string, publish: boolean) => {
-    "use server"
-    await togglePublish(postId, publish)
+    notFound()
   }
 
   return (
-    <div className="mx-auto max-w-4xl py-12">
-      <h1 className="text-3xl font-bold mb-8">Edit Post</h1>
-      <PostForm
-        post={post}
-        categories={categories}
-        tags={tags}
-        onSubmit={handleUpdate}
-        onPublish={handleTogglePublish}
-      />
-    </div>
+    <CreatePostForm
+      user={user}
+      categories={categories}
+      availableTags={tags}
+      initialPost={post}
+    />
   )
 }
