@@ -8,7 +8,7 @@ import Image from "next/image"
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { WebGLBackground } from "@/components/home/WebGLBackground"
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
-import { Newsletter } from "@/components/blog/newsletter"
+import { Newsletter } from "@/features/blog/components/Newsletter"
 import { SearchX } from "lucide-react"
 import type { BlogPost } from "@/types/blog"
 

@@ -10,8 +10,8 @@ import { WebGLBackground } from "@/components/home/WebGLBackground"
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { timelineData, TimelineType } from "@/lib/data/timeline"
 import { cn } from "@/lib/utils"
-import { TimelineGlobalStyles } from "@/components/timeline/TimelineGlobalStyles"
-import { TimelineDecorations } from "@/components/timeline/TimelineDecorations"
+import { TimelineGlobalStyles } from "@/features/timeline/components/TimelineGlobalStyles"
+import { TimelineDecorations } from "@/features/timeline/components/TimelineDecorations"
 
 gsap.registerPlugin(ScrollTrigger)
 

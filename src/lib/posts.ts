@@ -2,7 +2,6 @@ import { cache } from "react"
 import { prisma } from "@/lib/db"
 import { POSTS_PER_PAGE } from "@/lib/constants"
 import type { PostWithRelations } from "@/types/posts"
-import type { Prisma } from "@/generated/prisma/client"
 import { formatDate, calculateReadingTime } from "@/lib/utils"
 import type { BlogPost } from "@/types/blog"
 
@@ -44,7 +43,7 @@ export async function getPosts(
           {
             title: {
               contains: search,
-              mode: "insensitive" as Prisma.QueryMode,
+              mode: "insensitive" as const,
             },
           },
           { content: { string_contains: search } },
@@ -60,7 +59,7 @@ export async function getPosts(
     ? { tags: { some: { slug: options.tagSlug } } }
     : undefined
 
-  const where: Prisma.PostWhereInput = {
+  const where = {
     published: true,
     ...searchFilter,
     ...categoryFilter,
@@ -135,7 +134,7 @@ export function mapPostToUi(post: PostWithRelations): BlogPost {
       post.coverImage ||
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
     category: post.categories[0]?.name.toLowerCase() || "uncategorized",
-    tags: post.tags.map(t => t.name),
+    tags: post.tags.map((t: { name: string }) => t.name),
     date: post.publishedAt
       ? formatDate(post.publishedAt)
       : formatDate(post.createdAt),
