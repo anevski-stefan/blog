@@ -3,7 +3,7 @@
 import React from "react"
 import { X, Trash2, Edit } from "lucide-react"
 import Image from "next/image"
-import { MediaItem } from "@/types/admin"
+import { MediaItem } from "@/features/admin/types/admin"
 import { Button } from "../ui/Button"
 
 interface MediaDetailsModalProps {

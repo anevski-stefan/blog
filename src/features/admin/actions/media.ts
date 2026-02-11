@@ -1,7 +1,7 @@
 "use server"
 
 import { UTApi } from "uploadthing/server"
-import { MediaItem } from "@/types/admin"
+import { MediaItem } from "@/features/admin/types/admin"
 import { requireAdmin } from "@/lib/auth"
 import { createLogger } from "@/lib/logger"
 

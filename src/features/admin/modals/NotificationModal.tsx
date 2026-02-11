@@ -7,7 +7,7 @@ import {
   getNotifications,
   markAllAsRead,
   markAsRead,
-} from "@/actions/notifications"
+} from "@/features/admin/actions/notifications"
 import { timeAgo } from "@/lib/utils"
 
 interface NotificationModalProps {

@@ -1,7 +1,7 @@
 import { AdminDashboard } from "@/features/admin/dashboard"
 import { constructMetadata } from "@/lib/metadata"
 import { getCurrentUser } from "@/lib/auth"
-import { getAdminDashboardData } from "@/lib/admin"
+import { getAdminDashboardData } from "@/features/admin/lib"
 
 export const metadata = constructMetadata({
   title: "Dashboard",

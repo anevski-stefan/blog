@@ -10,7 +10,7 @@ import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { Newsletter } from "@/features/blog/components/Newsletter"
 import { SearchX } from "lucide-react"
-import type { BlogPost } from "@/types/blog"
+import type { BlogPost } from "@/features/blog/types/blog"
 
 gsap.registerPlugin(ScrollTrigger)
 

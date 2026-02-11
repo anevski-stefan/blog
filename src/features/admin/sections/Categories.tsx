@@ -2,7 +2,7 @@
 
 import React from "react"
 import { FolderOpen, Plus, Edit, Trash2 } from "lucide-react"
-import { CategoriesProps } from "@/types/admin"
+import { CategoriesProps } from "@/features/admin/types/admin"
 import { Button } from "../ui/Button"
 import { Card } from "../ui/Card"
 import { Badge } from "../ui/Badge"

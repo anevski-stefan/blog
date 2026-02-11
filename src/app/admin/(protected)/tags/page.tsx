@@ -1,4 +1,4 @@
-import { getTaxonomies } from "@/lib/posts"
+import { getTaxonomies } from "@/features/blog/lib/posts"
 import Link from "next/link"
 
 export default async function TagsPage() {

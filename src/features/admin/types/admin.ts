@@ -1,3 +1,4 @@
+import type React from "react"
 import { LucideIcon } from "lucide-react"
 
 export interface Post {

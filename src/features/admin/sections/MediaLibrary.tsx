@@ -3,12 +3,12 @@
 import React from "react"
 import Image from "next/image"
 import { Grid as GridIcon, List, Upload } from "lucide-react"
-import { MediaLibraryProps, MediaItem } from "@/types/admin"
+import { MediaLibraryProps, MediaItem } from "@/features/admin/types/admin"
 import { Button } from "../ui/Button"
 import { UploadDropzone } from "@/lib/uploadthing"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
-import { getMediaItems } from "@/actions/media"
+import { getMediaItems } from "@/features/admin/actions/media"
 
 export function MediaLibrary({
   mediaItems: initialMediaItems,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { X, FolderOpen, Loader2 } from "lucide-react"
 import { Input } from "../ui/Input"
 import { Button } from "../ui/Button"
-import { createCategory } from "@/actions/admin-taxonomy"
+import { createCategory } from "@/features/admin/actions/taxonomy"
 
 interface CategoryModalProps {
   isOpen: boolean

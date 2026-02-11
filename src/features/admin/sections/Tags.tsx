@@ -2,7 +2,7 @@
 
 import React from "react"
 import { Plus, X } from "lucide-react"
-import { TagsProps } from "@/types/admin"
+import { TagsProps } from "@/features/admin/types/admin"
 import { Button } from "../ui/Button"
 import { Card } from "../ui/Card"
 

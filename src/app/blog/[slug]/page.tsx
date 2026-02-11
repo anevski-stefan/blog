@@ -1,5 +1,10 @@
 import { notFound } from "next/navigation"
-import { getPostBySlug, getPosts, mapPostToUi, getAllPosts } from "@/lib/posts"
+import {
+  getPostBySlug,
+  getPosts,
+  mapPostToUi,
+  getAllPosts,
+} from "@/features/blog/lib/posts"
 import { BlogPostClientView } from "./client-view"
 import { Metadata } from "next"
 

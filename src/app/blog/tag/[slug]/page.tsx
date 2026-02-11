@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { PostCard } from "@/features/blog/components/PostCard"
 import { prisma } from "@/lib/db"
-import { getPosts } from "@/lib/posts"
+import { getPosts } from "@/features/blog/lib/posts"
 import { Pagination } from "@/components/shared/pagination"
 
 interface TagPageProps {

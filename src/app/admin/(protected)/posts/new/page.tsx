@@ -1,6 +1,6 @@
 import { CreatePostForm } from "@/features/admin/blog/create-post-form"
 import { getCurrentUser } from "@/lib/auth"
-import { getAvailableCategories, getAvailableTags } from "@/lib/admin"
+import { getAvailableCategories, getAvailableTags } from "@/features/admin/lib"
 
 export default async function NewPostPage() {
   const [user, categories, tags] = await Promise.all([

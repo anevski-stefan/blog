@@ -2,7 +2,7 @@
 
 import React from "react"
 import { Settings as SettingsIcon, TrendingUp } from "lucide-react"
-import { SettingsProps } from "@/types/admin"
+import { SettingsProps } from "@/features/admin/types/admin"
 import { Input, TextArea } from "../ui/Input"
 import { Button } from "../ui/Button"
 import { Card } from "../ui/Card"

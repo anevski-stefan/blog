@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { X, Tag as TagIcon, Loader2 } from "lucide-react"
 import { Input } from "../ui/Input"
 import { Button } from "../ui/Button"
-import { createTag } from "@/actions/admin-taxonomy"
+import { createTag } from "@/features/admin/actions/taxonomy"
 
 interface TagModalProps {
   isOpen: boolean

@@ -13,7 +13,7 @@ import {
   Loader2,
 } from "lucide-react"
 import Link from "next/link"
-import { login, loginWithProvider } from "@/actions/auth"
+import { login, loginWithProvider } from "@/features/auth/actions/auth"
 import { toast } from "@/components/ui/use-toast"
 
 function showError(message: string) {

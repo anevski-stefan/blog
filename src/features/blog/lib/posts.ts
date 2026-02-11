@@ -1,9 +1,9 @@
 import { cache } from "react"
 import { prisma } from "@/lib/db"
 import { POSTS_PER_PAGE } from "@/lib/constants"
-import type { PostWithRelations } from "@/types/posts"
+import type { PostWithRelations } from "@/features/blog/types/posts"
 import { formatDate, calculateReadingTime } from "@/lib/utils"
-import type { BlogPost } from "@/types/blog"
+import type { BlogPost } from "@/features/blog/types/blog"
 
 /**
  * Get a single published post by slug

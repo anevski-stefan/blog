@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { BlogPost } from "@/types/blog"
+import type { BlogPost } from "@/features/blog/types/blog"
 
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"

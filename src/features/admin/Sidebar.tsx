@@ -4,9 +4,9 @@ import React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { LogOut, Settings } from "lucide-react"
-import { signOut } from "@/actions/auth"
+import { signOut } from "@/features/auth/actions/auth"
 import { ADMIN_NAV_ITEMS as navItems } from "@/config/admin-navigation"
-import { NavItem as NavItemType } from "@/types/admin"
+import { NavItem as NavItemType } from "@/features/admin/types/admin"
 
 import { User } from "@supabase/supabase-js"
 

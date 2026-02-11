@@ -3,7 +3,7 @@
 import React from "react"
 import { Edit, Eye, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { PostsListProps } from "@/types/admin"
+import { PostsListProps } from "@/features/admin/types/admin"
 import { Badge } from "../ui/Badge"
 import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"

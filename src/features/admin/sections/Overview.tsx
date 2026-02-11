@@ -11,7 +11,7 @@ import {
   Tag,
   Upload,
 } from "lucide-react"
-import { OverviewProps } from "@/types/admin"
+import { OverviewProps } from "@/features/admin/types/admin"
 import { StatCard } from "../ui/StatCard"
 import { Card } from "../ui/Card"
 

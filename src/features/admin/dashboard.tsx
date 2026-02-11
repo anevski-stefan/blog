@@ -20,10 +20,10 @@ import {
   Tag,
   AdminStats,
   Activity,
-} from "@/types/admin"
+} from "@/features/admin/types/admin"
 import { User } from "@supabase/supabase-js"
-import { deleteCategory, deleteTag } from "@/actions/admin-taxonomy"
-import { getUnreadStatus } from "@/actions/notifications"
+import { deleteCategory, deleteTag } from "@/features/admin/actions/taxonomy"
+import { getUnreadStatus } from "@/features/admin/actions/notifications"
 
 interface AdminDashboardProps {
   user: User | null

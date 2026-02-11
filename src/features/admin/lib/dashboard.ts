@@ -6,7 +6,7 @@ import type {
   MediaItem,
   Post,
   Tag,
-} from "@/types/admin"
+} from "@/features/admin/types/admin"
 import { unstable_noStore as noStore } from "next/cache"
 
 export async function getAdminDashboardData() {

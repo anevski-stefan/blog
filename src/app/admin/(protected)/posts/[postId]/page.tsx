@@ -5,7 +5,7 @@ import {
   getAvailableCategories,
   getAvailableTags,
   getPostById,
-} from "@/lib/admin"
+} from "@/features/admin/lib"
 
 interface EditPostPageProps {
   params: Promise<{

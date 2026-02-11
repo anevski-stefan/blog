@@ -1,4 +1,4 @@
-import { getAllPosts, mapPostToUi } from "@/lib/posts"
+import { getAllPosts, mapPostToUi } from "@/features/blog/lib/posts"
 import { BlogClientPage } from "./client-page"
 import { Metadata } from "next"
 
