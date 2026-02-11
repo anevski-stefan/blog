@@ -43,13 +43,6 @@ export interface Activity {
   time: string
 }
 
-export interface AdminData {
-  posts: Post[]
-  categories: Category[]
-  tags: Tag[]
-  mediaItems: MediaItem[]
-}
-
 export interface AdminStats {
   label: string
   value: string

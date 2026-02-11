@@ -43,11 +43,3 @@ export async function getCurrentUser() {
   } = await supabase.auth.getUser()
   return user
 }
-
-/**
- * Get the current user's ID
- */
-export async function getCurrentUserId(): Promise<string | null> {
-  const user = await getCurrentUser()
-  return user?.id ?? null
-}

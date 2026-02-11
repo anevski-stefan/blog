@@ -1,0 +1,18 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "project": [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "*.{js,jsx,ts,tsx,mjs,cjs}",
+    "*.config.{js,cjs,mjs,ts,cts,mts}",
+    "!src/generated/**"
+  ],
+  "entry": ["next-sitemap.config.mjs"],
+  "ignoreDependencies": [
+    "@tailwindcss/typography",
+    "eslint-config-next",
+    "sharp",
+    "tw-animate-css"
+  ],
+  "ignoreExportsUsedInFile": true,
+  "ignore": [".next/**", "node_modules/**"]
+}

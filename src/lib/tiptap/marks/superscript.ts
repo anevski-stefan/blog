@@ -53,5 +53,3 @@ export const Superscript = Mark.create({
     }
   },
 })
-
-export default Superscript

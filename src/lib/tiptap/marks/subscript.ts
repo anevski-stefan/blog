@@ -53,5 +53,3 @@ export const Subscript = Mark.create({
     }
   },
 })
-
-export default Subscript

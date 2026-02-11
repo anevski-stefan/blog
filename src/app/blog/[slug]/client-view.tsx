@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { BlogPost } from "@/types/blog"
 
 import { SiteHeader } from "@/components/layout/SiteHeader"
+import { WebGLBackground } from "@/components/home/WebGLBackground"
 import { Newsletter } from "@/components/blog/newsletter"
 import { TiptapRenderer } from "@/components/tiptap/Renderer"
 import { Github, Twitter, Linkedin, Globe } from "lucide-react"
@@ -132,7 +133,8 @@ export function BlogPostClientView({
   }
 
   return (
-    <div className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
+    <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
+      <WebGLBackground />
       <style jsx global>{`
         .prose {
           max-width: 65ch;

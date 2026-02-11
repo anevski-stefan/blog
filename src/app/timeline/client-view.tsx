@@ -6,7 +6,7 @@ import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { SiteHeader } from "@/components/layout/SiteHeader"
-import { TimelineBackground } from "@/components/timeline/timeline-background"
+import { WebGLBackground } from "@/components/home/WebGLBackground"
 import { timelineData, TimelineType } from "@/lib/data/timeline"
 import { cn } from "@/lib/utils"
 
@@ -217,7 +217,7 @@ export function TimelineClientView() {
   return (
     <div
       ref={containerRef}
-      className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen"
+      className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen"
     >
       <style jsx global>{`
         /* Timeline Line */
@@ -366,7 +366,7 @@ export function TimelineClientView() {
         }
       `}</style>
 
-      <TimelineBackground />
+      <WebGLBackground />
 
       <div
         className="fixed inset-0 -z-5 opacity-[0.02]"

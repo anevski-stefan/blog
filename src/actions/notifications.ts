@@ -50,25 +50,6 @@ export async function markAsRead(id: string) {
   }
 }
 
-export async function createNotification(data: {
-  type: string
-  title: string
-  message: string
-  link?: string
-}) {
-  try {
-    await requireAdmin()
-    await prisma.notification.create({
-      data,
-    })
-    revalidatePath("/")
-    return { success: true }
-  } catch (error) {
-    console.error("Failed to create notification:", error)
-    return { success: false, error: "Failed to create notification" }
-  }
-}
-
 export async function getUnreadStatus() {
   try {
     await requireAdmin()

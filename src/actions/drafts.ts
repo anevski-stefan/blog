@@ -83,27 +83,3 @@ export async function saveDraft(data: {
     return { error: "Failed to save draft to database." }
   }
 }
-
-export async function deleteDraft(id: string) {
-  await requireAdmin()
-  try {
-    await prisma.draft.delete({ where: { id } })
-    revalidatePath("/admin/dashboard")
-    return { success: true }
-  } catch (error) {
-    console.error("Failed to delete draft:", error)
-    return { error: "Failed to delete draft." }
-  }
-}
-
-export async function getDrafts() {
-  await requireAdmin()
-  try {
-    return prisma.draft.findMany({
-      orderBy: { updatedAt: "desc" },
-    })
-  } catch (error) {
-    console.error("Failed to fetch drafts:", error)
-    return []
-  }
-}

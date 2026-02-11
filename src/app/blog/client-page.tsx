@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Link from "next/link"
 import Image from "next/image"
 import { SiteHeader } from "@/components/layout/SiteHeader"
+import { WebGLBackground } from "@/components/home/WebGLBackground"
 import { Newsletter } from "@/components/blog/newsletter"
 import { SearchX } from "lucide-react"
 import type { BlogPost } from "@/types/blog"
@@ -122,7 +123,8 @@ export function BlogClientPage({ posts }: BlogClientPageProps) {
   }
 
   return (
-    <div className="font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
+    <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
+      <WebGLBackground />
       <div
         className="fixed inset-0 -z-10 opacity-[0.03]"
         style={{
