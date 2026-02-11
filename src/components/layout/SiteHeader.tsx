@@ -24,11 +24,6 @@ export function SiteHeader({
       href: "/projects",
     },
     {
-      key: "work",
-      label: "Work",
-      href: isHome ? "#work" : "/#work",
-    },
-    {
       key: "timeline",
       label: "Timeline",
       href: "/timeline",
@@ -37,11 +32,6 @@ export function SiteHeader({
       key: "about",
       label: "About",
       href: "/about",
-    },
-    {
-      key: "contact",
-      label: "Contact",
-      href: isHome ? "#contact" : "/#contact",
     },
   ] as const
 

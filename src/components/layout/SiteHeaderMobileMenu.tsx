@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 
-type NavKey = "blog" | "projects" | "work" | "timeline" | "about" | "contact"
+type NavKey = "blog" | "projects" | "timeline" | "about"
 
 interface SiteHeaderMobileMenuItem {
   key: NavKey
