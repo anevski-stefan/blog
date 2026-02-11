@@ -1,5 +1,5 @@
-import { WebGLBackground } from "@/components/home/WebGLBackground"
-import { LoginForm } from "@/components/auth/LoginForm"
+import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
+import { LoginForm } from "@/features/auth/components/LoginForm"
 import { Metadata } from "next"
 
 import { isAdmin } from "@/lib/auth"

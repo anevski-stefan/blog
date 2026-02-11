@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import { AboutClientView } from "./client-view"
-import { WebGLBackground } from "@/components/home/WebGLBackground"
+import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
 
 export const metadata: Metadata = {
   title: "About Me | Stefan Anevski",

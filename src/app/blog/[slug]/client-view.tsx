@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { BlogPost } from "@/types/blog"
 
 import { SiteHeader } from "@/components/layout/SiteHeader"
-import { WebGLBackground } from "@/components/home/WebGLBackground"
+import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { Newsletter } from "@/features/blog/components/Newsletter"
 import { TiptapRenderer } from "@/components/tiptap/Renderer"

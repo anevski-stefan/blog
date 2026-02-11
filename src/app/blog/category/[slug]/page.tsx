@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { PostCard } from "@/components/posts/post-card"
+import { PostCard } from "@/features/blog/components/PostCard"
 import { prisma } from "@/lib/db"
 import { getPosts } from "@/lib/posts"
 import { Pagination } from "@/components/shared/pagination"

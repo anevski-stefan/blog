@@ -1,5 +1,5 @@
-import { HomeContent } from "@/components/home/HomeContent"
-import { WebGLBackground } from "@/components/home/WebGLBackground"
+import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
+import { HomeContent } from "@/features/home/components/HomeContent"
 import { constructMetadata } from "@/lib/metadata"
 
 export const metadata = constructMetadata({

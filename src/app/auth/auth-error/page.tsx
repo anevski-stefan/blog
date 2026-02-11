@@ -1,4 +1,4 @@
-import { AuthErrorContent } from "@/components/auth/AuthErrorContent"
+import { AuthErrorContent } from "@/features/auth/components/AuthErrorContent"
 import { constructMetadata } from "@/lib/metadata"
 import { Suspense } from "react"
 
