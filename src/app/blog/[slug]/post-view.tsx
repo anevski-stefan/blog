@@ -391,12 +391,6 @@ export function BlogPostView(props: {
           >
             GitHub
           </Link>
-          <Link
-            href="#"
-            className="text-sm text-home-muted hover:text-white transition-colors duration-300"
-          >
-            Dribbble
-          </Link>
         </div>
       </footer>
     </div>

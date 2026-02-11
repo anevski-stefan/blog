@@ -11,7 +11,7 @@ export function ProjectsCtaSection() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <a
-            href="mailto:hello@stefananevski.com"
+            href="mailto:anevskistefan11@gmail.com"
             className="inline-flex items-center gap-3 px-6 py-3 bg-home-accent hover:bg-home-accent/90 text-white font-heading text-sm font-medium tracking-wider rounded-full transition-all hover:scale-105"
           >
             <svg

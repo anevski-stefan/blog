@@ -23,12 +23,6 @@ export function ProjectsFooter() {
         >
           GitHub
         </a>
-        <a
-          href="#"
-          className="text-sm text-home-muted hover:text-white transition-colors duration-300"
-        >
-          Dribbble
-        </a>
       </div>
     </footer>
   )

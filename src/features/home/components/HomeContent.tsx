@@ -311,10 +311,10 @@ export function HomeContent() {
           something
         </h2>
         <a
-          href="mailto:hello@stefananevski.com"
+          href="mailto:anevskistefan11@gmail.com"
           className="magnetic inline-flex items-center gap-4 text-base md:text-lg text-home-muted px-8 py-4 border border-white/20 rounded-full transition-all duration-500 hover:border-home-accent hover:text-home-accent reveal"
         >
-          hello@stefananevski.com
+          anevskistefan11@gmail.com
           <svg
             className="w-5 h-5"
             viewBox="0 0 24 24"
@@ -349,12 +349,6 @@ export function HomeContent() {
             className="text-sm hover:text-white transition-colors duration-300"
           >
             GitHub
-          </Link>
-          <Link
-            href="#"
-            className="text-sm hover:text-white transition-colors duration-300"
-          >
-            Dribbble
           </Link>
         </div>
       </footer>
