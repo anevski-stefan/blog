@@ -6,7 +6,6 @@ import { LazyWebGLBackground } from "@/components/shared/backgrounds/LazyWebGLBa
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { timelineData, TimelineType } from "@/features/timeline/data/timeline"
 import { cn } from "@/lib/utils"
-import { TimelineGlobalStyles } from "@/features/timeline/components/TimelineGlobalStyles"
 import { TimelineDecorations } from "@/features/timeline/components/TimelineDecorations"
 
 export const metadata: Metadata = {
@@ -129,8 +128,6 @@ export default async function TimelinePage(props: TimelinePageProps) {
 
   return (
     <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
-      <TimelineGlobalStyles />
-
       <LazyWebGLBackground />
       <DotGridBackground className="-z-5 opacity-[0.02]" />
       <TimelineDecorations />
