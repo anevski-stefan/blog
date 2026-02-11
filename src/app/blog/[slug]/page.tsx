@@ -5,7 +5,7 @@ import {
   mapPostToUi,
   getAllPosts,
 } from "@/features/blog/lib/posts"
-import { BlogPostClientView } from "./client-view"
+import { BlogPostView } from "./post-view"
 import { Metadata } from "next"
 
 export async function generateStaticParams() {
@@ -71,5 +71,5 @@ export default async function BlogPostPage({
 
   const uiPost = mapPostToUi(post)
 
-  return <BlogPostClientView post={uiPost} relatedPosts={relatedPosts} />
+  return <BlogPostView post={uiPost} relatedPosts={relatedPosts} />
 }

@@ -1,308 +1,22 @@
-"use client"
-
-import { useEffect, useRef, useState } from "react"
-import { gsap } from "gsap"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-
-interface ScrambleItem {
-  from: string
-  to: string
-  start: number
-  end: number
-  char: string
-}
-
-class TextScramble {
-  el: HTMLElement
-  chars: string
-  queue: ScrambleItem[]
-  frame: number
-  frameRequest: number
-  resolve: (value?: unknown) => void
-
-  constructor(el: HTMLElement) {
-    this.el = el
-    this.chars = "!<>-_\\/[]{}—=+*^?#________"
-    this.queue = []
-    this.frame = 0
-    this.frameRequest = 0
-    this.resolve = () => {}
-    this.update = this.update.bind(this)
-  }
-
-  setText(newText: string) {
-    const oldText = this.el.innerText
-    const length = Math.max(oldText.length, newText.length)
-    const promise = new Promise(resolve => (this.resolve = resolve))
-    this.queue = []
-    for (let i = 0; i < length; i++) {
-      const from = oldText[i] || ""
-      const to = newText[i] || ""
-      const start = Math.floor(Math.random() * 40)
-      const end = start + Math.floor(Math.random() * 40)
-      this.queue.push({ from, to, start, end, char: "" })
-    }
-    cancelAnimationFrame(this.frameRequest)
-    this.frame = 0
-    this.update()
-    return promise
-  }
-
-  update() {
-    let output = ""
-    let complete = 0
-    for (let i = 0, n = this.queue.length; i < n; i++) {
-      const { from, to, start, end } = this.queue[i]
-      let { char } = this.queue[i]
-      if (this.frame >= end) {
-        complete++
-        output += to
-      } else if (this.frame >= start) {
-        if (!char || Math.random() < 0.28) {
-          char = this.randomChar()
-          this.queue[i].char = char
-        }
-        output += `<span class="text-home-accent font-bold">${char}</span>`
-      } else {
-        output += from
-      }
-    }
-    this.el.innerHTML = output
-    if (complete === this.queue.length) {
-      if (this.resolve) this.resolve()
-    } else {
-      this.frameRequest = requestAnimationFrame(this.update)
-      this.frame++
-    }
-  }
-
-  randomChar() {
-    return this.chars[Math.floor(Math.random() * this.chars.length)]
-  }
-}
+import { GoBackButton } from "./not-found/GoBackButton"
+import { KonamiEasterEgg } from "./not-found/KonamiEasterEgg"
+import { NotFoundIntroFx } from "./not-found/NotFoundIntroFx"
+import { NotFoundPathname } from "./not-found/NotFoundPathname"
+import { NotFoundThreeCanvas } from "./not-found/NotFoundThreeCanvas"
+import { ScrambleText } from "./not-found/ScrambleText"
 
 export function NotFoundContent() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const scrambleRef = useRef<HTMLHeadingElement>(null)
-  const [easterEggActive, setEasterEggActive] = useState(false)
-  const pathname = usePathname()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (scrambleRef.current) {
-      const el = scrambleRef.current
-      const fx = new TextScramble(el)
-      const phrases = [
-        "Page Not Found",
-        "Lost in Space",
-        "Wrong Dimension",
-        "Null Reference",
-        "Path undefined",
-        "Page Not Found",
-      ]
-      let counter = 0
-      const next = () => {
-        fx.setText(phrases[counter]).then(() => {
-          setTimeout(next, 3000)
-        })
-        counter = (counter + 1) % phrases.length
-      }
-      setTimeout(next, 2000)
-    }
-
-    const konamiCode = [
-      "ArrowUp",
-      "ArrowUp",
-      "ArrowDown",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      "ArrowLeft",
-      "ArrowRight",
-      "KeyB",
-      "KeyA",
-    ]
-    let konamiIndex = 0
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === konamiCode[konamiIndex]) {
-        konamiIndex++
-        if (konamiIndex === konamiCode.length) {
-          setEasterEggActive(true)
-          konamiIndex = 0
-        }
-      } else {
-        konamiIndex = 0
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-
-    const canvas = canvasRef.current
-    let cancelledThree = false
-    let cleanupThreeInner = () => {}
-    const cleanupThree = () => {
-      cancelledThree = true
-      cleanupThreeInner()
-    }
-
-    if (canvas) {
-      void (async () => {
-        const THREE = await import("three")
-        if (cancelledThree) return
-
-        const scene = new THREE.Scene()
-        const camera = new THREE.PerspectiveCamera(
-          75,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000
-        )
-        camera.position.z = 50
-
-        const renderer = new THREE.WebGLRenderer({
-          canvas,
-          alpha: true,
-          antialias: true,
-        })
-        renderer.setSize(window.innerWidth, window.innerHeight)
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-        const brokenGeo = new THREE.IcosahedronGeometry(20, 1)
-        const brokenMat = new THREE.MeshBasicMaterial({
-          color: 0x5865f2,
-          wireframe: true,
-          transparent: true,
-          opacity: 0.1,
-        })
-        const brokenMesh = new THREE.Mesh(brokenGeo, brokenMat)
-        scene.add(brokenMesh)
-
-        const particlesGeometry = new THREE.BufferGeometry()
-        const particleCount = 300
-        const posArray = new Float32Array(particleCount * 3)
-        for (let i = 0; i < particleCount * 3; i++) {
-          posArray[i] = (Math.random() - 0.5) * 100
-        }
-        particlesGeometry.setAttribute(
-          "position",
-          new THREE.BufferAttribute(posArray, 3)
-        )
-        const particlesMaterial = new THREE.PointsMaterial({
-          size: 0.08,
-          color: 0x5865f2,
-          transparent: true,
-          opacity: 0.5,
-          blending: THREE.AdditiveBlending,
-        })
-        const particles = new THREE.Points(particlesGeometry, particlesMaterial)
-        scene.add(particles)
-
-        let targetX = 0,
-          targetY = 0
-        let currentX = 0,
-          currentY = 0
-        const handleMouseMove = (e: MouseEvent) => {
-          targetX = (e.clientX / window.innerWidth - 0.5) * 2
-          targetY = (e.clientY / window.innerHeight - 0.5) * 2
-        }
-        window.addEventListener("mousemove", handleMouseMove)
-
-        let animationId: number
-        const animate = () => {
-          animationId = requestAnimationFrame(animate)
-          currentX += (targetX - currentX) * 0.02
-          currentY += (targetY - currentY) * 0.02
-
-          brokenMesh.rotation.x += 0.001
-          brokenMesh.rotation.y += 0.002
-          brokenMesh.rotation.x += currentY * 0.01
-          brokenMesh.rotation.y += currentX * 0.01
-
-          particles.rotation.y = currentX * 0.2
-          particles.rotation.x = currentY * 0.2
-          particles.rotation.z += 0.0003
-          renderer.render(scene, camera)
-        }
-        animate()
-
-        const handleResize = () => {
-          camera.aspect = window.innerWidth / window.innerHeight
-          camera.updateProjectionMatrix()
-          renderer.setSize(window.innerWidth, window.innerHeight)
-        }
-        window.addEventListener("resize", handleResize)
-
-        cleanupThreeInner = () => {
-          window.removeEventListener("mousemove", handleMouseMove)
-          window.removeEventListener("resize", handleResize)
-          cancelAnimationFrame(animationId)
-          brokenGeo.dispose()
-          brokenMat.dispose()
-          particlesGeometry.dispose()
-          particlesMaterial.dispose()
-          renderer.dispose()
-        }
-      })()
-    }
-
-    const ctx = gsap.context(() => {
-      gsap.from("h1", {
-        opacity: 0,
-        scale: 0.5,
-        duration: 1,
-        ease: "elastic.out(1, 0.5)",
-        delay: 0.2,
-      })
-      gsap.from("h2, .not-found-desc", {
-        opacity: 0,
-        y: 30,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.5,
-      })
-      gsap.from(".terminal-window", {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.8,
-      })
-      gsap.from(".action-buttons button, .action-buttons a", {
-        opacity: 0,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power3.out",
-        delay: 1,
-      })
-      gsap.from(".float", {
-        opacity: 0,
-        scale: 0,
-        stagger: 0.2,
-        duration: 1,
-        ease: "elastic.out(1, 0.5)",
-        delay: 0.3,
-      })
-    })
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-      ctx.revert()
-      cleanupThree()
-    }
-  }, [])
-
   return (
-    <div className="relative font-body bg-home-primary text-white min-h-screen overflow-hidden scanlines">
+    <div
+      id="not-found-root"
+      className="relative font-body bg-home-primary text-white min-h-screen overflow-hidden scanlines"
+    >
+      <NotFoundIntroFx />
       <div className="noise"></div>
       <div className="broken-grid"></div>
 
-      <canvas
-        ref={canvasRef}
-        id="webgl"
-        className="fixed inset-0 -z-10"
-      ></canvas>
+      <NotFoundThreeCanvas />
 
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -416,9 +130,7 @@ export function NotFoundContent() {
 
           <div className="mb-6">
             <h2 className="font-heading text-xl md:text-2xl lg:text-3xl font-semibold mb-2">
-              <span className="scramble-text" ref={scrambleRef}>
-                Page Not Found
-              </span>
+              <ScrambleText className="scramble-text" />
             </h2>
             <p className="not-found-desc text-home-muted text-sm md:text-base max-w-md mx-auto leading-relaxed">
               The page you&apos;re looking for has been moved, deleted, or you
@@ -439,7 +151,7 @@ export function NotFoundContent() {
               <p className="flex items-center gap-2">
                 <span className="text-home-accent">$</span>
                 <span className="text-white/80">fetch</span>
-                <span className="text-home-muted">{pathname}</span>
+                <NotFoundPathname className="text-home-muted" />
               </p>
               <p className="text-red-400">→ Error: ENOENT - Page not found</p>
               <p className="text-home-muted">→ Status: 404</p>
@@ -468,10 +180,7 @@ export function NotFoundContent() {
               </svg>
               Go Home
             </Link>
-            <button
-              onClick={() => router.back()}
-              className="group flex items-center gap-3 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-home-accent/50 text-white font-heading text-xs font-medium tracking-wider uppercase rounded-full transition-all duration-300"
-            >
+            <GoBackButton className="group flex items-center gap-3 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-home-accent/50 text-white font-heading text-xs font-medium tracking-wider uppercase rounded-full transition-all duration-300">
               <svg
                 className="w-4 h-4 transition-transform group-hover:-rotate-45"
                 viewBox="0 0 24 24"
@@ -483,7 +192,7 @@ export function NotFoundContent() {
                 <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
               </svg>
               Go Back
-            </button>
+            </GoBackButton>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
@@ -520,26 +229,7 @@ export function NotFoundContent() {
         </div>
       </main>
 
-      <div
-        id="easter-egg"
-        className={`fixed inset-0 z-[100] bg-home-primary flex items-center justify-center transition-opacity duration-500 ${easterEggActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-      >
-        <div className="text-center">
-          <div className="text-8xl mb-6 animate-bounce">🎮</div>
-          <h3 className="font-heading text-2xl font-semibold mb-2">
-            Konami Code Activated!
-          </h3>
-          <p className="text-home-muted mb-6">
-            You found the secret! Here&apos;s a virtual high-five 🙌
-          </p>
-          <button
-            onClick={() => setEasterEggActive(false)}
-            className="px-6 py-3 bg-home-accent text-white rounded-full text-sm font-medium hover:bg-home-accent/90 transition-colors"
-          >
-            Cool, take me back
-          </button>
-        </div>
-      </div>
+      <KonamiEasterEgg />
 
       <style jsx>{`
         @keyframes typing {
