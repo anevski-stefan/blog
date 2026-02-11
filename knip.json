@@ -1,12 +1,17 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "next.config.{js,mjs,ts}",
+    "next-sitemap.config.mjs",
+    "app/**/*.{js,jsx,ts,tsx}",
+    "middleware.{js,ts}",
+    "instrumentation.{js,ts}"
+  ],
   "project": [
     "src/**/*.{js,jsx,ts,tsx}",
-    "*.{js,jsx,ts,tsx,mjs,cjs}",
-    "*.config.{js,cjs,mjs,ts,cts,mts}",
+    "app/**/*.{js,jsx,ts,tsx}",
     "!src/generated/**"
   ],
-  "entry": ["next-sitemap.config.mjs"],
   "ignoreDependencies": [
     "@tailwindcss/typography",
     "eslint-config-next",
