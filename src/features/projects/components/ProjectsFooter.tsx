@@ -6,19 +6,19 @@ export function ProjectsFooter() {
       </p>
       <div className="flex gap-6 md:gap-8">
         <a
-          href="#"
+          href="https://x.com/s_anevski"
           className="text-sm text-home-muted hover:text-white transition-colors duration-300"
         >
           Twitter
         </a>
         <a
-          href="#"
+          href="https://www.linkedin.com/in/stefan-anevski/"
           className="text-sm text-home-muted hover:text-white transition-colors duration-300"
         >
           LinkedIn
         </a>
         <a
-          href="#"
+          href="https://github.com/anevski-stefan"
           className="text-sm text-home-muted hover:text-white transition-colors duration-300"
         >
           GitHub
