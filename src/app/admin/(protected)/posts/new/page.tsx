@@ -1,4 +1,4 @@
-import { CreatePostForm } from "@/components/blog/create-post-form"
+import { CreatePostForm } from "@/features/admin/blog/create-post-form"
 import { getCurrentUser } from "@/lib/auth"
 import { getAvailableCategories, getAvailableTags } from "@/lib/admin"
 

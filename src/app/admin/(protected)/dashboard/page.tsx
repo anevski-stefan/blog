@@ -1,4 +1,4 @@
-import { AdminDashboard } from "@/components/admin/dashboard"
+import { AdminDashboard } from "@/features/admin/dashboard"
 import { constructMetadata } from "@/lib/metadata"
 import { getCurrentUser } from "@/lib/auth"
 import { getAdminDashboardData } from "@/lib/admin"

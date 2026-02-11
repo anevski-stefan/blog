@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { CreatePostForm } from "@/components/blog/create-post-form"
+import { CreatePostForm } from "@/features/admin/blog/create-post-form"
 import { getCurrentUser } from "@/lib/auth"
 import {
   getAvailableCategories,
