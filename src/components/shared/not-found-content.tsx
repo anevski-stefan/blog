@@ -1,10 +1,12 @@
 import Link from "next/link"
-import { GoBackButton } from "./not-found/GoBackButton"
-import { KonamiEasterEgg } from "./not-found/KonamiEasterEgg"
-import { NotFoundIntroFx } from "./not-found/NotFoundIntroFx"
-import { NotFoundPathname } from "./not-found/NotFoundPathname"
-import { NotFoundThreeCanvas } from "./not-found/NotFoundThreeCanvas"
-import { ScrambleText } from "./not-found/ScrambleText"
+import {
+  GoBackButton,
+  KonamiEasterEgg,
+  NotFoundIntroFx,
+  NotFoundPathname,
+  NotFoundThreeCanvas,
+  ScrambleText,
+} from "./not-found/client"
 
 export function NotFoundContent() {
   return (

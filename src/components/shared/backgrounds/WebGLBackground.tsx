@@ -9,6 +9,15 @@ export function WebGLBackground() {
     const canvas = canvasRef.current
     if (!canvas) return
 
+    const mediaQuery =
+      typeof window !== "undefined"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null
+
+    if (mediaQuery?.matches) {
+      return
+    }
+
     let cleanup = () => {}
     let cancelled = false
 
@@ -112,13 +121,18 @@ export function WebGLBackground() {
       const handleScroll = () => {
         scrollY = window.scrollY
       }
-      window.addEventListener("scroll", handleScroll)
+      window.addEventListener("scroll", handleScroll, { passive: true })
 
       const clock = new THREE.Clock()
-      let animationId: number
+      let animationId = 0
 
-      const animate = () => {
-        animationId = requestAnimationFrame(animate)
+      const tick = () => {
+        if (cancelled) return
+        if (document.hidden) {
+          animationId = 0
+          return
+        }
+
         const elapsedTime = clock.getElapsedTime()
 
         currentX += (targetX - currentX) * 0.02
@@ -140,8 +154,24 @@ export function WebGLBackground() {
         camera.rotation.x = scrollY * 0.0001
 
         renderer.render(scene, camera)
+
+        animationId = requestAnimationFrame(tick)
       }
-      animate()
+
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          if (animationId) cancelAnimationFrame(animationId)
+          animationId = 0
+          return
+        }
+
+        if (!animationId) {
+          animationId = requestAnimationFrame(tick)
+        }
+      }
+      document.addEventListener("visibilitychange", handleVisibilityChange)
+
+      animationId = requestAnimationFrame(tick)
 
       const handleResize = () => {
         camera.aspect = window.innerWidth / window.innerHeight
@@ -154,7 +184,8 @@ export function WebGLBackground() {
         window.removeEventListener("mousemove", handleMouseMove)
         window.removeEventListener("scroll", handleScroll)
         window.removeEventListener("resize", handleResize)
-        cancelAnimationFrame(animationId)
+        document.removeEventListener("visibilitychange", handleVisibilityChange)
+        if (animationId) cancelAnimationFrame(animationId)
 
         particlesGeometry.dispose()
         particlesMaterial.dispose()

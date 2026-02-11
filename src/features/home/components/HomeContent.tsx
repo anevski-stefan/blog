@@ -1,178 +1,16 @@
-"use client"
-
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 import Link from "next/link"
 import Image from "next/image"
-import { SiteHeader } from "@/components/layout/SiteHeader"
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+import { HomeAnimations } from "./HomeAnimations"
 
 export function HomeContent() {
-  const loaderRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const loaderText = document.querySelectorAll(".loader-text span")
-      const loadingTl = gsap.timeline()
-
-      loadingTl
-        .to(loaderText, {
-          y: 0,
-          opacity: 1,
-          stagger: 0.05,
-          duration: 0.5,
-          ease: "power3.out",
-        })
-        .to(loaderText, {
-          y: -20,
-          opacity: 0,
-          stagger: 0.03,
-          duration: 0.3,
-          delay: 0.5,
-        })
-        .to(loaderRef.current, {
-          yPercent: -100,
-          duration: 1,
-          ease: "power4.inOut",
-        })
-        .call(() => {
-          if (loaderRef.current) loaderRef.current.style.display = "none"
-          animateHero()
-        })
-
-      function animateHero() {
-        const heroTl = gsap.timeline()
-        heroTl
-          .to(".hero-line", {
-            y: 0,
-            duration: 1.2,
-            stagger: 0.1,
-            ease: "power4.out",
-          })
-          .to(
-            ".hero-eyebrow",
-            {
-              opacity: 1,
-              x: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.8"
-          )
-          .to(
-            ".hero-desc",
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.6"
-          )
-          .to(
-            ".hero-cta",
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.6"
-          )
-          .to(
-            ".hero-scroll",
-            {
-              opacity: 1,
-              duration: 1,
-              ease: "power3.out",
-            },
-            "-=0.4"
-          )
-      }
-
-      gsap.utils.toArray(".reveal").forEach(elem => {
-        const el = elem as HTMLElement
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          }
-        )
-      })
-
-      gsap.utils.toArray(".stat-number").forEach(statNode => {
-        const stat = statNode as HTMLElement
-        const target = parseInt(stat.dataset.count || "0")
-        gsap.to(stat, {
-          innerText: target,
-          duration: 2,
-          snap: { innerText: 1 },
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: stat,
-            start: "top 80%",
-          },
-        })
-      })
-
-      const magneticElements = document.querySelectorAll(".magnetic")
-      magneticElements.forEach(elem => {
-        const el = elem as HTMLElement
-        const handleMouseMove = (e: MouseEvent) => {
-          const rect = el.getBoundingClientRect()
-          const x = e.clientX - rect.left - rect.width / 2
-          const y = e.clientY - rect.top - rect.height / 2
-          gsap.to(el, {
-            x: x * 0.3,
-            y: y * 0.3,
-            duration: 0.4,
-            ease: "power2.out",
-          })
-        }
-        const handleMouseLeave = () => {
-          gsap.to(el, {
-            x: 0,
-            y: 0,
-            duration: 0.7,
-            ease: "elastic.out(1, 0.3)",
-          })
-        }
-
-        el.addEventListener("mousemove", handleMouseMove)
-        el.addEventListener("mouseleave", handleMouseLeave)
-      })
-    })
-
-    return () => ctx.revert()
-  }, [])
-
-  const scrollToSection = (id: string) => {
-    const target = document.querySelector(id)
-    if (target) {
-      gsap.to(window, {
-        duration: 1.5,
-        scrollTo: { y: target, offsetY: 50 },
-        ease: "power4.inOut",
-      })
-    }
-  }
-
   return (
-    <div className="text-white font-body selection:bg-home-accent selection:text-white">
+    <div
+      id="home-root"
+      className="text-white font-body selection:bg-home-accent selection:text-white"
+    >
+      <HomeAnimations />
       <div
-        ref={loaderRef}
         id="loader"
         className="fixed inset-0 bg-home-primary z-[9999] flex items-center justify-center"
       >
@@ -186,8 +24,6 @@ export function HomeContent() {
           <span className="opacity-0 translate-y-4">G</span>
         </div>
       </div>
-
-      <SiteHeader />
 
       <section className="min-h-screen flex flex-col justify-center px-6 md:px-16 relative pt-20">
         <div className="max-w-7xl mx-auto w-full">
@@ -213,13 +49,13 @@ export function HomeContent() {
             problems. Specialized in full-stack architecture and interactive web
             systems.
           </p>
-          <button
-            onClick={() => scrollToSection("#work")}
+          <a
+            href="#work"
             className="hero-cta magnetic inline-flex items-center gap-4 px-8 py-4 md:px-10 md:py-5 bg-white text-home-primary font-heading text-sm font-medium tracking-widest uppercase rounded-full relative overflow-hidden transition-transform duration-500 hover:scale-105 opacity-0 translate-y-10"
           >
             View Selected Work
             <span className="arrow transition-transform duration-500">→</span>
-          </button>
+          </a>
         </div>
         <div className="hero-scroll absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-0">
           <span className="text-[10px] tracking-[0.3em] uppercase text-home-muted [writing-mode:vertical-rl]">

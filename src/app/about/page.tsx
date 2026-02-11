@@ -1,9 +1,8 @@
 import { Metadata } from "next"
-import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
+import { LazyWebGLBackground } from "@/components/shared/backgrounds/LazyWebGLBackground"
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import Link from "next/link"
 import { SkillsInspector } from "./components/SkillsInspector"
-import { AboutRevealFx } from "./components/AboutRevealFx"
 
 export const metadata: Metadata = {
   title: "About Me | Stefan Anevski",
@@ -14,13 +13,12 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="relative z-0 min-h-screen w-full bg-home-primary overflow-x-hidden selection:bg-home-accent/30 selection:text-white">
-      <WebGLBackground />
+      <LazyWebGLBackground />
       <div
         id="about-root"
         className="relative z-10 text-white font-body min-h-screen"
       >
-        <AboutRevealFx />
-        <SiteHeader />
+        <SiteHeader activeKey="about" />
 
         <main className="pt-32 pb-20 px-6 md:px-16 max-w-7xl mx-auto">
           <header className="mb-32 md:mb-48 relative">

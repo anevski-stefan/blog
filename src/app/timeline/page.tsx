@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { SiteHeader } from "@/components/layout/SiteHeader"
-import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
+import { LazyWebGLBackground } from "@/components/shared/backgrounds/LazyWebGLBackground"
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { timelineData, TimelineType } from "@/features/timeline/data/timeline"
 import { cn } from "@/lib/utils"
@@ -131,11 +131,11 @@ export default async function TimelinePage(props: TimelinePageProps) {
     <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
       <TimelineGlobalStyles />
 
-      <WebGLBackground />
+      <LazyWebGLBackground />
       <DotGridBackground className="-z-5 opacity-[0.02]" />
       <TimelineDecorations />
 
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" activeKey="timeline" />
 
       <section className="pt-32 md:pt-44 pb-16 md:pb-24 px-6 md:px-16">
         <div className="max-w-7xl mx-auto">

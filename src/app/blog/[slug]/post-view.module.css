@@ -1,0 +1,167 @@
+.root :global(.prose) {
+  max-width: 65ch;
+}
+
+.root :global(.prose p) {
+  margin-bottom: 1.5em;
+  line-height: 1.8;
+  color: #d1d5db;
+}
+
+.root :global(.prose h2) {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 100px;
+  color: #ffffff;
+}
+
+.root :global(.prose h3) {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 100px;
+  color: #ffffff;
+}
+
+.root :global(.prose a) {
+  color: #5865f2;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.3s;
+}
+
+.root :global(.prose a:hover) {
+  color: #7983f5;
+}
+
+.root :global(.prose strong) {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.root :global(.prose ul),
+.root :global(.prose ol) {
+  margin: 1.5em 0;
+  padding-left: 1.5em;
+  color: #d1d5db;
+}
+
+.root :global(.prose li) {
+  margin: 0.5em 0;
+  line-height: 1.7;
+}
+
+.root :global(.prose ul li::marker),
+.root :global(.prose ol li::marker) {
+  color: #5865f2;
+}
+
+.root :global(.prose ol li::marker) {
+  font-weight: 600;
+}
+
+.root :global(.prose blockquote) {
+  border-left: 3px solid #5865f2;
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: #9ca3af;
+}
+
+.root :global(.prose code:not([class*="language-"])) {
+  background: rgba(88, 101, 242, 0.15);
+  color: #5865f2;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-family: var(--font-space-mono);
+}
+
+.root :global(.prose pre) {
+  margin: 2rem 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1a1a1a;
+  padding: 1em;
+  overflow-x: auto;
+}
+
+.root :global(.prose pre code) {
+  font-size: 0.875rem;
+  font-family: var(--font-space-mono);
+  color: #e5e5e5;
+}
+
+.root :global(.prose img) {
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.root :global(.prose hr) {
+  border-color: rgba(255, 255, 255, 0.1);
+  margin: 3rem 0;
+}
+
+.root :global(.toc-link) {
+  transition: all 0.3s ease;
+}
+
+.root :global(.toc-link.active) {
+  color: #5865f2;
+  border-left-color: #5865f2;
+}
+
+.root :global(.toc-link:hover) {
+  color: #5865f2;
+}
+
+.root :global(#reading-progress) {
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.root :global(.share-btn) {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.root :global(.share-btn:hover) {
+  transform: translateY(-2px);
+}
+
+.root :global(.copy-btn) {
+  transition: all 0.3s ease;
+}
+
+.root :global(.copy-btn:hover) {
+  background: rgba(88, 101, 242, 0.3);
+}
+
+.root :global(.copy-btn.copied) {
+  background: rgba(34, 197, 94, 0.3);
+}
+
+.root :global(.callout) {
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+}
+
+.root :global(.callout-info) {
+  background: rgba(88, 101, 242, 0.1);
+  border: 1px solid rgba(88, 101, 242, 0.3);
+}
+
+.root :global(.callout-warning) {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.root :global(.callout-tip) {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}

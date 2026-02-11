@@ -1,6 +1,6 @@
 import { constructMetadata } from "@/lib/metadata"
 import { SiteHeader } from "@/components/layout/SiteHeader"
-import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
+import { LazyWebGLBackground } from "@/components/shared/backgrounds/LazyWebGLBackground"
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { projectsData } from "@/features/projects/data/projects"
 import { ProjectsHero } from "@/features/projects/components/ProjectsHero"
@@ -18,10 +18,10 @@ export const metadata = constructMetadata({
 export default function ProjectsPage() {
   return (
     <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
-      <WebGLBackground />
+      <LazyWebGLBackground />
       <DotGridBackground className="opacity-[0.02]" />
 
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" activeKey="projects" />
 
       <main id="projects-root" className="pt-28 md:pt-36 pb-20 px-6 md:px-16">
         <div className="max-w-7xl mx-auto">

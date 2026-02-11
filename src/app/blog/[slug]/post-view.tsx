@@ -3,14 +3,14 @@ import Image from "next/image"
 
 import type { BlogPost } from "@/features/blog/types/blog"
 import { SiteHeader } from "@/components/layout/SiteHeader"
-import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
+import { LazyWebGLBackground } from "@/components/shared/backgrounds/LazyWebGLBackground"
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { Newsletter } from "@/features/blog/components/Newsletter"
 import { TiptapRenderer } from "@/components/tiptap/Renderer"
 import { toEditorContent, calculateReadingTime } from "@/lib/utils"
 import { Twitter, Linkedin, Github, Globe } from "lucide-react"
-import { ReadingProgressBar } from "./components/ReadingProgressBar"
 import { PostShareButtons } from "./components/PostShareButtons"
+import styles from "./post-view.module.css"
 
 export function BlogPostView(props: {
   post: BlogPost
@@ -20,146 +20,10 @@ export function BlogPostView(props: {
   const editorContent = toEditorContent(post.content)
 
   return (
-    <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
-      <WebGLBackground />
-      <ReadingProgressBar articleId="post-article" />
-
-      <style jsx global>{`
-        .prose {
-          max-width: 65ch;
-        }
-        .prose p {
-          margin-bottom: 1.5em;
-          line-height: 1.8;
-          color: #d1d5db;
-        }
-        .prose h2 {
-          font-family: var(--font-heading);
-          font-size: 1.75rem;
-          font-weight: 600;
-          margin-top: 3rem;
-          margin-bottom: 1rem;
-          scroll-margin-top: 100px;
-          color: #ffffff;
-        }
-        .prose h3 {
-          font-family: var(--font-heading);
-          font-size: 1.25rem;
-          font-weight: 600;
-          margin-top: 2rem;
-          margin-bottom: 0.75rem;
-          scroll-margin-top: 100px;
-          color: #ffffff;
-        }
-        .prose a {
-          color: #5865f2;
-          text-decoration: underline;
-          text-underline-offset: 2px;
-          transition: color 0.3s;
-        }
-        .prose a:hover {
-          color: #7983f5;
-        }
-        .prose strong {
-          color: #ffffff;
-          font-weight: 600;
-        }
-        .prose ul,
-        .prose ol {
-          margin: 1.5em 0;
-          padding-left: 1.5em;
-          color: #d1d5db;
-        }
-        .prose li {
-          margin: 0.5em 0;
-          line-height: 1.7;
-        }
-        .prose ul li::marker {
-          color: #5865f2;
-        }
-        .prose ol li::marker {
-          color: #5865f2;
-          font-weight: 600;
-        }
-        .prose blockquote {
-          border-left: 3px solid #5865f2;
-          padding-left: 1.5rem;
-          margin: 2rem 0;
-          font-style: italic;
-          color: #9ca3af;
-        }
-        .prose code:not([class*="language-"]) {
-          background: rgba(88, 101, 242, 0.15);
-          color: #5865f2;
-          padding: 0.2em 0.4em;
-          border-radius: 4px;
-          font-size: 0.875em;
-          font-family: var(--font-space-mono);
-        }
-        .prose pre {
-          margin: 2rem 0;
-          border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          background: #1a1a1a;
-          padding: 1em;
-          overflow-x: auto;
-        }
-        .prose pre code {
-          font-size: 0.875rem;
-          font-family: var(--font-space-mono);
-          color: #e5e5e5;
-        }
-        .prose img {
-          border-radius: 12px;
-          margin: 2rem 0;
-        }
-        .prose hr {
-          border-color: rgba(255, 255, 255, 0.1);
-          margin: 3rem 0;
-        }
-
-        #reading-progress {
-          transform-origin: left;
-          transform: scaleX(0);
-        }
-        .share-btn {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .share-btn:hover {
-          transform: translateY(-2px);
-        }
-        .copy-btn {
-          transition: all 0.3s ease;
-        }
-        .copy-btn:hover {
-          background: rgba(88, 101, 242, 0.3);
-        }
-        .copy-btn.copied {
-          background: rgba(34, 197, 94, 0.3);
-        }
-
-        .callout {
-          border-radius: 12px;
-          padding: 1.25rem 1.5rem;
-          margin: 2rem 0;
-        }
-        .callout-info {
-          background: rgba(88, 101, 242, 0.1);
-          border: 1px solid rgba(88, 101, 242, 0.3);
-        }
-        .callout-warning {
-          background: rgba(245, 158, 11, 0.1);
-          border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-        .callout-tip {
-          background: rgba(34, 197, 94, 0.1);
-          border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-
-        html {
-          scroll-padding-top: 100px;
-        }
-      `}</style>
+    <div
+      className={`relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen ${styles.root}`}
+    >
+      <LazyWebGLBackground />
 
       <div
         id="reading-progress"
@@ -168,7 +32,7 @@ export function BlogPostView(props: {
 
       <DotGridBackground className="opacity-[0.02]" />
 
-      <SiteHeader variant="solid" />
+      <SiteHeader variant="solid" activeKey="blog" />
 
       <header className="pt-32 md:pt-40 pb-12 px-6 md:px-16">
         <div className="max-w-4xl mx-auto">
@@ -256,7 +120,7 @@ export function BlogPostView(props: {
               </div>
             </div>
 
-            <PostShareButtons title={post.title} />
+            <PostShareButtons title={post.title} articleId="post-article" />
           </div>
         </div>
       </header>

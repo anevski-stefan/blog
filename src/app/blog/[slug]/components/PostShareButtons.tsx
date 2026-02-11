@@ -1,10 +1,45 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-export function PostShareButtons(props: { title: string }) {
-  const { title } = props
+export function PostShareButtons(props: {
+  title: string
+  articleId: string
+  barId?: string
+}) {
+  const { title, articleId, barId = "reading-progress" } = props
   const [copyState, setCopyState] = useState<"default" | "copied">("default")
+
+  useEffect(() => {
+    const article = document.getElementById(articleId)
+    const bar = document.getElementById(barId)
+
+    if (!article || !bar) return
+
+    const update = () => {
+      const rect = article.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+
+      const totalScrollable = rect.height - viewportHeight
+      const scrolled = -rect.top
+
+      const progress =
+        totalScrollable <= 0
+          ? 1
+          : Math.min(1, Math.max(0, scrolled / totalScrollable))
+
+      bar.style.transform = `scaleX(${progress})`
+    }
+
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    window.addEventListener("resize", update)
+
+    return () => {
+      window.removeEventListener("scroll", update)
+      window.removeEventListener("resize", update)
+    }
+  }, [articleId, barId])
 
   const shareTwitter = () => {
     const text = encodeURIComponent(title)

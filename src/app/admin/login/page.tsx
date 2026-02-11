@@ -1,4 +1,4 @@
-import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground"
+import { LazyWebGLBackground } from "@/components/shared/backgrounds/LazyWebGLBackground"
 import { LoginForm } from "@/features/auth/components/LoginForm"
 import { Metadata } from "next"
 
@@ -18,7 +18,7 @@ export default async function AdminLoginPage() {
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center py-10 px-4 overflow-hidden bg-home-primary">
-      <WebGLBackground />
+      <LazyWebGLBackground />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
         <LoginForm />
