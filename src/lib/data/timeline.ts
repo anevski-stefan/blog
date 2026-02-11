@@ -1,6 +1,6 @@
 export type TimelineType = "work" | "education" | "achievement" | "project"
 
-export interface TimelineItem {
+interface TimelineItem {
   id: string
   type: TimelineType
   year: string

@@ -4,6 +4,9 @@ import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/db"
 import { requireAdmin } from "@/lib/auth"
 import { z } from "zod"
+import { createLogger } from "@/lib/logger"
+
+const logger = createLogger("Actions:Taxonomy")
 
 const TaxonomySchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -40,7 +43,9 @@ export async function createCategory(data: {
     revalidatePath("/admin/dashboard")
     return { success: true, category }
   } catch (error) {
-    console.error("Failed to create category:", error)
+    logger.error("Failed to create category", error, {
+      slug: validatedData.data.slug,
+    })
     return { error: "Failed to create category. Name or slug might be taken." }
   }
 }
@@ -69,7 +74,9 @@ export async function createTag(data: { name: string; slug: string }) {
     revalidatePath("/admin/dashboard")
     return { success: true, tag }
   } catch (error) {
-    console.error("Failed to create tag:", error)
+    logger.error("Failed to create tag", error, {
+      slug: validatedData.data.slug,
+    })
     return { error: "Failed to create tag. Name or slug might be taken." }
   }
 }

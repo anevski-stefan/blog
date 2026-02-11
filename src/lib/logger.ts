@@ -3,7 +3,7 @@ import "server-only"
 /**
  * Log levels for structured logging
  */
-export enum LogLevel {
+enum LogLevel {
   DEBUG = "debug",
   INFO = "info",
   WARN = "warn",
@@ -125,7 +125,7 @@ class Logger {
  *   logger.info("User logged in", { userId: "123" })
  *   logger.error("Failed to create post", error, { postId: "abc" })
  */
-export const logger = new Logger()
+const logger = new Logger()
 
 /**
  * Helper to create context-specific loggers

@@ -9,6 +9,7 @@ import { BlogPost } from "@/types/blog"
 
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { WebGLBackground } from "@/components/home/WebGLBackground"
+import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { Newsletter } from "@/components/blog/newsletter"
 import { TiptapRenderer } from "@/components/tiptap/Renderer"
 import { Github, Twitter, Linkedin, Globe } from "lucide-react"
@@ -288,13 +289,7 @@ export function BlogPostClientView({
         className="fixed top-0 left-0 right-0 h-1 bg-home-accent z-[100]"
       ></div>
 
-      <div
-        className="fixed inset-0 -z-10 opacity-[0.02]"
-        style={{
-          backgroundImage: "radial-gradient(#5865F2 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      ></div>
+      <DotGridBackground className="opacity-[0.02]" />
 
       <SiteHeader variant="solid" />
 

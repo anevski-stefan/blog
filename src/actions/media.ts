@@ -3,6 +3,9 @@
 import { UTApi } from "uploadthing/server"
 import { MediaItem } from "@/types/admin"
 import { requireAdmin } from "@/lib/auth"
+import { createLogger } from "@/lib/logger"
+
+const logger = createLogger("Actions:Media")
 
 export async function getMediaItems(): Promise<{
   success: boolean
@@ -25,7 +28,7 @@ export async function getMediaItems(): Promise<{
 
     return { success: true, data: mediaItems }
   } catch (error) {
-    console.error("Failed to fetch media items:", error)
+    logger.error("Failed to fetch media items", error)
     return { success: false, error: "Failed to fetch media items" }
   }
 }

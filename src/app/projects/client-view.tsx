@@ -7,6 +7,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { WebGLBackground } from "@/components/home/WebGLBackground"
+import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { projectsData, Project } from "@/lib/data/projects"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -247,13 +248,7 @@ export function ProjectsClientView() {
   return (
     <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
       <WebGLBackground />
-      <div
-        className="fixed inset-0 -z-10 opacity-[0.02]"
-        style={{
-          backgroundImage: "radial-gradient(#5865F2 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      ></div>
+      <DotGridBackground className="opacity-[0.02]" />
 
       <SiteHeader variant="solid" />
 

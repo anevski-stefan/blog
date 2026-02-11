@@ -3,6 +3,9 @@
 import { prisma } from "@/lib/db"
 import { requireAdmin } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
+import { createLogger } from "@/lib/logger"
+
+const logger = createLogger("Actions:Notifications")
 
 export async function getNotifications() {
   try {
@@ -15,7 +18,7 @@ export async function getNotifications() {
     })
     return { success: true, data: notifications }
   } catch (error) {
-    console.error("Failed to fetch notifications:", error)
+    logger.error("Failed to fetch notifications", error)
     return { success: false, error: "Failed to fetch notifications" }
   }
 }
@@ -30,7 +33,7 @@ export async function markAllAsRead() {
     revalidatePath("/")
     return { success: true }
   } catch (error) {
-    console.error("Failed to mark notifications as read:", error)
+    logger.error("Failed to mark all notifications as read", error)
     return { success: false, error: "Failed to update notifications" }
   }
 }
@@ -45,7 +48,7 @@ export async function markAsRead(id: string) {
     revalidatePath("/")
     return { success: true }
   } catch (error) {
-    console.error("Failed to mark notification as read:", error)
+    logger.error("Failed to mark notification as read", error, { id })
     return { success: false, error: "Failed to update notification" }
   }
 }
@@ -58,7 +61,7 @@ export async function getUnreadStatus() {
     })
     return { success: true, hasUnread: count > 0 }
   } catch (error) {
-    console.error("Failed to check unread status:", error)
+    logger.error("Failed to check unread status", error)
     return { success: false, hasUnread: false }
   }
 }

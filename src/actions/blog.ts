@@ -6,6 +6,9 @@ import { prisma } from "@/lib/db"
 import { requireAdmin, getCurrentUser } from "@/lib/auth"
 import { z } from "zod"
 import type { Prisma } from "@/generated/prisma/client"
+import { createLogger } from "@/lib/logger"
+
+const logger = createLogger("Actions:Blog")
 
 function parseJsonValue(value: string): Prisma.InputJsonValue {
   try {
@@ -194,12 +197,10 @@ export async function createPost(formData: FormData) {
         .delete({
           where: { id: draftId },
         })
-        .catch(e =>
-          console.error("Failed to delete draft after publishing:", e)
-        )
+        .catch(e => logger.error("Failed to delete draft after publishing", e))
     }
   } catch (error) {
-    console.error("Failed to create post:", error)
+    logger.error("Failed to create post", error)
     return {
       error:
         error instanceof Error
@@ -369,7 +370,7 @@ export async function updatePost(formData: FormData) {
       },
     })
   } catch (error) {
-    console.error("Failed to update post:", error)
+    logger.error("Failed to update post", error, { postId, slug })
     return {
       error: error instanceof Error ? error.message : "Failed to update post.",
     }

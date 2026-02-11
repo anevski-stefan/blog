@@ -14,7 +14,15 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { login, loginWithProvider } from "@/actions/auth"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/use-toast"
+
+function showError(message: string) {
+  toast({
+    variant: "destructive",
+    title: "Sign in failed",
+    description: message,
+  })
+}
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
@@ -98,10 +106,10 @@ export function LoginForm() {
 
       const result = await login(formData)
       if (result?.error) {
-        toast.error(result.error)
+        showError(result.error)
       }
     } catch {
-      toast.error("An unexpected error occurred")
+      showError("An unexpected error occurred")
     } finally {
       setIsLoading(false)
     }
@@ -112,10 +120,10 @@ export function LoginForm() {
     try {
       const result = await loginWithProvider(provider)
       if (result?.error) {
-        toast.error(result.error)
+        showError(result.error)
       }
     } catch {
-      toast.error("Failed to connect with provider")
+      showError("Failed to connect with provider")
     } finally {
       setSocialLoading(null)
     }

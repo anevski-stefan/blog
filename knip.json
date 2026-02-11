@@ -3,21 +3,17 @@
   "entry": [
     "next.config.{js,mjs,ts}",
     "next-sitemap.config.mjs",
-    "app/**/*.{js,jsx,ts,tsx}",
-    "middleware.{js,ts}",
-    "instrumentation.{js,ts}"
+    "src/app/**/*.{js,jsx,ts,tsx}"
   ],
-  "project": [
-    "src/**/*.{js,jsx,ts,tsx}",
-    "app/**/*.{js,jsx,ts,tsx}",
-    "!src/generated/**"
-  ],
+  "project": ["src/**/*.{js,jsx,ts,tsx}", "!src/generated/**"],
   "ignoreDependencies": [
     "@tailwindcss/typography",
     "eslint-config-next",
     "sharp",
     "tw-animate-css"
   ],
-  "ignoreExportsUsedInFile": true,
+  "ignoreIssues": {
+    "src/components/ui/**": ["exports", "types"]
+  },
   "ignore": [".next/**", "node_modules/**"]
 }
