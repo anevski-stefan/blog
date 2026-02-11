@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef } from "react"
+import { logClientError } from "@/lib/client-logger"
 
 type SaveStatus = "saving" | "saved" | "idle"
 
@@ -85,7 +86,7 @@ export function useLocalDraft(options: {
       }
       if (data.publishDate) setPublishDate(data.publishDate)
     } catch (error) {
-      console.error("Failed to load draft", error)
+      logClientError("Failed to load draft", error)
     }
   }, [
     initialPost,

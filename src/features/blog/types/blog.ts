@@ -1,4 +1,4 @@
-import type { JsonValue } from "@prisma/client/runtime/library"
+import type { Prisma } from "@prisma/client"
 
 export interface BlogPost {
   id: string
@@ -13,5 +13,5 @@ export interface BlogPost {
   slug: string
   authorName?: string
   authorImage?: string
-  content?: JsonValue
+  content?: Prisma.JsonValue
 }

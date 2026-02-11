@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import type { Project } from "@/lib/data/projects"
+import type { Project } from "@/features/projects/data/projects"
 import { ProjectStatusBadge } from "./ProjectStatusBadge"
 
 interface ProjectDetailsModalProps {

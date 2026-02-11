@@ -2,7 +2,7 @@
 
 import { UTApi } from "uploadthing/server"
 import { MediaItem } from "@/features/admin/types/admin"
-import { requireAdmin } from "@/lib/auth"
+import { requireAdmin } from "@/features/admin/lib/auth"
 import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("Actions:Media")

@@ -1,4 +1,4 @@
-import type { Project } from "@/lib/data/projects"
+import type { Project } from "@/features/projects/data/projects"
 
 interface ProjectStatusBadgeProps {
   status: Project["status"]

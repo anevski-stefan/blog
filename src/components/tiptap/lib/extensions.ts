@@ -7,8 +7,8 @@ import TextAlign from "@tiptap/extension-text-align"
 import TextStyle from "@tiptap/extension-text-style"
 import Color from "@tiptap/extension-color"
 import Highlight from "@tiptap/extension-highlight"
-import { Subscript } from "@/lib/tiptap/marks/subscript"
-import { Superscript } from "@/lib/tiptap/marks/superscript"
+import { Subscript } from "@/components/tiptap/lib/marks/subscript"
+import { Superscript } from "@/components/tiptap/lib/marks/superscript"
 
 export function createTiptapExtensions(options?: {
   placeholder?: string

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { prisma } from "@/lib/db"
-import { requireAdmin, getCurrentUser } from "@/lib/auth"
+import { requireAdmin, getCurrentUser } from "@/features/admin/lib/auth"
 import { z } from "zod"
 import type { Prisma } from "@prisma/client"
 import { createLogger } from "@/lib/logger"

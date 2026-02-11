@@ -1,5 +1,5 @@
 import { Editor as CoreEditor } from "@tiptap/core"
-import { createTiptapExtensions } from "@/lib/tiptap/extensions"
+import { createTiptapExtensions } from "@/components/tiptap/lib/extensions"
 
 export function serializeEditorContent(value: string | object): string {
   if (typeof value === "object" && value !== null) {

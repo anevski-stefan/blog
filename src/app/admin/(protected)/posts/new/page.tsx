@@ -1,5 +1,5 @@
 import { CreatePostForm } from "@/features/admin/blog/create-post-form"
-import { getCurrentUser } from "@/lib/auth"
+import { getCurrentUser } from "@/features/admin/lib/auth"
 import { getAvailableCategories, getAvailableTags } from "@/features/admin/lib"
 
 export default async function NewPostPage() {

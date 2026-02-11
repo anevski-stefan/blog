@@ -55,7 +55,12 @@ export default async function CategoryPage(props: CategoryPageProps) {
           </div>
           {totalPages > 1 && (
             <div className="mt-8">
-              <Pagination totalPages={totalPages} currentPage={currentPage} />
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                basePath={`/blog/category/${params.slug}`}
+                searchParams={searchParams}
+              />
             </div>
           )}
         </>

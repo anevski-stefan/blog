@@ -17,7 +17,8 @@ import { useLocalDraft } from "./create-post-form/useLocalDraft"
 import { User } from "@supabase/supabase-js"
 import { calculateReadingTime } from "@/lib/utils"
 import { PostWithRelations } from "@/features/blog/types/posts"
-import { serializeEditorContent } from "@/lib/tiptap/serialize"
+import { serializeEditorContent } from "@/components/tiptap/lib/serialize"
+import { logClientError } from "@/lib/client-logger"
 
 interface CreatePostFormProps {
   user?: User | null
@@ -167,11 +168,11 @@ export function CreatePostForm({
           JSON.stringify({ ...currentDraft, draftId: result.draftId })
         )
       } else {
-        console.error(result.error)
+        logClientError("Failed to save draft", result.error)
         setSaveStatus("idle")
       }
     } catch (e) {
-      console.error("Failed to save draft:", e)
+      logClientError("Failed to save draft", e)
       setSaveStatus("idle")
     }
 
@@ -209,7 +210,7 @@ export function CreatePostForm({
     }
 
     if (result?.error) {
-      console.error(result.error)
+      logClientError("Failed to publish post", result.error)
       alert(`Error: ${result.error}`)
       setSaveStatus("idle")
     } else if (result?.success && result?.slug) {

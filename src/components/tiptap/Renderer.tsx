@@ -3,7 +3,7 @@
 import * as React from "react"
 import { EditorContent, type Content, useEditor } from "@tiptap/react"
 import { cn, type TiptapContent } from "@/lib/utils"
-import { createTiptapExtensions } from "@/lib/tiptap/extensions"
+import { createTiptapExtensions } from "@/components/tiptap/lib/extensions"
 
 export function TiptapRenderer(props: {
   content?: TiptapContent

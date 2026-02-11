@@ -62,7 +62,12 @@ export default async function TagPage(props: TagPageProps) {
           </div>
           {totalPages > 1 && (
             <div className="mt-8">
-              <Pagination totalPages={totalPages} currentPage={currentPage} />
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                basePath={`/blog/tag/${params.slug}`}
+                searchParams={searchParams}
+              />
             </div>
           )}
         </>

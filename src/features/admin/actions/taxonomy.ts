@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/db"
-import { requireAdmin } from "@/lib/auth"
+import { requireAdmin } from "@/features/admin/lib/auth"
 import { z } from "zod"
 import { createLogger } from "@/lib/logger"
 

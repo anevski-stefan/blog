@@ -1,5 +1,5 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next"
-import { isAdmin } from "@/lib/auth"
+import { isAdmin } from "@/features/admin/lib/auth"
 
 const f = createUploadthing()
 

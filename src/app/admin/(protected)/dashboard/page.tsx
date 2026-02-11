@@ -1,7 +1,10 @@
 import { AdminDashboard } from "@/features/admin/dashboard"
 import { constructMetadata } from "@/lib/metadata"
-import { getCurrentUser } from "@/lib/auth"
+import { getCurrentUser } from "@/features/admin/lib/auth"
 import { getAdminDashboardData } from "@/features/admin/lib"
+import { createLogger } from "@/lib/logger"
+
+const logger = createLogger("AdminDashboardPage")
 
 export const metadata = constructMetadata({
   title: "Dashboard",
@@ -18,10 +21,7 @@ export default async function DashboardPage() {
   try {
     data = await getAdminDashboardData()
   } catch (error) {
-    console.error(
-      "Failed to fetch dashboard data:",
-      error instanceof Error ? error.message : error
-    )
+    logger.error("Failed to fetch dashboard data", error)
     data = {
       posts: [],
       categories: [],

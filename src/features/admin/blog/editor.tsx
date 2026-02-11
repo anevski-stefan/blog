@@ -35,7 +35,7 @@ import {
   X,
 } from "lucide-react"
 import { cn, type TiptapContent } from "@/lib/utils"
-import { createTiptapExtensions } from "@/lib/tiptap/extensions"
+import { createTiptapExtensions } from "@/components/tiptap/lib/extensions"
 
 interface EditorProps {
   content?: TiptapContent

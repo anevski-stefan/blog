@@ -2,7 +2,7 @@ import { WebGLBackground } from "@/components/shared/backgrounds/WebGLBackground
 import { LoginForm } from "@/features/auth/components/LoginForm"
 import { Metadata } from "next"
 
-import { isAdmin } from "@/lib/auth"
+import { isAdmin } from "@/features/admin/lib/auth"
 import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {

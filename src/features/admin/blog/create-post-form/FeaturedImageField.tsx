@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { X } from "lucide-react"
-import { UploadDropzone } from "@/lib/uploadthing"
+import { UploadDropzone } from "@/features/admin/lib/uploadthing"
 
 export function FeaturedImageField(props: {
   featuredImage: string | null

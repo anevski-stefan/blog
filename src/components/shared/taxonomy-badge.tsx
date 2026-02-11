@@ -1,7 +1,5 @@
-"use client"
-
-import { useRouter } from "next/navigation"
-import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
+import { badgeVariants } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 interface TaxonomyBadgeProps {
@@ -17,24 +15,17 @@ export function TaxonomyBadge({
   type,
   className,
 }: TaxonomyBadgeProps) {
-  const router = useRouter()
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    router.push(`/blog/${type}/${slug}`)
-  }
-
+  const href = `/blog/${type}/${slug}`
   return (
-    <Badge
-      variant="secondary"
+    <Link
+      href={href}
       className={cn(
-        "hover:bg-secondary hover:text-secondary-foreground transition-colors cursor-pointer",
+        badgeVariants({ variant: "secondary" }),
+        "transition-colors",
         className
       )}
-      onClick={handleClick}
     >
       {name}
-    </Badge>
+    </Link>
   )
 }

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { CreatePostForm } from "@/features/admin/blog/create-post-form"
-import { getCurrentUser } from "@/lib/auth"
+import { getCurrentUser } from "@/features/admin/lib/auth"
 import {
   getAvailableCategories,
   getAvailableTags,
