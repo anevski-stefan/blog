@@ -88,6 +88,27 @@
   }
 }
 
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+
+  50% {
+    border-color: #5865f2;
+  }
+}
+
 :root {
   --radius: 0.625rem;
   --background: #f4faff;

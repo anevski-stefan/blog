@@ -232,26 +232,6 @@ export function NotFoundContent() {
       </main>
 
       <KonamiEasterEgg />
-
-      <style jsx>{`
-        @keyframes typing {
-          from {
-            width: 0;
-          }
-          to {
-            width: 100%;
-          }
-        }
-        @keyframes blink-caret {
-          from,
-          to {
-            border-color: transparent;
-          }
-          50% {
-            border-color: #5865f2;
-          }
-        }
-      `}</style>
     </div>
   )
 }
