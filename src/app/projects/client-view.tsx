@@ -9,6 +9,14 @@ import { SiteHeader } from "@/components/layout/SiteHeader"
 import { WebGLBackground } from "@/components/home/WebGLBackground"
 import { DotGridBackground } from "@/components/shared/DotGridBackground"
 import { projectsData, Project } from "@/lib/data/projects"
+import { ProjectDetailsModal } from "@/features/projects/components/ProjectDetailsModal"
+import { ProjectStatusBadge } from "@/features/projects/components/ProjectStatusBadge"
+import { ProjectsCtaSection } from "@/features/projects/components/ProjectsCtaSection"
+import { ProjectsFilterBar } from "@/features/projects/components/ProjectsFilterBar"
+import { ProjectsFooter } from "@/features/projects/components/ProjectsFooter"
+import { ProjectsHero } from "@/features/projects/components/ProjectsHero"
+import { ProjectsStats } from "@/features/projects/components/ProjectsStats"
+import { ProjectsStatusSummary } from "@/features/projects/components/ProjectsStatusSummary"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -218,33 +226,6 @@ export function ProjectsClientView() {
     }
   }, [selectedProject])
 
-  const getStatusBadge = (status: Project["status"]) => {
-    switch (status) {
-      case "live":
-        return (
-          <span className="flex items-center gap-1.5 px-2 py-1 bg-green-500/20 text-green-500 text-[10px] font-mono rounded uppercase">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-            Live
-          </span>
-        )
-      case "development":
-        return (
-          <span className="flex items-center gap-1.5 px-2 py-1 bg-yellow-500/20 text-yellow-500 text-[10px] font-mono rounded uppercase">
-            <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>In
-            Dev
-          </span>
-        )
-      case "archived":
-        return (
-          <span className="flex items-center gap-1.5 px-2 py-1 bg-home-muted/20 text-home-muted text-[10px] font-mono rounded uppercase">
-            Archived
-          </span>
-        )
-      default:
-        return null
-    }
-  }
-
   return (
     <div className="relative z-0 font-body bg-home-primary text-white overflow-x-hidden min-h-screen">
       <WebGLBackground />
@@ -254,182 +235,20 @@ export function ProjectsClientView() {
 
       <main className="pt-28 md:pt-36 pb-20 px-6 md:px-16">
         <div className="max-w-7xl mx-auto">
-          <div className="projects-hero text-center mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <span className="w-2 h-2 bg-home-accent rounded-full animate-pulse"></span>
-              <span className="text-xs font-mono font-medium tracking-widest uppercase text-home-accent">
-                Portfolio
-              </span>
-            </div>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-4">
-              Featured Projects
-            </h1>
-            <p className="text-home-muted text-lg max-w-2xl mx-auto">
-              A curated collection of projects showcasing my expertise in
-              full-stack development, system design, and creative
-              problem-solving.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-            <div className="stat-card glass rounded-xl border border-white/10 p-5 text-center transition-all duration-300 hover:border-home-accent/30 relative overflow-hidden group">
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-home-accent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              <div className="font-heading text-3xl font-bold text-home-accent mb-1">
-                <span className="stat-number" data-target="24">
-                  0
-                </span>
-              </div>
-              <div className="text-xs text-home-muted uppercase tracking-wider">
-                Total Projects
-              </div>
-            </div>
-            <div className="stat-card glass rounded-xl border border-white/10 p-5 text-center transition-all duration-300 hover:border-home-accent/30 relative overflow-hidden group">
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-home-accent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              <div className="font-heading text-3xl font-bold text-green-500 mb-1">
-                <span className="stat-number" data-target="18">
-                  0
-                </span>
-              </div>
-              <div className="text-xs text-home-muted uppercase tracking-wider">
-                Live & Active
-              </div>
-            </div>
-            <div className="stat-card glass rounded-xl border border-white/10 p-5 text-center transition-all duration-300 hover:border-home-accent/30 relative overflow-hidden group">
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-home-accent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              <div className="font-heading text-3xl font-bold text-yellow-500 mb-1">
-                <span className="stat-number" data-target="2">
-                  0
-                </span>
-                M+
-              </div>
-              <div className="text-xs text-home-muted uppercase tracking-wider">
-                Users Reached
-              </div>
-            </div>
-            <div className="stat-card glass rounded-xl border border-white/10 p-5 text-center transition-all duration-300 hover:border-home-accent/30 relative overflow-hidden group">
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-home-accent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              <div className="font-heading text-3xl font-bold text-pink-500 mb-1">
-                <span className="stat-number" data-target="15">
-                  0
-                </span>
-              </div>
-              <div className="text-xs text-home-muted uppercase tracking-wider">
-                Open Source
-              </div>
-            </div>
-          </div>
-
-          <div className="filter-bar flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 p-4 glass rounded-xl border border-white/10">
-            <div className="flex flex-wrap gap-2">
-              {["all", "web-app", "api", "design-system", "open-source"].map(
-                cat => (
-                  <button
-                    key={cat}
-                    onClick={() => {
-                      setCurrentFilter(cat)
-                      setVisibleCount(9)
-                    }}
-                    className={`px-4 py-2 text-xs font-mono uppercase tracking-wider border border-white/10 rounded-lg bg-white/5 transition-all duration-300 ${currentFilter === cat ? "bg-home-accent/20 border-home-accent text-home-accent" : "hover:bg-home-accent/20 hover:text-home-accent hover:border-home-accent"}`}
-                  >
-                    {cat === "all" ? "All Projects" : cat.replace("-", " ")}
-                  </button>
-                )
-              )}
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-home-muted"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="M21 21l-4.35-4.35" />
-                </svg>
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={e => {
-                    setSearchQuery(e.target.value)
-                    setVisibleCount(9)
-                  }}
-                  className="w-40 md:w-48 bg-white/5 border border-white/10 rounded-lg py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-home-accent/50 transition-colors text-white placeholder-home-muted"
-                />
-              </div>
-
-              <select
-                value={sortBy}
-                onChange={e => setSortBy(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-home-accent/50 transition-colors text-white"
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="name">By Name</option>
-              </select>
-
-              <div className="hidden md:flex items-center gap-1 p-1 bg-white/5 rounded-lg border border-white/10">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded transition-colors ${viewMode === "grid" ? "bg-home-accent/20 text-home-accent" : "text-white hover:text-home-accent"}`}
-                  title="Grid View"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <rect x="3" y="3" width="7" height="7" rx="1" />
-                    <rect x="14" y="3" width="7" height="7" rx="1" />
-                    <rect x="3" y="14" width="7" height="7" rx="1" />
-                    <rect x="14" y="14" width="7" height="7" rx="1" />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 rounded transition-colors ${viewMode === "list" ? "bg-home-accent/20 text-home-accent" : "text-white hover:text-home-accent"}`}
-                  title="List View"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <line x1="8" y1="6" x2="21" y2="6" />
-                    <line x1="8" y1="12" x2="21" y2="12" />
-                    <line x1="8" y1="18" x2="21" y2="18" />
-                    <line x1="3" y1="6" x2="3.01" y2="6" />
-                    <line x1="3" y1="12" x2="3.01" y2="12" />
-                    <line x1="3" y1="18" x2="3.01" y2="18" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between mb-6">
-            <p className="text-sm text-home-muted">
-              Showing{" "}
-              <span className="text-white font-medium">
-                {filteredProjects.length}
-              </span>{" "}
-              projects
-            </p>
-            <div className="flex items-center gap-2 text-xs text-home-muted">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span> Live
-              <span className="w-2 h-2 bg-yellow-500 rounded-full ml-2"></span>{" "}
-              In Development
-              <span className="w-2 h-2 bg-home-muted rounded-full ml-2"></span>{" "}
-              Archived
-            </div>
-          </div>
+          <ProjectsHero />
+          <ProjectsStats />
+          <ProjectsFilterBar
+            currentFilter={currentFilter}
+            setCurrentFilter={setCurrentFilter}
+            setVisibleCount={setVisibleCount}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+          />
+          <ProjectsStatusSummary total={filteredProjects.length} />
 
           {displayedProjects.length > 0 ? (
             <div
@@ -454,7 +273,7 @@ export function ProjectsClientView() {
                       </div>
                     )}
                     <div className="absolute top-3 right-3 z-20">
-                      {getStatusBadge(project.status)}
+                      <ProjectStatusBadge status={project.status} />
                     </div>
                     <div className="w-full h-full relative">
                       <Image
@@ -620,259 +439,17 @@ export function ProjectsClientView() {
             </div>
           )}
 
-          <section className="py-20 border-t border-white/5 mt-20">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="font-heading text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-                Have a project in mind?
-              </h2>
-              <p className="text-home-muted mb-8 max-w-lg mx-auto">
-                I&apos;m always open to discussing new projects, creative ideas,
-                or opportunities to be part of your vision.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <a
-                  href="mailto:hello@stefananevski.com"
-                  className="inline-flex items-center gap-3 px-6 py-3 bg-home-accent hover:bg-home-accent/90 text-white font-heading text-sm font-medium tracking-wider rounded-full transition-all hover:scale-105"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                  </svg>
-                  Start a Conversation
-                </a>
-                <a
-                  href="https://github.com/alexchen"
-                  target="_blank"
-                  className="inline-flex items-center gap-3 px-6 py-3 border border-white/20 hover:border-home-accent/50 text-white font-heading text-sm font-medium tracking-wider rounded-full transition-all hover:bg-white/5"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                  </svg>
-                  View GitHub
-                </a>
-              </div>
-            </div>
-          </section>
+          <ProjectsCtaSection />
         </div>
       </main>
 
-      <footer className="py-8 md:py-12 px-6 md:px-16 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="text-sm text-home-muted">
-          © {new Date().getFullYear()} Stefan Anevski. All rights reserved.
-        </p>
-        <div className="flex gap-6 md:gap-8">
-          <a
-            href="#"
-            className="text-sm text-home-muted hover:text-white transition-colors duration-300"
-          >
-            Twitter
-          </a>
-          <a
-            href="#"
-            className="text-sm text-home-muted hover:text-white transition-colors duration-300"
-          >
-            LinkedIn
-          </a>
-          <a
-            href="#"
-            className="text-sm text-home-muted hover:text-white transition-colors duration-300"
-          >
-            GitHub
-          </a>
-          <a
-            href="#"
-            className="text-sm text-home-muted hover:text-white transition-colors duration-300"
-          >
-            Dribbble
-          </a>
-        </div>
-      </footer>
+      <ProjectsFooter />
 
       {selectedProject && (
-        <div
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 overflow-y-auto"
-          onClick={e => {
-            if (e.target === e.currentTarget) setSelectedProject(null)
-          }}
-        >
-          <div className="glass rounded-2xl border border-white/10 w-full max-w-4xl max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-            <div className="relative">
-              <div className="w-full aspect-video relative">
-                <Image
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-home-primary via-transparent to-transparent"></div>
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors text-white"
-              >
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-              <div className="absolute top-4 left-4">
-                {getStatusBadge(selectedProject.status)}
-              </div>
-            </div>
-
-            <div className="p-6 md:p-8 text-white overflow-y-auto max-h-[calc(90vh-300px)]">
-              <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
-                <div>
-                  <span className="text-xs font-mono text-home-accent uppercase tracking-wider mb-2 block">
-                    {selectedProject.category.replace("-", " ")}
-                  </span>
-                  <h2 className="font-heading text-2xl md:text-3xl font-semibold">
-                    {selectedProject.title}
-                  </h2>
-                </div>
-                <div className="flex items-center gap-3">
-                  {selectedProject.liveUrl && (
-                    <Link
-                      href={selectedProject.liveUrl}
-                      target="_blank"
-                      className="flex items-center gap-2 px-4 py-2 bg-home-accent hover:bg-home-accent/90 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                      Live Demo
-                    </Link>
-                  )}
-                  {selectedProject.githubUrl && (
-                    <Link
-                      href={selectedProject.githubUrl}
-                      target="_blank"
-                      className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-colors"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                      </svg>
-                      Source
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              <p className="text-home-muted leading-relaxed mb-6">
-                {selectedProject.longDescription}
-              </p>
-
-              <div className="mb-6">
-                <h4 className="text-sm font-medium uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4 text-home-accent"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                  Key Features
-                </h4>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {selectedProject.features.map((feature, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center gap-2 text-sm text-home-muted"
-                    >
-                      <svg
-                        className="w-4 h-4 text-green-500 flex-shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mb-6">
-                <h4 className="text-sm font-medium uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4 text-home-accent"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <polyline points="16 18 22 12 16 6" />
-                    <polyline points="8 6 2 12 8 18" />
-                  </svg>
-                  Tech Stack
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedProject.tech.map(t => (
-                    <span
-                      key={t}
-                      className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-mono text-white/70"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 p-4 bg-white/5 rounded-xl">
-                <div className="text-center">
-                  <div className="font-heading text-xl font-semibold text-home-accent">
-                    {selectedProject.stats.users}
-                  </div>
-                  <div className="text-xs text-home-muted">Users</div>
-                </div>
-                <div className="text-center border-x border-white/10">
-                  <div className="font-heading text-xl font-semibold text-home-accent">
-                    {selectedProject.stats.stars}
-                  </div>
-                  <div className="text-xs text-home-muted">Stars</div>
-                </div>
-                <div className="text-center">
-                  <div className="font-heading text-xl font-semibold text-home-accent">
-                    {selectedProject.stats.duration}
-                  </div>
-                  <div className="text-xs text-home-muted">Duration</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProjectDetailsModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
       )}
     </div>
   )
