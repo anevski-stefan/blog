@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/db"
 import { requireAdmin, getCurrentUser } from "@/lib/auth"
 import { z } from "zod"
-import type { Prisma } from "@/generated/prisma/client"
+import type { Prisma } from "@prisma/client"
 import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("Actions:Blog")

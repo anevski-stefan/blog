@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { formatDate } from "@/lib/utils"
 import { TaxonomyBadge } from "@/components/shared/taxonomy-badge"
-import type { Post, Category, Tag } from "@/generated/prisma/client"
+import type { Category, Post, Tag } from "@prisma/client"
 
 interface PostCardProps {
   post: Post & {

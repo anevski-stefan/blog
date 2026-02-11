@@ -1,4 +1,4 @@
-import type { Post, Category, Tag } from "@/generated/prisma/client"
+import type { Category, Post, Tag } from "@prisma/client"
 
 /**
  * Post with relations (categories and tags)

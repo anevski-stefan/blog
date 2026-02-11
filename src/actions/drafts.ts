@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/db"
 import { requireAdmin } from "@/lib/auth"
-import { Prisma } from "@/generated/prisma/client"
+import { Prisma } from "@prisma/client"
 import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("Actions:Drafts")
